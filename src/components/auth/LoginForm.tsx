@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Mail, Lock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export const LoginForm: React.FC = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -60,6 +62,14 @@ export const LoginForm: React.FC = () => {
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
               Sign in
+            </button>
+            <br />
+            <button
+              onClick={() => navigate("/auth/signup")}
+              type="submit"
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Sign Up
             </button>
           </div>
         </form>
