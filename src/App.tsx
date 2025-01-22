@@ -1,4 +1,3 @@
-import React from "react";
 import { AuthProvider } from "./context/AuthContext";
 import { SocketProvider } from "./context/SocketContext";
 import { LoginForm } from "./components/auth/LoginForm";

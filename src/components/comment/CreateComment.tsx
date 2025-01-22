@@ -35,7 +35,7 @@ export const CreateComment: React.FC<CreateCommentProps> = ({
         throw new Error("Failed to create comment");
       }
 
-      const data = await response.json();
+      const data = (await response.json())?.data;
       onCommentAdded(data.comment);
       setContent("");
     } catch (err) {

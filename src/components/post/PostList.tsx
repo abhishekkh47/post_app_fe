@@ -23,7 +23,7 @@ export const PostList: React.FC = () => {
           throw new Error("Failed to fetch posts");
         }
 
-        const data = await response.json();
+        const data = (await response.json())?.data;
         setPosts(data.posts);
       } catch (err) {
         setError("Failed to load posts");

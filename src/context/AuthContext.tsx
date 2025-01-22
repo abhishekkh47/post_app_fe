@@ -52,7 +52,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       throw new Error("Login failed");
     }
 
-    const data: AuthResponse = await response.json();
+    const data: AuthResponse = (await response.json())?.data;
     localStorage.setItem("token", data.token);
     localStorage.setItem("refreshToken", data.refreshToken);
     localStorage.setItem("user", JSON.stringify(data.user));
@@ -76,7 +76,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       throw new Error("Signup failed");
     }
 
-    const data: AuthResponse = await response.json();
+    const data: AuthResponse = (await response.json())?.data;
     localStorage.setItem("token", data.token);
     localStorage.setItem("refreshToken", data.refreshToken);
     localStorage.setItem("user", JSON.stringify(data.user));

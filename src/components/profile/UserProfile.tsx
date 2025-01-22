@@ -28,7 +28,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
           throw new Error("Failed to fetch profile");
         }
 
-        const data = await response.json();
+        const data = (await response.json())?.data;
         setProfile(data.user);
         setIsFollowing(data.isFollowing);
       } catch (err) {

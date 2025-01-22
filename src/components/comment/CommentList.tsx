@@ -38,10 +38,10 @@ export const CommentList: React.FC<CommentListProps> = ({
     <div className="space-y-4 mt-4">
       {comments.map((comment) => (
         <div key={comment._id} className="flex items-start space-x-3">
-          {comment.userId.profile_pic ? (
+          {comment?.userId?.profile_pic ? (
             <img
-              src={comment.userId.profile_pic}
-              alt={`${comment.userId.firstName} ${comment.userId.lastName}`}
+              src={comment?.userId?.profile_pic}
+              alt={`${comment?.userId?.firstName} ${comment?.userId?.lastName}`}
               className="h-8 w-8 rounded-full"
             />
           ) : (
@@ -50,9 +50,9 @@ export const CommentList: React.FC<CommentListProps> = ({
           <div className="flex-1 bg-gray-50 rounded-lg p-3">
             <div className="flex items-center justify-between">
               <p className="font-medium">
-                {comment.userId.firstName} {comment.userId.lastName}
+                {comment?.userId?.firstName} {comment?.userId?.lastName}
               </p>
-              {user?._id === comment.userId._id && (
+              {user?._id === comment?.userId?._id && (
                 <button
                   onClick={() => handleDeleteComment(comment._id)}
                   className="text-gray-400 hover:text-red-500"
@@ -61,7 +61,7 @@ export const CommentList: React.FC<CommentListProps> = ({
                 </button>
               )}
             </div>
-            <p className="text-gray-800">{comment.content}</p>
+            <p className="text-gray-800">{comment?.content}</p>
             <p className="text-xs text-gray-500 mt-1">
               {new Date(comment.createdAt).toLocaleDateString()}
             </p>

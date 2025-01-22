@@ -42,10 +42,10 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
     <div className="bg-white rounded-lg shadow-md p-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
-          {post.userId.profile_pic ? (
+          {post?.userId?.profile_pic ? (
             <img
-              src={post.userId.profile_pic}
-              alt={`${post.userId.firstName} ${post.userId.lastName}`}
+              src={post?.userId?.profile_pic}
+              alt={`${post?.userId?.firstName} ${post?.userId?.lastName}`}
               className="h-10 w-10 rounded-full"
             />
           ) : (
@@ -53,14 +53,14 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
           )}
           <div>
             <p className="font-medium">
-              {post.userId.firstName} {post.userId.lastName}
+              {post?.userId?.firstName} {post?.userId?.lastName}
             </p>
             <p className="text-sm text-gray-500">
               {new Date(post.createdAt).toLocaleDateString()}
             </p>
           </div>
         </div>
-        {user?._id === post.userId._id && (
+        {user?._id === post?.userId?._id && (
           <button
             onClick={handleDelete}
             className="text-gray-400 hover:text-red-500"
