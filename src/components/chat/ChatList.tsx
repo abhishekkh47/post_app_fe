@@ -19,7 +19,7 @@ export const ChatList: React.FC<ChatListProps> = ({
         <h2 className="text-xl font-semibold">Messages</h2>
       </div>
       <div className="divide-y divide-gray-200">
-        {conversations.map((conversation) => (
+        {conversations?.map((conversation) => (
           <div
             key={conversation._id}
             className={`p-4 cursor-pointer hover:bg-gray-50 transition-colors ${

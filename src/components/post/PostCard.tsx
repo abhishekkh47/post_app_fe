@@ -14,6 +14,27 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
   const [comments, setComments] = useState<Comment[]>(post.comments || []);
   const { user } = useAuth();
 
+  const getComments = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/comment/get-post-comments/${post._id}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("No comments found");
+      }
+      const data = (await response.json())?.data;
+      setComments([...data.comments]);
+    } catch (err) {
+      console.error("Failed to get comments:", err);
+    }
+  };
   const handleDelete = async () => {
     try {
       const response = await fetch(
@@ -32,10 +53,6 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
     } catch (err) {
       console.error("Failed to delete post:", err);
     }
-  };
-
-  const handleCommentAdded = (newComment: Comment) => {
-    setComments([...comments, newComment]);
   };
 
   return (
@@ -90,7 +107,8 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
         <div className="mt-4">
           <CreateComment
             postId={post._id}
-            onCommentAdded={handleCommentAdded}
+            // onCommentAdded={handleCommentAdded}
+            onCommentAdded={getComments}
           />
           <CommentList comments={comments} postId={post._id} />
         </div>

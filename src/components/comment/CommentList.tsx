@@ -36,8 +36,8 @@ export const CommentList: React.FC<CommentListProps> = ({
 
   return (
     <div className="space-y-4 mt-4">
-      {comments.map((comment) => (
-        <div key={comment._id} className="flex items-start space-x-3">
+      {comments?.map((comment) => (
+        <div key={comment?._id} className="flex items-start space-x-3">
           {comment?.userId?.profile_pic ? (
             <img
               src={comment?.userId?.profile_pic}
@@ -63,7 +63,7 @@ export const CommentList: React.FC<CommentListProps> = ({
             </div>
             <p className="text-gray-800">{comment?.content}</p>
             <p className="text-xs text-gray-500 mt-1">
-              {new Date(comment.createdAt).toLocaleDateString()}
+              {new Date(comment?.createdAt).toLocaleDateString()}
             </p>
           </div>
         </div>
