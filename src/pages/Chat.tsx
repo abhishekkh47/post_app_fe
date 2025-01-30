@@ -18,7 +18,7 @@ export const ChatPage: React.FC = () => {
       },
     })
       .then((res) => res.json())
-      .then((data) => setConversations(data.conversations));
+      .then((data) => setConversations(data.data.conversations));
   }, []);
 
   useEffect(() => {

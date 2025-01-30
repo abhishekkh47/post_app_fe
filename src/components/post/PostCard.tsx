@@ -70,7 +70,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
           )}
           <div>
             <p className="font-medium">
-              {post?.userId?.firstName} {post?.userId?.lastName}
+              {user?.firstName} {user?.lastName}
             </p>
             <p className="text-sm text-gray-500">
               {new Date(post.createdAt).toLocaleDateString()}
