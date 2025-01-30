@@ -30,11 +30,19 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
         throw new Error("No comments found");
       }
       const data = (await response.json())?.data;
-      setComments([...data.comments]);
+      setComments(data.comments);
     } catch (err) {
       console.error("Failed to get comments:", err);
     }
   };
+
+  const handleCommentClick = () => {
+    setShowComments(!showComments);
+    if (!showComments) {
+      getComments();
+    }
+  };
+
   const handleDelete = async () => {
     try {
       const response = await fetch(
@@ -95,7 +103,8 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
           <span>Like</span>
         </button>
         <button
-          onClick={() => setShowComments(!showComments)}
+          // onClick={() => setShowComments(!showComments)}
+          onClick={handleCommentClick}
           className="flex items-center space-x-1 hover:text-blue-500"
         >
           <MessageCircle className="h-5 w-5" />

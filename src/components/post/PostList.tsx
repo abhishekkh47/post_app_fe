@@ -7,31 +7,31 @@ export const PostList: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/post/get-my-posts`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch posts");
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch(
+        `${import.meta.env.VITE_API_URL}/post/get-my-posts`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
+      );
 
-        const data = (await response.json())?.data;
-        setPosts(data.posts);
-      } catch (err) {
-        setError("Failed to load posts");
-      } finally {
-        setLoading(false);
+      if (!response.ok) {
+        throw new Error("Failed to fetch posts");
       }
-    };
 
+      const data = (await response.json())?.data;
+      setPosts(data.posts);
+    } catch (err) {
+      setError("Failed to load posts");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchPosts();
   }, []);
 
