@@ -77,7 +77,7 @@ export const ChatPage: React.FC = () => {
   };
 
   return (
-    <div className="h-screen flex">
+    <div className="relative h-screen flex">
       <ChatList
         conversations={conversations}
         selectedUser={selectedUser}
@@ -88,6 +88,7 @@ export const ChatPage: React.FC = () => {
         messages={messages}
         onSendMessage={handleSendMessage}
         onBackButtonClick={handleBackButtonClick}
+        className="absolute top-0 left-0 w-full h-full z-20"
       />
     </div>
   );

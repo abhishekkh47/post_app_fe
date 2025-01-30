@@ -14,7 +14,7 @@ export const ChatList: React.FC<ChatListProps> = ({
   onSelectConversation,
 }) => {
   return (
-    <div className="w-full md:w-80 border-r border-gray-200 h-full overflow-y-auto">
+    <div className="w-full overflow-y-auto">
       <div className="p-4 border-b border-gray-200">
         <h2 className="text-xl font-semibold">Messages</h2>
       </div>
