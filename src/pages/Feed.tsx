@@ -1,6 +1,4 @@
 import React from "react";
-import { CreatePost } from "../components/post/CreatePost";
-import { PostList } from "../components/post/PostList";
 import { PostFeed } from "../components/post/PostFeed";
 
 export const Feed: React.FC = () => {

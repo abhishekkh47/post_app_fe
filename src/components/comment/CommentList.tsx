@@ -5,13 +5,9 @@ import { Trash2 } from "lucide-react";
 
 interface CommentListProps {
   comments: Comment[];
-  postId: string;
 }
 
-export const CommentList: React.FC<CommentListProps> = ({
-  comments,
-  postId,
-}) => {
+export const CommentList: React.FC<CommentListProps> = ({ comments }) => {
   const { user } = useAuth();
 
   const handleDeleteComment = async (commentId: string) => {
