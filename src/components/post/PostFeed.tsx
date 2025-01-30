@@ -26,7 +26,7 @@ export const PostFeed: React.FC = () => {
       const data = (await response.json())?.data;
       setPosts(data.posts);
     } catch (err) {
-      setError("Failed to load posts1");
+      setError("Failed to load posts");
     } finally {
       setLoading(false);
     }

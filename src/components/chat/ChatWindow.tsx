@@ -1,18 +1,20 @@
 import React, { useState, useRef, useEffect } from "react";
 import { User, Message } from "../../types";
-import { Send, Image } from "lucide-react";
+import { Send, Image, ArrowLeft } from "lucide-react";
 import { useSocket } from "../../context/SocketContext";
 
 interface ChatWindowProps {
   selectedUser: User | null;
   messages: Message[];
   onSendMessage: (content: string, attachments?: string[]) => void;
+  onBackButtonClick: () => void;
 }
 
 export const ChatWindow: React.FC<ChatWindowProps> = ({
   selectedUser,
   messages,
   onSendMessage,
+  onBackButtonClick,
 }) => {
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -52,6 +54,13 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
     <div className="flex-1 flex flex-col h-full">
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center space-x-3">
+          <button
+            type="button"
+            className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
+            onClick={() => onBackButtonClick()}
+          >
+            <ArrowLeft className="text-xl font-semibold" />
+          </button>
           {selectedUser.profile_pic ? (
             <img
               src={selectedUser.profile_pic}

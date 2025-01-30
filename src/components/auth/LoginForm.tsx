@@ -15,8 +15,7 @@ export const LoginForm: React.FC = () => {
     try {
       await login({ email, password });
     } catch (err) {
-      console.log("Error > : ", err);
-      setError("Invalid email or password 1");
+      setError("Invalid email or password");
     }
   };
 

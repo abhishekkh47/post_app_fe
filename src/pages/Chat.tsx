@@ -71,6 +71,11 @@ export const ChatPage: React.FC = () => {
     });
   };
 
+  const handleBackButtonClick = () => {
+    setSelectedUser(null);
+    setMessages([]);
+  };
+
   return (
     <div className="h-screen flex">
       <ChatList
@@ -82,6 +87,7 @@ export const ChatPage: React.FC = () => {
         selectedUser={selectedUser}
         messages={messages}
         onSendMessage={handleSendMessage}
+        onBackButtonClick={handleBackButtonClick}
       />
     </div>
   );
