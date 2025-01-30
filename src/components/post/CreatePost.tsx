@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { Send } from "lucide-react";
 
-export const CreatePost: React.FC = () => {
+interface CreatePostProps {
+  fetchPosts: () => void;
+}
+
+export const CreatePost: React.FC<CreatePostProps> = ({ fetchPosts }) => {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
 
@@ -25,6 +29,7 @@ export const CreatePost: React.FC = () => {
       }
 
       setContent("");
+      fetchPosts();
     } catch (err) {
       setError("Failed to create post. Please try again.");
     }
