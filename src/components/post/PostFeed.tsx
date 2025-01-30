@@ -44,7 +44,7 @@ export const PostFeed: React.FC = () => {
       ) : error ? (
         <div className="text-red-500 text-center py-4">{error}</div>
       ) : (
-        <PostList posts={posts} />
+        <PostList posts={posts} fetchPosts={fetchPosts} />
       )}
     </div>
   );

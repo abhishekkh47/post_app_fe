@@ -4,13 +4,14 @@ import { PostCard } from "./PostCard";
 
 interface PostListProps {
   posts: Post[];
+  fetchPosts: () => void;
 }
 
-export const PostList: React.FC<PostListProps> = ({ posts }) => {
+export const PostList: React.FC<PostListProps> = ({ posts, fetchPosts }) => {
   return (
     <div className="space-y-4">
       {posts.map((post) => (
-        <PostCard key={post._id} post={post} />
+        <PostCard key={post._id} post={post} fetchPosts={fetchPosts} />
       ))}
     </div>
   );

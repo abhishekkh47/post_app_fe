@@ -7,9 +7,10 @@ import { useAuth } from "../../context/AuthContext";
 
 interface PostCardProps {
   post: Post;
+  fetchPosts: () => void;
 }
 
-export const PostCard: React.FC<PostCardProps> = ({ post }) => {
+export const PostCard: React.FC<PostCardProps> = ({ post, fetchPosts }) => {
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState<Comment[]>(post.comments || []);
   const { user } = useAuth();
@@ -58,6 +59,8 @@ export const PostCard: React.FC<PostCardProps> = ({ post }) => {
       if (!response.ok) {
         throw new Error("Failed to delete post");
       }
+
+      fetchPosts();
     } catch (err) {
       console.error("Failed to delete post:", err);
     }
