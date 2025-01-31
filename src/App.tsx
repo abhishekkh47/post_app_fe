@@ -6,9 +6,9 @@ import { ChatPage } from "./pages/Chat";
 import { useAuth } from "./context/AuthContext";
 
 const AppContent = () => {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated || !user) {
     return <LoginForm />;
   }
 

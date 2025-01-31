@@ -23,8 +23,9 @@ export const ChatPage: React.FC = () => {
 
   useEffect(() => {
     if (!socket) return;
+    socket.connect();
 
-    socket.on("new_message", (message: Message) => {
+    socket.on("private_message", (message: Message) => {
       setMessages((prev) => [...prev, message]);
       // Update conversations list
       setConversations((prev) =>
