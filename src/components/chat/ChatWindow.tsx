@@ -6,6 +6,7 @@ import { useSocket } from "../../context/SocketContext";
 interface ChatWindowProps {
   selectedUser: User | null;
   messages: Message[];
+  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
   onSendMessage: (content: string, attachments?: string[]) => void;
   onBackButtonClick: () => void;
   className?: string;
@@ -14,6 +15,7 @@ interface ChatWindowProps {
 export const ChatWindow: React.FC<ChatWindowProps> = ({
   selectedUser,
   messages,
+  setMessages,
   onSendMessage,
   onBackButtonClick,
   className,
@@ -21,6 +23,22 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { socket } = useSocket();
+
+  // Listen for incoming messages from the WebSocket server
+  useEffect(() => {
+    if (socket) {
+      socket.on("new_message", (newMessage: Message) => {
+        if (selectedUser && newMessage.senderId._id === selectedUser._id) {
+          setMessages((prevMessages) => [...prevMessages, newMessage]);
+        }
+      });
+
+      // Cleanup when the component unmounts or the socket changes
+      return () => {
+        socket.off("new_message");
+      };
+    }
+  }, [selectedUser, socket, messages]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

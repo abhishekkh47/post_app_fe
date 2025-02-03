@@ -83,7 +83,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       setAuthData(data);
     } catch (error) {
       logout();
-      navigate("/auth/login");
+      navigate("/");
     }
   };
 

@@ -21,31 +21,54 @@ export const ChatPage: React.FC = () => {
       .then((data) => setConversations(data.data.conversations));
   }, []);
 
+  const handleNewMessage = async () => {
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/chat/conversations`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    const data = (await response.json())?.data;
+    setConversations(data.conversations);
+  };
+
   useEffect(() => {
     if (!socket) return;
     socket.connect();
 
-    socket.on("private_message", (message: Message) => {
+    socket.on("new_message", async (message: Message) => {
       setMessages((prev) => [...prev, message]);
       // Update conversations list
-      setConversations((prev) =>
-        prev.map((conv) =>
-          conv.userDetails._id === message.senderId._id
-            ? { ...conv, lastMessage: message }
-            : conv
-        )
-      );
+      await handleNewMessage();
     });
 
-    socket.on("message_sent", (message: Message) => {
+    socket.on("message_sent", async (message: Message) => {
       setMessages((prev) => [...prev, message]);
+      await handleNewMessage();
     });
 
     return () => {
       socket.off("new_message");
       socket.off("message_sent");
     };
-  }, [socket]);
+  }, [socket, messages]);
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.connect();
+
+    socket.on("messages_read", async (message: Message) => {
+      setMessages((prev) => [...prev, message]);
+      await handleNewMessage();
+    });
+
+    return () => {
+      socket.off("messages_read");
+    };
+  }, [socket, messages]);
 
   const handleSelectConversation = async (user: User) => {
     setSelectedUser(user);
@@ -60,6 +83,7 @@ export const ChatPage: React.FC = () => {
     );
     const data = (await response.json())?.data;
     setMessages(data.messages);
+    await handleNewMessage();
   };
 
   const handleSendMessage = (content: string, attachments?: string[]) => {
@@ -87,6 +111,7 @@ export const ChatPage: React.FC = () => {
       <ChatWindow
         selectedUser={selectedUser}
         messages={messages}
+        setMessages={setMessages}
         onSendMessage={handleSendMessage}
         onBackButtonClick={handleBackButtonClick}
         className="absolute top-0 left-0 w-full h-full z-20"
