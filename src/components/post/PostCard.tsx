@@ -74,7 +74,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post, fetchPosts }) => {
             <img
               src={post?.userId?.profile_pic}
               alt={`${post?.userId?.firstName} ${post?.userId?.lastName}`}
-              className="h-10 w-10 rounded-full"
+              className="w-10 h-10 rounded-full object-cover"
             />
           ) : (
             <div className="h-10 w-10 rounded-full bg-gray-200" />
