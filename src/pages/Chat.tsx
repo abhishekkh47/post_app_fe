@@ -70,6 +70,19 @@ export const ChatPage: React.FC = () => {
     };
   }, [socket, messages]);
 
+  useEffect(() => {
+    if (!socket) return;
+    socket.connect();
+
+    socket.on("message_marked_read", async () => {
+      await handleNewMessage();
+    });
+
+    return () => {
+      socket.off("message_marked_read");
+    };
+  }, [socket, messages]);
+
   const handleSelectConversation = async (user: User) => {
     setSelectedUser(user);
     // Fetch messages for selected conversation
@@ -84,6 +97,11 @@ export const ChatPage: React.FC = () => {
     const data = (await response.json())?.data;
     setMessages(data.messages);
     await handleNewMessage();
+
+    if (!socket || !user) return;
+    socket.emit("mark_read", {
+      receiverId: user._id,
+    });
   };
 
   const handleSendMessage = (content: string, attachments?: string[]) => {
