@@ -4,10 +4,11 @@ import { useAuth } from "../../context/AuthContext";
 import { UserPlus, UserMinus } from "lucide-react";
 
 interface UserProfileProps {
-  userId: string;
+  userId: string | undefined;
 }
 
 export const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
+  // if (!userId) return;
   const [profile, setProfile] = useState<User | null>(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const { user } = useAuth();
@@ -16,7 +17,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
     const fetchProfile = async () => {
       try {
         const response = await fetch(
-          `${import.meta.env.VITE_API_URL}/user/profile/${userId}`,
+          `${import.meta.env.VITE_API_URL}/user/get-profile/${userId}`,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -29,7 +30,8 @@ export const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
         }
 
         const data = (await response.json())?.data;
-        setProfile(data.user);
+        console.log("data L: ", data);
+        setProfile(data.userDetails);
         setIsFollowing(data.isFollowing);
       } catch (err) {
         console.error("Failed to fetch profile:", err);
@@ -37,7 +39,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
     };
 
     fetchProfile();
-  }, [userId]);
+  }, [user]);
 
   const handleFollow = async () => {
     try {

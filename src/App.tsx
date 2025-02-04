@@ -4,6 +4,7 @@ import { LoginForm } from "./components/auth/LoginForm";
 import { Feed } from "./pages/Feed";
 import { ChatPage } from "./pages/Chat";
 import { useAuth } from "./context/AuthContext";
+import { NavBar } from "./components/navbar/navbar";
 
 const AppContent = () => {
   const { isAuthenticated, user } = useAuth();
@@ -14,6 +15,7 @@ const AppContent = () => {
 
   return (
     <SocketProvider>
+      <NavBar />
       <div className="min-h-screen bg-gray-100">
         <div className="flex">
           <div className="flex-1">
