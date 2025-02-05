@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { ChatList } from "../components/chat/ChatList";
 import { ChatWindow } from "../components/chat/ChatWindow";
+import { ChatPopup } from "../components/chat/ChatPopup";
 import { useSocket } from "../context/SocketContext";
 import { User, Message, Conversation } from "../types";
 
@@ -104,6 +105,11 @@ export const ChatPage: React.FC = () => {
     });
   };
 
+  const handleCloseChat = () => {
+    setSelectedUser(null);
+    setMessages([]);
+  };
+
   const handleSendMessage = (content: string, attachments?: string[]) => {
     if (!socket || !selectedUser) return;
 
@@ -114,10 +120,10 @@ export const ChatPage: React.FC = () => {
     });
   };
 
-  const handleBackButtonClick = () => {
-    setSelectedUser(null);
-    setMessages([]);
-  };
+  // const handleBackButtonClick = () => {
+  //   setSelectedUser(null);
+  //   setMessages([]);
+  // };
 
   return (
     <div className="relative h-screen flex">
@@ -126,13 +132,20 @@ export const ChatPage: React.FC = () => {
         selectedUser={selectedUser}
         onSelectConversation={handleSelectConversation}
       />
-      <ChatWindow
+      {/* <ChatWindow
         selectedUser={selectedUser}
         messages={messages}
         setMessages={setMessages}
         onSendMessage={handleSendMessage}
         onBackButtonClick={handleBackButtonClick}
         className="absolute top-0 left-0 w-full h-full z-20"
+      /> */}
+      <ChatPopup
+        selectedUser={selectedUser}
+        messages={messages}
+        setMessages={setMessages}
+        onSendMessage={handleSendMessage}
+        onClose={handleCloseChat}
       />
     </div>
   );
