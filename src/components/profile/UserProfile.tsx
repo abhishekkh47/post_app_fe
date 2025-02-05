@@ -8,7 +8,6 @@ interface UserProfileProps {
 }
 
 export const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
-  // if (!userId) return;
   const [profile, setProfile] = useState<User | null>(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const { user } = useAuth();
@@ -30,7 +29,6 @@ export const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
         }
 
         const data = (await response.json())?.data;
-        console.log("data L: ", data);
         setProfile(data.userDetails);
         setIsFollowing(data.isFollowing);
       } catch (err) {
@@ -39,7 +37,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
     };
 
     fetchProfile();
-  }, [user]);
+  }, [userId]);
 
   const handleFollow = async () => {
     try {

@@ -17,7 +17,7 @@ createRoot(document.getElementById("root")!).render(
       </Routes>
       <AuthProvider>
         <Routes>
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:userId" element={<Profile />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>

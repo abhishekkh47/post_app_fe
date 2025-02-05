@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { User, Message } from "../../types";
 import { Send, Image, ArrowLeft } from "lucide-react";
 import { useSocket } from "../../context/SocketContext";
+import { useNavigate } from "react-router-dom";
 
 interface ChatWindowProps {
   selectedUser: User | null;
@@ -23,6 +24,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { socket } = useSocket();
+  const navigate = useNavigate();
 
   // Listen for incoming messages from the WebSocket server
   useEffect(() => {
@@ -71,6 +73,10 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
     // );
   }
 
+  const onProfileClick = () => {
+    navigate(`/profile/${selectedUser._id}`);
+  };
+
   return (
     <div className={className}>
       <div className="flex-1 flex flex-col h-full opacity-100 bg-white">
@@ -92,7 +98,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
             ) : (
               <div className="w-10 h-10 rounded-full bg-gray-200" />
             )}
-            <div>
+            <div onClick={onProfileClick} className="cursor-pointer">
               <h3 className="font-medium">
                 {selectedUser.firstName} {selectedUser.lastName}
               </h3>

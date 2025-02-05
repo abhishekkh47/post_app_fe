@@ -38,7 +38,7 @@ export const CommentList: React.FC<CommentListProps> = ({ comments }) => {
             <img
               src={comment?.userId?.profile_pic}
               alt={`${comment?.userId?.firstName} ${comment?.userId?.lastName}`}
-              className="h-8 w-8 rounded-full"
+              className="h-8 w-8 rounded-full object-cover"
             />
           ) : (
             <div className="h-8 w-8 rounded-full bg-gray-200" />

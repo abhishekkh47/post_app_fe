@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Disclosure,
   DisclosureButton,
@@ -12,7 +12,6 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../../image.png";
 import { useAuth } from "../../context/AuthContext";
-import { UserProfile } from "../profile/UserProfile";
 
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
@@ -26,10 +25,14 @@ function classNames(...classes: any) {
 }
 
 export const NavBar: React.FC = () => {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogOutClick = async () => {
     logout();
+  };
+  const handleProfileClick = async () => {
+    navigate(`/profile/${user?._id}`);
   };
 
   return (
@@ -103,12 +106,14 @@ export const NavBar: React.FC = () => {
                 className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
               >
                 <MenuItem>
-                  <Link
-                    to="/profile"
+                  <div
+                    onClick={() => {
+                      handleProfileClick();
+                    }}
                     className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
                   >
                     Your Profile
-                  </Link>
+                  </div>
                 </MenuItem>
                 <MenuItem>
                   <a
