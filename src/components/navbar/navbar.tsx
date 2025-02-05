@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Disclosure,
@@ -12,6 +12,7 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../../image.png";
 import { useAuth } from "../../context/AuthContext";
+import { Loader2 } from "lucide-react";
 
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
@@ -26,10 +27,20 @@ function classNames(...classes: any) {
 
 export const NavBar: React.FC = () => {
   const { logout, user } = useAuth();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogOutClick = async () => {
-    logout();
+  const handleLogOutClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    try {
+      setIsLoggingOut(true);
+      logout();
+      navigate("/auth/login", { replace: true });
+    } catch (error) {
+      console.log("Logout Failed : ", error);
+    } finally {
+      setIsLoggingOut(false);
+    }
   };
   const handleProfileClick = async () => {
     navigate(`/profile/${user?._id}`);
@@ -127,11 +138,12 @@ export const NavBar: React.FC = () => {
                   <a
                     href="/"
                     className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                    onClick={() => {
-                      handleLogOutClick();
-                    }}
+                    onClick={handleLogOutClick}
                   >
-                    Sign out
+                    <div className="flex items-center">
+                      <span>Sign out</span>
+                      {isLoggingOut && <Loader2 className="" />}
+                    </div>
                   </a>
                 </MenuItem>
               </MenuItems>
