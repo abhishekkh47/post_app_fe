@@ -10,19 +10,21 @@ import { useNavigate } from "react-router-dom";
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: (credentials: LoginCredentials) => Promise<void>;
+  login: (credentials: LoginCredentials) => Promise<boolean>;
   signup: (credentials: SignupCredentials) => Promise<void>;
   logout: () => void;
   refreshToken: () => Promise<void>;
+  loading: boolean;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
   isAuthenticated: false,
-  login: async () => {},
+  login: async () => false,
   signup: async () => {},
   logout: () => {},
   refreshToken: async () => {},
+  loading: false,
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -32,6 +34,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   const setAuthData = (data: AuthResponse) => {
@@ -60,6 +63,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         setIsAuthenticated(true);
       }
     }
+    setLoading(false);
   }, []);
 
   const refreshToken = async () => {
@@ -88,6 +92,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const login = async (credentials: LoginCredentials) => {
+    setLoading(true);
     const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
       method: "POST",
       headers: {
@@ -102,6 +107,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const data: AuthResponse = (await response.json())?.data;
     setAuthData(data);
+    setLoading(false);
+    return true;
   };
 
   const signup = async (credentials: SignupCredentials) => {
@@ -135,7 +142,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated, login, signup, logout, refreshToken }}
+      value={{
+        user,
+        isAuthenticated,
+        login,
+        signup,
+        logout,
+        refreshToken,
+        loading,
+      }}
     >
       {children}
     </AuthContext.Provider>

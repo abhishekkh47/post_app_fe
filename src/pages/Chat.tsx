@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ChatList } from "../components/chat/ChatList";
-import { ChatWindow } from "../components/chat/ChatWindow";
+// import { ChatWindow } from "../components/chat/ChatWindow";
 import { ChatPopup } from "../components/chat/ChatPopup";
 import { useSocket } from "../context/SocketContext";
 import { User, Message, Conversation } from "../types";
