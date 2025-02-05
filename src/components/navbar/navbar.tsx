@@ -13,6 +13,7 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../../image.png";
 import { useAuth } from "../../context/AuthContext";
 import { Loader2 } from "lucide-react";
+import { SearchBar } from "./SearchBar";
 
 const navigation = [
   { name: "Dashboard", href: "#", current: true },
@@ -90,6 +91,7 @@ export const NavBar: React.FC = () => {
             </div>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <SearchBar />
             <button
               type="button"
               className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
