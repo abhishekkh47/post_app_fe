@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { Mail, Lock } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AnimatedBrand } from "../brand/BrandAnimation";
 
 export const LoginForm: React.FC = () => {
   const navigate = useNavigate();
@@ -28,12 +29,7 @@ export const LoginForm: React.FC = () => {
     <div className="fle min-h-screen flex items-center justify-center bg-gray-50">
       <div className="flex flex-col md:flex-row items-center max-w-4xl mx-auto space-y-10 md:space-y-0 md:space-x-16">
         {/* Left Side - Branding */}
-        <div className="text-center md:text-left">
-          <h1 className="text-blue-600 text-6xl font-bold">postal</h1>
-          <p className="mt-4 text-xl text-gray-700">
-            Postal helps you connect and share with the people in your life.
-          </p>
-        </div>
+        <AnimatedBrand />
 
         {/* Right Side - Login Form */}
         <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
