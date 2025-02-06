@@ -44,28 +44,34 @@ export const LoginForm: React.FC = () => {
               {error && (
                 <div className="text-red-500 text-sm text-center">{error}</div>
               )}
-              <div className="rounded-md shadow-sm -space-y-px">
-                <div className="relative">
-                  <Mail className="absolute top-3 left-3 h-5 w-5 text-gray-400" />
-                  <input
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="appearance-none rounded-none relative block w-full px-12 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="Email address"
-                  />
-                </div>
-                <div className="relative">
-                  <Lock className="absolute top-3 left-3 h-5 w-5 text-gray-400" />
-                  <input
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="appearance-none rounded-none relative block w-full px-12 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    placeholder="Password"
-                  />
+              <div className="rounded-lg shadow-sm -space-y-px">
+                {/* Outer Box (Rounded Corners) */}
+                <div className="flex flex-col p-2 rounded-lg bg-white">
+                  {/* Email Input */}
+                  <div className="flex flex-row items-center border-t border-l border-r border-gray-300 p-2 rounded-t-md">
+                    <Mail className="h-5 w-5 text-gray-400 mr-2" />
+                    <input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="flex-1 px-4 py-1 border-none focus:outline-none sm:text-sm"
+                      placeholder="Email address"
+                    />
+                  </div>
+
+                  {/* Password Input */}
+                  <div className="flex flex-row items-center border border-gray-300 p-2 rounded-b-md">
+                    <Lock className="h-5 w-5 text-gray-400 mr-2" />
+                    <input
+                      type="password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="flex-1 px-4 py-1 border-none focus:outline-none sm:text-sm"
+                      placeholder="Password"
+                    />
+                  </div>
                 </div>
               </div>
 
