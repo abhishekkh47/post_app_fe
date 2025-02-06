@@ -3,6 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Mail, Lock } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AnimatedBrand } from "../brand/BrandAnimation";
+import { Footer } from "../footer/footer";
 
 export const LoginForm: React.FC = () => {
   const navigate = useNavigate();
@@ -26,65 +27,70 @@ export const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="fle min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="flex flex-col md:flex-row items-center max-w-4xl mx-auto space-y-10 md:space-y-0 md:space-x-16">
-        {/* Left Side - Branding */}
-        <AnimatedBrand />
+    <div className="flex flex-col min-h-screen">
+      <div className="flex min-h-[85vh] items-center justify-center bg-gray-50 shadow-md bg-pink-100">
+        <div className="flex flex-col md:flex-row items-center max-w-4xl mx-auto space-y-10 md:space-y-0 md:space-x-16">
+          {/* Left Side - Branding */}
+          <AnimatedBrand />
 
-        {/* Right Side - Login Form */}
-        <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
-          <div>
-            <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-              Sign in to your account
-            </h2>
-          </div>
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-            {error && (
-              <div className="text-red-500 text-sm text-center">{error}</div>
-            )}
-            <div className="rounded-md shadow-sm -space-y-px">
-              <div className="relative">
-                <Mail className="absolute top-3 left-3 h-5 w-5 text-gray-400" />
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="appearance-none rounded-none relative block w-full px-12 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Email address"
-                />
-              </div>
-              <div className="relative">
-                <Lock className="absolute top-3 left-3 h-5 w-5 text-gray-400" />
-                <input
-                  type="password"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="appearance-none rounded-none relative block w-full px-12 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                  placeholder="Password"
-                />
-              </div>
-            </div>
-
+          {/* Right Side - Login Form */}
+          <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
             <div>
-              <button
-                type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Sign in
-              </button>
-              <br />
-              <button
-                onClick={() => navigate("/auth/signup")}
-                type="submit"
-                className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-              >
-                Sign Up
-              </button>
+              <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Sign in to your account
+              </h2>
             </div>
-          </form>
+            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+              {error && (
+                <div className="text-red-500 text-sm text-center">{error}</div>
+              )}
+              <div className="rounded-md shadow-sm -space-y-px">
+                <div className="relative">
+                  <Mail className="absolute top-3 left-3 h-5 w-5 text-gray-400" />
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="appearance-none rounded-none relative block w-full px-12 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    placeholder="Email address"
+                  />
+                </div>
+                <div className="relative">
+                  <Lock className="absolute top-3 left-3 h-5 w-5 text-gray-400" />
+                  <input
+                    type="password"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="appearance-none rounded-none relative block w-full px-12 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                    placeholder="Password"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <button
+                  type="submit"
+                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  Sign in
+                </button>
+                <br />
+                <button
+                  onClick={() => navigate("/auth/signup")}
+                  type="submit"
+                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                >
+                  Sign Up
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
+      </div>
+      <div className="flex min-h-[vh15] text-gray-500 items-center justify-center mt-10">
+        <Footer />
       </div>
     </div>
   );
