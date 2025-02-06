@@ -3,7 +3,7 @@ import { useAuth } from "../../context/AuthContext";
 import { Mail, Lock } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AnimatedBrand } from "../brand/BrandAnimation";
-import { Footer } from "../footer/footer";
+import { Footer } from "../footer/Footer";
 
 export const LoginForm: React.FC = () => {
   const navigate = useNavigate();
