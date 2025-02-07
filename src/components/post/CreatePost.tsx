@@ -29,6 +29,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ fetchPosts }) => {
       }
 
       setContent("");
+      setError("");
       fetchPosts();
     } catch (err) {
       setError("Failed to create post. Please try again.");
