@@ -6,11 +6,15 @@ import { UserPlus, UserMinus } from "lucide-react";
 interface UserProfileProps {
   userId: string | undefined;
   setPublicProfile: (isPublic: boolean) => void;
+  following: boolean;
+  setFollowing: (following: boolean) => void;
 }
 
 export const UserProfile: React.FC<UserProfileProps> = ({
   userId,
   setPublicProfile,
+  following,
+  setFollowing,
 }) => {
   const [profile, setProfile] = useState<User | null>(null);
   const [isFollowing, setIsFollowing] = useState(false);
@@ -35,6 +39,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
         const data = (await response.json())?.data;
         setProfile(data.userDetails);
         setIsFollowing(data.isFollowing);
+        setFollowing(data.isFollowing);
         setPublicProfile(data.userDetails?.isPrivate === false);
       } catch (err) {
         console.error("Failed to fetch profile:", err);
@@ -68,6 +73,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
       }
 
       setIsFollowing(!isFollowing);
+      setFollowing(!isFollowing);
     } catch (err) {
       console.error("Failed to follow/unfollow:", err);
     }
