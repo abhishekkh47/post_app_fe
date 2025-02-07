@@ -17,7 +17,6 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   setFollowing,
 }) => {
   const [profile, setProfile] = useState<User | null>(null);
-  const [isFollowing, setIsFollowing] = useState(false);
   const { user } = useAuth();
 
   useEffect(() => {
@@ -38,7 +37,6 @@ export const UserProfile: React.FC<UserProfileProps> = ({
 
         const data = (await response.json())?.data;
         setProfile(data.userDetails);
-        setIsFollowing(data.isFollowing);
         setFollowing(data.isFollowing);
         setPublicProfile(data.userDetails?.isPrivate === false);
       } catch (err) {
@@ -53,7 +51,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
     try {
       const response = await fetch(
         `${import.meta.env.VITE_API_URL}/follow/${
-          isFollowing ? "unfollow-user" : "follow-user"
+          following ? "unfollow-user" : "follow-user"
         }`,
         {
           method: "POST",
@@ -72,8 +70,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
         throw new Error("Failed to follow/unfollow user");
       }
 
-      setIsFollowing(!isFollowing);
-      setFollowing(!isFollowing);
+      setFollowing(!following);
     } catch (err) {
       console.error("Failed to follow/unfollow:", err);
     }
@@ -118,12 +115,12 @@ export const UserProfile: React.FC<UserProfileProps> = ({
           <button
             onClick={handleFollow}
             className={`mt-2 inline-flex items-center px-4 py-2 rounded-md text-sm font-medium ${
-              isFollowing
+              following
                 ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
                 : "bg-blue-600 text-white hover:bg-blue-700"
             }`}
           >
-            {isFollowing ? (
+            {following ? (
               <>
                 <UserMinus className="h-4 w-4 mr-2" />
                 Unfollow
