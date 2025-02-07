@@ -6,6 +6,9 @@ export interface User {
   profile_pic?: string;
   bio?: string;
   isPrivate: boolean;
+  posts: number;
+  followers: number;
+  following: number;
 }
 
 export interface Message {

@@ -5,9 +5,13 @@ import { UserPlus, UserMinus } from "lucide-react";
 
 interface UserProfileProps {
   userId: string | undefined;
+  setPublicProfile: (isPublic: boolean) => void;
 }
 
-export const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
+export const UserProfile: React.FC<UserProfileProps> = ({
+  userId,
+  setPublicProfile,
+}) => {
   const [profile, setProfile] = useState<User | null>(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const { user } = useAuth();
@@ -31,13 +35,14 @@ export const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
         const data = (await response.json())?.data;
         setProfile(data.userDetails);
         setIsFollowing(data.isFollowing);
+        setPublicProfile(data.userDetails?.isPrivate === false);
       } catch (err) {
         console.error("Failed to fetch profile:", err);
       }
     };
 
     fetchProfile();
-  }, [userId]);
+  }, [userId, setPublicProfile]);
 
   const handleFollow = async () => {
     try {
@@ -88,31 +93,45 @@ export const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
           <h2 className="text-2xl font-bold">
             {profile.firstName} {profile.lastName}
           </h2>
-          {profile.bio && <p className="text-gray-600 mt-1">{profile.bio}</p>}
-          {user?._id !== profile._id && (
-            <button
-              onClick={handleFollow}
-              className={`mt-2 inline-flex items-center px-4 py-2 rounded-md text-sm font-medium ${
-                isFollowing
-                  ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                  : "bg-blue-600 text-white hover:bg-blue-700"
-              }`}
-            >
-              {isFollowing ? (
-                <>
-                  <UserMinus className="h-4 w-4 mr-2" />
-                  Unfollow
-                </>
-              ) : (
-                <>
-                  <UserPlus className="h-4 w-4 mr-2" />
-                  Follow
-                </>
-              )}
-            </button>
-          )}
+          <div className="flex flex-row">
+            <div className="flex flex-col pr-4">
+              <p className="relative">posts</p>
+              <p className="relative">{profile?.posts ?? 0}</p>
+            </div>
+            <div className="flex flex-col px-4">
+              <p className="relative">followers</p>
+              <p className="relative">{profile?.followers ?? 0}</p>
+            </div>
+            <div className="flex flex-col px-4">
+              <p className="relative">following</p>
+              <p className="relative">{profile?.following ?? 0}</p>
+            </div>
+          </div>
         </div>
+        {user?._id !== profile._id && (
+          <button
+            onClick={handleFollow}
+            className={`mt-2 inline-flex items-center px-4 py-2 rounded-md text-sm font-medium ${
+              isFollowing
+                ? "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                : "bg-blue-600 text-white hover:bg-blue-700"
+            }`}
+          >
+            {isFollowing ? (
+              <>
+                <UserMinus className="h-4 w-4 mr-2" />
+                Unfollow
+              </>
+            ) : (
+              <>
+                <UserPlus className="h-4 w-4 mr-2" />
+                Follow
+              </>
+            )}
+          </button>
+        )}
       </div>
+      {profile.bio && <p className="text-gray-600 mt-1">{profile.bio}</p>}
     </div>
   );
 };
