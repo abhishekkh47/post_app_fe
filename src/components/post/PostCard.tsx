@@ -122,7 +122,7 @@ export const PostCard: React.FC<PostCardProps> = ({ post, fetchPosts }) => {
             // onCommentAdded={handleCommentAdded}
             onCommentAdded={getComments}
           />
-          <CommentList comments={comments} />
+          <CommentList comments={comments} onCommentDelete={getComments} />
         </div>
       )}
     </div>

@@ -5,9 +5,13 @@ import { Trash2 } from "lucide-react";
 
 interface CommentListProps {
   comments: Comment[];
+  onCommentDelete: () => void;
 }
 
-export const CommentList: React.FC<CommentListProps> = ({ comments }) => {
+export const CommentList: React.FC<CommentListProps> = ({
+  comments,
+  onCommentDelete,
+}) => {
   const { user } = useAuth();
 
   const handleDeleteComment = async (commentId: string) => {
@@ -25,6 +29,7 @@ export const CommentList: React.FC<CommentListProps> = ({ comments }) => {
       if (!response.ok) {
         throw new Error("Failed to delete comment");
       }
+      onCommentDelete();
     } catch (err) {
       console.error("Failed to delete comment:", err);
     }
