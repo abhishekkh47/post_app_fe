@@ -31,6 +31,7 @@ export interface Post {
   type: string;
   createdAt: string;
   comments?: Comment[];
+  edited?: boolean;
 }
 
 export interface Comment {
