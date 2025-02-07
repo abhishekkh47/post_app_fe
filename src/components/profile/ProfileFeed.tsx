@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Post } from "../../types";
-import { PostList } from "./PostList";
+import { PostList } from "../post/PostList";
 
 interface ProfileFeedProps {
   userId: string | undefined;

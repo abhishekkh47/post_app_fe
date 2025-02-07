@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { UserProfile } from "../components/profile/UserProfile";
 import { useParams } from "react-router-dom";
-import { ProfileFeed } from "../components/post/ProfileFeed";
+import { ProfileFeed } from "../components/profile/ProfileFeed";
 import { useAuth } from "../context/AuthContext";
 
 export const Profile: React.FC = () => {
