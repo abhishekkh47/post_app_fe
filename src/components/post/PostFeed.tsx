@@ -11,7 +11,7 @@ export const PostFeed: React.FC = () => {
   const fetchPosts = async () => {
     try {
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/post/get-my-posts`,
+        `${import.meta.env.VITE_API_URL}/post/get-feed`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -44,7 +44,7 @@ export const PostFeed: React.FC = () => {
       ) : error ? (
         <div className="text-red-500 text-center py-4">{error}</div>
       ) : (
-        <PostList posts={posts} fetchPosts={fetchPosts} />
+        <PostList posts={posts} fetchPosts={fetchPosts} fromHomePage={true} />
       )}
     </div>
   );

@@ -15,9 +15,14 @@ import { useAuth } from "../../context/AuthContext";
 interface PostCardProps {
   post: Post;
   fetchPosts: () => void;
+  fromHomePage: boolean;
 }
 
-export const PostCard: React.FC<PostCardProps> = ({ post, fetchPosts }) => {
+export const PostCard: React.FC<PostCardProps> = ({
+  post,
+  fetchPosts,
+  fromHomePage,
+}) => {
   const [showComments, setShowComments] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [updatedContent, setUpdatedContent] = useState(post.post);
@@ -137,38 +142,40 @@ export const PostCard: React.FC<PostCardProps> = ({ post, fetchPosts }) => {
             </p>
           </div>
         </div>
-        <div className="flex space-x-2">
-          {user?._id === post?.userId?._id && isEditing ? (
-            <div className="flex space-x-2">
-              <button
-                onClick={getPostsIfUpdated}
-                className="hover:text-green-500"
-              >
-                <Check className="relative h-5 w-5" />
-              </button>
-              <button
-                onClick={() => setIsEditing(false)}
-                className="hover:text-green-500"
-              >
-                <X className="relative h-5 w-5" />
-              </button>
-            </div>
-          ) : (
-            user?._id === post?.userId?._id && (
+        {!fromHomePage && (
+          <div className="flex space-x-2">
+            {user?._id === post?.userId?._id && isEditing ? (
               <div className="flex space-x-2">
                 <button
-                  onClick={() => setIsEditing(true)}
+                  onClick={getPostsIfUpdated}
                   className="hover:text-green-500"
                 >
-                  <PencilIcon className="relative h-5 w-5" />
+                  <Check className="relative h-5 w-5" />
                 </button>
-                <button onClick={handleDelete} className="hover:text-red-500">
-                  <Trash2 className="h-5 w-5" />
+                <button
+                  onClick={() => setIsEditing(false)}
+                  className="hover:text-green-500"
+                >
+                  <X className="relative h-5 w-5" />
                 </button>
               </div>
-            )
-          )}
-        </div>
+            ) : (
+              user?._id === post?.userId?._id && (
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => setIsEditing(true)}
+                    className="hover:text-green-500"
+                  >
+                    <PencilIcon className="relative h-5 w-5" />
+                  </button>
+                  <button onClick={handleDelete} className="hover:text-red-500">
+                    <Trash2 className="h-5 w-5" />
+                  </button>
+                </div>
+              )
+            )}
+          </div>
+        )}
       </div>
 
       {isEditing ? (
