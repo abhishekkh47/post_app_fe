@@ -15,6 +15,7 @@ export const PostList: React.FC<PostListProps> = ({
 }) => {
   return (
     <div className="space-y-4">
+      {/* List all posts */}
       {posts.map((post) => (
         <PostCard
           key={post._id}

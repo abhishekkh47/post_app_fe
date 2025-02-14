@@ -107,6 +107,7 @@ export const PostCard: React.FC<PostCardProps> = ({
     }
   };
 
+  // update the post content and close text box
   const checkUpdatedPost = (data: string) => {
     if (updatedContent != data) {
       setUpdatedContent(data);
@@ -114,6 +115,7 @@ export const PostCard: React.FC<PostCardProps> = ({
     }
   };
 
+  // refresh posts once the content is updated
   const getPostsIfUpdated = () => {
     if (ifUpdated) handleUpdate();
     setIsEditing(false);
@@ -142,6 +144,7 @@ export const PostCard: React.FC<PostCardProps> = ({
             </p>
           </div>
         </div>
+        {/* Only show edit and delete icons if user is in profile section */}
         {!fromHomePage && (
           <div className="flex space-x-2">
             {user?._id === post?.userId?._id && isEditing ? (
@@ -178,6 +181,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         )}
       </div>
 
+      {/* open text box to edit the content */}
       {isEditing ? (
         <textarea
           className="w-full p-2 border rounded-md"
@@ -188,6 +192,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         <p className="text-gray-800 mb-4">{post.post}</p>
       )}
 
+      {/* Like and comment icons */}
       <div className="flex items-center space-x-4 text-gray-500">
         <button className="flex items-center space-x-1 hover:text-blue-500">
           <Heart className="h-5 w-5" />
@@ -203,6 +208,7 @@ export const PostCard: React.FC<PostCardProps> = ({
         </button>
       </div>
 
+      {/* Show post comments */}
       {showComments && (
         <div className="mt-4">
           <CreateComment

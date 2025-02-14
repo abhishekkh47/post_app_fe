@@ -19,6 +19,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
   const [profile, setProfile] = useState<User | null>(null);
   const { user } = useAuth();
 
+  // get user profile
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -47,6 +48,7 @@ export const UserProfile: React.FC<UserProfileProps> = ({
     fetchProfile();
   }, [userId, setPublicProfile]);
 
+  // follow and unfollow a user
   const handleFollow = async () => {
     try {
       const response = await fetch(
