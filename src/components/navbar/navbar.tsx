@@ -15,13 +15,6 @@ import { useAuth } from "../../context/AuthContext";
 import { Loader2 } from "lucide-react";
 import { SearchBar } from "./SearchBar";
 
-const navigation = [
-  { name: "Dashboard", href: "#", current: true },
-  { name: "Friends", href: "#", current: false },
-  { name: "Projects", href: "#", current: false },
-  { name: "Calendar", href: "#", current: false },
-];
-
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
@@ -30,6 +23,21 @@ export const NavBar: React.FC = () => {
   const { logout, user } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const navigate = useNavigate();
+
+  const handleDashboardClick = async () => {
+    navigate(`/}`);
+  };
+  const navigation = [
+    {
+      name: "Dashboard",
+      href: "/",
+      current: true,
+      onClick: handleDashboardClick,
+    },
+    { name: "Friends", href: "#", current: false },
+    { name: "Projects", href: "#", current: false },
+    { name: "Calendar", href: "#", current: false },
+  ];
 
   const handleLogOutClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -83,6 +91,12 @@ export const NavBar: React.FC = () => {
                         : "text-gray-300 hover:bg-gray-700 hover:text-white",
                       "rounded-md px-3 py-2 text-sm font-medium"
                     )}
+                    onClick={(e) => {
+                      if (item?.onClick) {
+                        e.preventDefault();
+                        item.onClick();
+                      }
+                    }}
                   >
                     {item.name}
                   </a>
