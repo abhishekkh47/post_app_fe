@@ -25,7 +25,10 @@ export const NavBar: React.FC = () => {
   const navigate = useNavigate();
 
   const handleDashboardClick = async () => {
-    navigate(`/}`);
+    navigate(`/`);
+  };
+  const handleFriendsClick = async () => {
+    navigate(`/friends`);
   };
   const navigation = [
     {
@@ -34,7 +37,12 @@ export const NavBar: React.FC = () => {
       current: true,
       onClick: handleDashboardClick,
     },
-    { name: "Friends", href: "#", current: false },
+    {
+      name: "Friends",
+      href: "/friends",
+      current: true,
+      onClick: handleFriendsClick,
+    },
     { name: "Projects", href: "#", current: false },
     { name: "Calendar", href: "#", current: false },
   ];

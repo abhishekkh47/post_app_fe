@@ -8,6 +8,7 @@ import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { AuthenticatedLayout } from "./components/layout/AuthenticatedLayout";
 import { Profile } from "./pages/Profile";
 import { Home } from "./pages/Home";
+import { Friends } from "./components/friends/friends";
 
 const AppContent = () => {
   const { isAuthenticated } = useAuth();
@@ -43,6 +44,18 @@ const AppContent = () => {
             <SocketProvider>
               <AuthenticatedLayout>
                 <Profile />
+              </AuthenticatedLayout>
+            </SocketProvider>
+          </ProtectedRoute>
+        }
+      ></Route>
+      <Route
+        path="/friends"
+        element={
+          <ProtectedRoute>
+            <SocketProvider>
+              <AuthenticatedLayout>
+                <Friends />
               </AuthenticatedLayout>
             </SocketProvider>
           </ProtectedRoute>
