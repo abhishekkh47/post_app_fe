@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { User } from "../../types";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export const Friends: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"followers" | "following">(
@@ -9,6 +10,7 @@ export const Friends: React.FC = () => {
   const [friends, setFriends] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
   const { user } = useAuth();
+  const navigate = useNavigate();
 
   // Fetch data based on selected tab
   useEffect(() => {
@@ -36,6 +38,10 @@ export const Friends: React.FC = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleFriendClick = async (userId: string) => {
+    navigate(`/profile/${userId}`);
   };
 
   return (
@@ -78,11 +84,12 @@ export const Friends: React.FC = () => {
                 <li
                   key={friend._id}
                   className="flex items-center space-x-4 p-3 bg-white rounded-lg shadow"
+                  onClick={() => handleFriendClick(friend._id)}
                 >
                   <img
                     src={friend.profile_pic}
                     alt={friend.firstName}
-                    className="w-12 h-12 rounded-full"
+                    className="w-12 h-12 rounded-full object-cover"
                   />
                   <span className="font-medium text-gray-800">
                     {friend.firstName} {friend.lastName}
