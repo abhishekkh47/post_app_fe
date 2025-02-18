@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Disclosure,
   DisclosureButton,
@@ -22,7 +22,22 @@ function classNames(...classes: any) {
 export const NavBar: React.FC = () => {
   const { logout, user } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
+  const [selected, setSelected] = useState("Home");
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    // Update the selected navigation item based on the current route path
+    if (location.pathname === "/friends") {
+      setSelected("Friends");
+    } else if (location.pathname === "/projects") {
+      setSelected("Projects");
+    } else if (location.pathname === "/calendar") {
+      setSelected("Calendar");
+    } else {
+      setSelected("Home"); // Default is home
+    }
+  }, [location.pathname]); // Re-run when the location (URL) changes
 
   const handleDashboardClick = async () => {
     navigate(`/`);
@@ -32,7 +47,7 @@ export const NavBar: React.FC = () => {
   };
   const navigation = [
     {
-      name: "Dashboard",
+      name: "Home",
       href: "/",
       current: true,
       onClick: handleDashboardClick,
@@ -40,7 +55,7 @@ export const NavBar: React.FC = () => {
     {
       name: "Friends",
       href: "/friends",
-      current: true,
+      current: false,
       onClick: handleFriendsClick,
     },
     { name: "Projects", href: "#", current: false },
@@ -92,9 +107,9 @@ export const NavBar: React.FC = () => {
                   <a
                     key={item.name}
                     href={item.href}
-                    aria-current={item.current ? "page" : undefined}
+                    aria-current={item.name == selected ? "page" : undefined}
                     className={classNames(
-                      item.current
+                      item.name == selected
                         ? "bg-gray-900 text-white"
                         : "text-gray-300 hover:bg-gray-700 hover:text-white",
                       "rounded-md px-3 py-2 text-sm font-medium"
@@ -183,9 +198,9 @@ export const NavBar: React.FC = () => {
               key={item.name}
               as="a"
               href={item.href}
-              aria-current={item.current ? "page" : undefined}
+              aria-current={item.name == selected ? "page" : undefined}
               className={classNames(
-                item.current
+                item.name == selected
                   ? "bg-gray-900 text-white"
                   : "text-gray-300 hover:bg-gray-700 hover:text-white",
                 "block rounded-md px-3 py-2 text-base font-medium"
