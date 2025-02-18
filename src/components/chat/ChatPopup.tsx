@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { User, Message } from "../../types";
-import { Send, Image, Minimize2, X } from "lucide-react";
+import { Send, Image, Minimize2, X, Check, CheckCheck } from "lucide-react";
 import { useSocket } from "../../context/SocketContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 interface ChatWindowProps {
   selectedUser: User | null;
@@ -25,6 +26,7 @@ export const ChatPopup: React.FC<ChatWindowProps> = ({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { socket } = useSocket();
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   // Listen for incoming messages from the WebSocket server
   useEffect(() => {
@@ -147,6 +149,15 @@ export const ChatPopup: React.FC<ChatWindowProps> = ({
                         className="mt-2 rounded-lg max-w-full"
                       />
                     ))}
+                    {/* Render Check or CheckCheck based on isRead */}
+                    <div className="mt-1 flex items-center space-x-1">
+                      {message.senderId._id == user?._id &&
+                        (message.isRead ? (
+                          <CheckCheck className="w-4 h-4 text-gray-500" />
+                        ) : (
+                          <Check className="w-4 h-4 text-gray-500" />
+                        ))}
+                    </div>
                   </div>
                 </div>
               ))}

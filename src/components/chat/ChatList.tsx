@@ -1,6 +1,7 @@
 import React from "react";
 import { User, Conversation } from "../../types";
 import { MessageCircle } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
 
 interface ChatListProps {
   conversations: Conversation[];
@@ -13,6 +14,8 @@ export const ChatList: React.FC<ChatListProps> = ({
   selectedUser,
   onSelectConversation,
 }) => {
+  const { user } = useAuth();
+
   return (
     <div className="w-full overflow-y-auto">
       <div className="p-4 border-b border-gray-200">
@@ -50,9 +53,14 @@ export const ChatList: React.FC<ChatListProps> = ({
                   {conversation.lastMessage.content}
                 </p>
               </div>
-              {!conversation.lastMessage.isRead && (
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
-              )}
+              {!conversation.lastMessage?.isRead &&
+                (conversation?.lastMessage?.senderId !== user?._id ? (
+                  <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                    {conversation?.unreadCount}
+                  </div>
+                ) : (
+                  <div className="w-3 h-3 bg-pink-500 rounded-full"></div>
+                ))}
             </div>
           </div>
         ))}

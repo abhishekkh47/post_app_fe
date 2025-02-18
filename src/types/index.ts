@@ -24,7 +24,11 @@ export interface Message {
 export interface Conversation {
   _id: string;
   userDetails: User;
-  lastMessage: Message;
+  lastMessage: Omit<Message, "senderId" | "receiverId"> & {
+    senderId: string;
+    receiverId: string;
+  };
+  unreadCount?: number;
 }
 
 export interface Post {

@@ -36,6 +36,16 @@ export const ChatPage: React.FC = () => {
     setConversations(data.conversations);
   };
 
+  // Update messages when they are marked as read
+  const updateMessagesReadStatus = () => {
+    setMessages((prevMessages) =>
+      prevMessages.map((message) => ({
+        ...message,
+        isRead: true,
+      }))
+    );
+  };
+
   useEffect(() => {
     if (!socket) return;
     socket.connect();
@@ -86,6 +96,7 @@ export const ChatPage: React.FC = () => {
     socket.connect();
 
     socket.on("message_marked_read", async () => {
+      updateMessagesReadStatus();
       await handleNewMessage();
     });
 
