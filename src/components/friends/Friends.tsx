@@ -148,16 +148,20 @@ export const Friends: React.FC = () => {
               <li
                 key={friend._id}
                 className="flex items-center space-x-4 p-3 bg-white rounded-lg shadow"
-                onClick={() => handleFriendClick(friend._id)}
               >
                 <img
                   src={friend.profile_pic}
                   alt={friend.firstName}
                   className="w-12 h-12 rounded-full object-cover"
                 />
-                <span className="flex-1 font-medium text-gray-800">
-                  {friend.firstName} {friend.lastName}
-                </span>
+                <div className="flex-1">
+                  <span
+                    className="font-medium text-gray-800"
+                    onClick={() => handleFriendClick(friend._id)}
+                  >
+                    {friend.firstName} {friend.lastName}
+                  </span>
+                </div>
                 <button
                   onClick={(e) => {
                     handleMessageClick(friend, e);
