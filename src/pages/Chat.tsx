@@ -41,13 +41,23 @@ export const ChatPage: React.FC = () => {
     socket.connect();
 
     socket.on("new_message", async (message: Message) => {
-      setMessages((prev) => [...prev, message]);
+      setMessages((prev) => {
+        if (prev.some((m) => m._id === message._id)) {
+          return prev;
+        }
+        return [...prev, message];
+      });
       // Update conversations list
       await handleNewMessage();
     });
 
     socket.on("message_sent", async (message: Message) => {
-      setMessages((prev) => [...prev, message]);
+      setMessages((prev) => {
+        if (prev.some((m) => m._id === message._id)) {
+          return prev;
+        }
+        return [...prev, message];
+      });
       await handleNewMessage();
     });
 

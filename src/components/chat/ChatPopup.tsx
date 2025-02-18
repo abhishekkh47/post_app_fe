@@ -40,7 +40,7 @@ export const ChatPopup: React.FC<ChatWindowProps> = ({
         socket.off("new_message");
       };
     }
-  }, [selectedUser, socket, messages]);
+  }, [selectedUser, socket]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });

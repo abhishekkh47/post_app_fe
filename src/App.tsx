@@ -8,7 +8,7 @@ import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 import { AuthenticatedLayout } from "./components/layout/AuthenticatedLayout";
 import { Profile } from "./pages/Profile";
 import { Home } from "./pages/Home";
-import { Friends } from "./components/friends/friends";
+import { Friends } from "./components/friends/Friends";
 
 const AppContent = () => {
   const { isAuthenticated } = useAuth();
