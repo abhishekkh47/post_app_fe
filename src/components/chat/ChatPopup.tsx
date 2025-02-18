@@ -134,29 +134,49 @@ export const ChatPopup: React.FC<ChatWindowProps> = ({
                   }`}
                 >
                   <div
-                    className={`max-w-[70%] rounded-lg p-3 ${
+                    className={`max-w-[70%] rounded-lg p-2 ${
                       message.senderId._id === selectedUser._id
                         ? "bg-gray-100"
                         : "bg-blue-500 text-white"
                     }`}
                   >
-                    <p>{message.content}</p>
-                    {message.attachments?.map((attachment, i) => (
-                      <img
-                        key={i}
-                        src={attachment}
-                        alt="attachment"
-                        className="mt-2 rounded-lg max-w-full"
-                      />
-                    ))}
-                    {/* Render Check or CheckCheck based on isRead */}
-                    <div className="mt-1 flex items-center space-x-1">
-                      {message.senderId._id == user?._id &&
-                        (message.isRead ? (
-                          <CheckCheck className="w-4 h-4 text-gray-500" />
-                        ) : (
-                          <Check className="w-4 h-4 text-gray-500" />
-                        ))}
+                    <div className="space-y-1">
+                      <p>{message.content}</p>
+                      {message.attachments?.map((attachment, i) => (
+                        <img
+                          key={i}
+                          src={attachment}
+                          alt="attachment"
+                          className="mt-2 rounded-lg max-w-full"
+                        />
+                      ))}
+                      {/* Render Check or CheckCheck based on isRead */}
+                      <div className="flex items-center justify-end gap-1 mt-1">
+                        <span
+                          className={`text-xs ${
+                            message.senderId._id === selectedUser._id
+                              ? "text-gray-500"
+                              : "text-gray-200"
+                          }`}
+                        >
+                          {message.createdAt.substring(11, 16)}
+                        </span>
+                        {message.senderId._id === user?._id && (
+                          <span
+                            className={`${
+                              message.senderId._id === selectedUser._id
+                                ? "text-gray-500"
+                                : "text-gray-200"
+                            }`}
+                          >
+                            {message.isRead ? (
+                              <CheckCheck className="w-3 h-3" />
+                            ) : (
+                              <Check className="w-3 h-3" />
+                            )}
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
