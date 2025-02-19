@@ -4,6 +4,7 @@ import { Send, Image, Minimize2, X, Check, CheckCheck } from "lucide-react";
 import { useSocket } from "../../context/SocketContext";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { MessageBubble } from "./MessageBubble";
 
 interface ChatWindowProps {
   selectedUser: User | null;
@@ -133,46 +134,11 @@ export const ChatPopup: React.FC<ChatWindowProps> = ({
                       : "justify-end"
                   }`}
                 >
-                  <div
-                    className={`max-w-[70%] rounded-lg p-2 ${
-                      message.senderId._id === selectedUser._id
-                        ? "bg-gray-100"
-                        : "bg-blue-500 text-white"
-                    }`}
-                  >
-                    <div className="flex items-end gap-2">
-                      <p className="break-words">{message.content}</p>
-                      {/* Render Check or CheckCheck based on isRead */}
-                      <div
-                        className={`flex items-center gap-0.5 flex-shrink-0 ml-1 ${
-                          message.senderId._id === selectedUser._id
-                            ? "text-gray-500"
-                            : "text-gray-200"
-                        }`}
-                      >
-                        <span className="text-[10px] min-w-[32px]">
-                          {message.createdAt.substring(11, 16)}
-                        </span>
-                        {message.senderId._id === user?._id && (
-                          <span>
-                            {message.isRead ? (
-                              <CheckCheck className="w-3 h-3" />
-                            ) : (
-                              <Check className="w-3 h-3" />
-                            )}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    {message.attachments?.map((attachment, i) => (
-                      <img
-                        key={i}
-                        src={attachment}
-                        alt="attachment"
-                        className="mt-2 rounded-lg max-w-full"
-                      />
-                    ))}
-                  </div>
+                  <MessageBubble
+                    message={message}
+                    selectedUser={selectedUser}
+                    user={user}
+                  />
                 </div>
               ))}
               <div ref={messagesEndRef} />
