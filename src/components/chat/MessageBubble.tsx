@@ -21,7 +21,7 @@ export const MessageBubble: React.FC<MessageProps> = ({
       }`}
     >
       {/* use 'flex-inline' to get wrap text */}
-      <div className="flex justify-between items-end">
+      <div className="flex-inline">
         <span className="break-words whitespace-pre-wrap pr-2">
           {message.content}
         </span>
