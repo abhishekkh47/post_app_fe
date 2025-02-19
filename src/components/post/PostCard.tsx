@@ -132,7 +132,10 @@ export const PostCard: React.FC<PostCardProps> = ({
               className="w-10 h-10 rounded-full object-cover"
             />
           ) : (
-            <div className="h-10 w-10 rounded-full bg-gray-200" />
+            // <div className="h-10 w-10 rounded-full bg-gray-200" />
+            <div className="h-10 w-10 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
+              {post?.userId?.firstName[0]}
+            </div>
           )}
           <div>
             <p className="font-medium">

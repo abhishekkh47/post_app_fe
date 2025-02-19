@@ -92,7 +92,10 @@ export const UserProfile: React.FC<UserProfileProps> = ({
             className="h-20 w-20 rounded-full object-cover"
           />
         ) : (
-          <div className="h-20 w-20 rounded-full bg-gray-200" />
+          // <div className="h-20 w-20 rounded-full bg-gray-200" />
+          <div className="h-20 w-20 rounded-full bg-blue-300 flex items-center justify-center text-[50px] border border-black">
+            {profile?.firstName[0]}
+          </div>
         )}
         <div className="flex-1">
           <h2 className="text-2xl font-bold">

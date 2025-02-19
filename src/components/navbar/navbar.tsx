@@ -141,14 +141,20 @@ export const NavBar: React.FC = () => {
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3">
               <div>
-                <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
+                <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden  hover:text-white">
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Open user menu</span>
-                  <img
-                    alt=""
-                    src={user?.profile_pic}
-                    className="size-8 rounded-full object-cover"
-                  />
+                  {user?.profile_pic ? (
+                    <img
+                      alt={user?.firstName[0]}
+                      src={user?.profile_pic}
+                      className="size-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <div className="size-8 rounded-full bg-pink-400 flex items-center justify-center text-lg border border-white">
+                      {user?.firstName[0]}
+                    </div>
+                  )}
                 </MenuButton>
               </div>
               <MenuItems

@@ -1,6 +1,6 @@
 import React from "react";
 import { User, Conversation } from "../../types";
-import { MessageCircle } from "lucide-react";
+// import { MessageCircle } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
 interface ChatListProps {
@@ -45,8 +45,9 @@ export const ChatList: React.FC<ChatListProps> = ({
                   className="w-12 h-12 rounded-full object-cover"
                 />
               ) : (
-                <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center">
-                  <MessageCircle className="w-6 h-6 text-gray-400" />
+                <div className="w-12 h-12 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
+                  {/* <MessageCircle className="w-6 h-6 text-gray-400" /> */}
+                  {conversation.userDetails?.firstName[0]}
                 </div>
               )}
               <div className="flex-1 min-w-0">
