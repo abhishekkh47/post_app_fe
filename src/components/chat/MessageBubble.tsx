@@ -20,12 +20,13 @@ export const MessageBubble: React.FC<MessageProps> = ({
           : "bg-blue-500 text-white"
       }`}
     >
-      <div className="inline text-left">
-        <span className="break-words whitespace-pre-wrap">
+      {/* use 'flex-inline' to get wrap text */}
+      <div className="flex justify-between items-end">
+        <span className="break-words whitespace-pre-wrap pr-2">
           {message.content}
         </span>
         <span
-          className={`inline-flex items-center gap-1 text-[10px] ml-1 ${
+          className={`inline-flex items-center gap-1 text-[10px] flex-shrink-0 ${
             message.senderId._id === selectedUser._id
               ? "text-gray-500"
               : "text-gray-200"
