@@ -20,10 +20,12 @@ export const MessageBubble: React.FC<MessageProps> = ({
           : "bg-blue-500 text-white"
       }`}
     >
-      <div className="flex flex-wrap items-end gap-1">
-        <p className="break-words whitespace-pre-wrap">{message.content}</p>
-        <div
-          className={`inline-flex items-center gap-1 text-[10px] ml-auto ${
+      <div className="inline text-left">
+        <span className="break-words whitespace-pre-wrap">
+          {message.content}
+        </span>
+        <span
+          className={`inline-flex items-center gap-1 text-[10px] ml-1 ${
             message.senderId._id === selectedUser._id
               ? "text-gray-500"
               : "text-gray-200"
@@ -39,7 +41,7 @@ export const MessageBubble: React.FC<MessageProps> = ({
               )}
             </span>
           )}
-        </div>
+        </span>
       </div>
       {message.attachments?.map((attachment: any, i: any) => (
         <img
