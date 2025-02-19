@@ -108,6 +108,28 @@ export const Friends: React.FC = () => {
     setMessages([]);
   };
 
+  const updateMessagesReadStatus = () => {
+    setMessages((prevMessages) =>
+      prevMessages.map((message) => ({
+        ...message,
+        isRead: true,
+      }))
+    );
+  };
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.connect();
+
+    socket.on("message_marked_read", () => {
+      updateMessagesReadStatus();
+    });
+
+    return () => {
+      socket.off("message_marked_read");
+    };
+  }, [socket, messages]);
+
   return (
     <div className="max-w-2xl mx-auto py-8 px-4">
       {/* <h1 className="text-2xl font-bold text-gray-900 text-center mb-6">
