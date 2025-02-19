@@ -30,7 +30,12 @@ export const ChatList: React.FC<ChatListProps> = ({
                 ? "bg-gray-100"
                 : ""
             }`}
-            onClick={() => onSelectConversation(conversation.userDetails)}
+            // Only update the selectedUser State when a different user is selected
+            onClick={() =>
+              selectedUser?._id !== conversation?.userDetails?._id
+                ? onSelectConversation(conversation?.userDetails)
+                : {}
+            }
           >
             <div className="flex items-center space-x-3">
               {conversation.userDetails.profile_pic ? (
