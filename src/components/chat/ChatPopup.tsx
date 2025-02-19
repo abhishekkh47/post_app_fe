@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { User, Message } from "../../types";
-import { Send, Image, Minimize2, X, Check, CheckCheck } from "lucide-react";
+import { Send, Image, Minimize2, X } from "lucide-react";
 import { useSocket } from "../../context/SocketContext";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";

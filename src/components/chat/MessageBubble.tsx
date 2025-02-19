@@ -20,14 +20,10 @@ export const MessageBubble: React.FC<MessageProps> = ({
           : "bg-blue-500 text-white"
       }`}
     >
-      <div className="flex items-end">
-        <div className="flex-1 min-w-0">
-          <p className="break-words whitespace-pre-wrap mr-2">
-            {message.content}
-          </p>
-        </div>
+      <div className="flex flex-wrap items-end gap-1">
+        <p className="break-words whitespace-pre-wrap">{message.content}</p>
         <div
-          className={`flex items-center gap-1 flex-shrink-0 text-[10px] ${
+          className={`inline-flex items-center gap-1 text-[10px] ml-auto ${
             message.senderId._id === selectedUser._id
               ? "text-gray-500"
               : "text-gray-200"
