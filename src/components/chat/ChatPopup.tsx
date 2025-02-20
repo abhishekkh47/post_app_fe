@@ -9,7 +9,7 @@ import { MessageBubble } from "./MessageBubble";
 interface ChatWindowProps {
   selectedUser: User | null;
   messages: Message[];
-  setMessages: React.Dispatch<React.SetStateAction<Message[]>>;
+  updateMessages: (messages: Message) => void;
   onSendMessage: (content: string, attachments?: string[]) => void;
   onClose: () => void;
   className?: string;
@@ -18,7 +18,7 @@ interface ChatWindowProps {
 export const ChatPopup: React.FC<ChatWindowProps> = ({
   selectedUser,
   messages,
-  setMessages,
+  updateMessages,
   onSendMessage,
   onClose,
 }) => {
@@ -34,7 +34,7 @@ export const ChatPopup: React.FC<ChatWindowProps> = ({
     if (socket) {
       socket.on("new_message", (newMessage: Message) => {
         if (selectedUser && newMessage.senderId._id === selectedUser._id) {
-          setMessages((prevMessages) => [...prevMessages, newMessage]);
+          updateMessages(newMessage);
         }
       });
 
