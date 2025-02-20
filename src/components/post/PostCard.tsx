@@ -11,6 +11,7 @@ import {
 import { CommentList } from "../comment/CommentList";
 import { CreateComment } from "../comment/CreateComment";
 import { useAuth } from "../../context/AuthContext";
+import { CommentService, PostService } from "../../services";
 
 interface PostCardProps {
   post: Post;
@@ -32,20 +33,7 @@ export const PostCard: React.FC<PostCardProps> = ({
 
   const getComments = async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/comment/get-post-comments/${post._id}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("No comments found");
-      }
-      const data = (await response.json())?.data;
+      const data = await CommentService.getPostComments(post._id);
       setComments(data.comments);
     } catch (err) {
       console.error("Failed to get comments:", err);
@@ -61,20 +49,7 @@ export const PostCard: React.FC<PostCardProps> = ({
 
   const handleDelete = async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/post/delete-post/${post._id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to delete post");
-      }
-
+      await PostService.deletePost(post._id);
       fetchPosts();
     } catch (err) {
       console.error("Failed to delete post:", err);
@@ -83,22 +58,7 @@ export const PostCard: React.FC<PostCardProps> = ({
 
   const handleUpdate = async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/post/edit-or-update-post`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({ postId: post._id, post: updatedContent }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to update post");
-      }
-
+      await PostService.updatePost(post._id, updatedContent);
       setIsEditing(false);
       setIfUpdated(false);
       fetchPosts();

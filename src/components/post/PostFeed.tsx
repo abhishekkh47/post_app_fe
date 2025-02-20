@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Post } from "../../types";
 import { CreatePost } from "./CreatePost";
 import { PostList } from "./PostList";
+import { PostService } from "../../services";
 
 export const PostFeed: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -10,23 +11,10 @@ export const PostFeed: React.FC = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/post/get-feed`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch posts");
-      }
-
-      const data = (await response.json())?.data;
+      const data = await PostService.getFeed();
       setPosts(data.posts);
     } catch (err) {
-      setError("Failed to load posts");
+      setError(`${(err as Error).message}`);
     } finally {
       setLoading(false);
     }

@@ -2,6 +2,7 @@ import React from "react";
 import { Comment } from "../../types";
 import { useAuth } from "../../context/AuthContext";
 import { Trash2 } from "lucide-react";
+import { CommentService } from "../../services";
 
 interface CommentListProps {
   comments: Comment[];
@@ -16,22 +17,10 @@ export const CommentList: React.FC<CommentListProps> = ({
 
   const handleDeleteComment = async (commentId: string) => {
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/comment/delete-comment/${commentId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to delete comment");
-      }
+      await CommentService.deleteComment(commentId);
       onCommentDelete();
     } catch (err) {
-      console.error("Failed to delete comment:", err);
+      console.error((err as Error).message);
     }
   };
 

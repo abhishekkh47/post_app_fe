@@ -6,6 +6,7 @@ import {
   SignupCredentials,
 } from "../types";
 import { useNavigate } from "react-router-dom";
+import { AuthService } from "../services";
 
 interface AuthContextType {
   user: User | null;
@@ -68,22 +69,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const refreshToken = async () => {
     try {
-      const refreshToken = localStorage.getItem("refreshToken");
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/auth/refresh-token`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ refreshToken }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Token refresh failed");
-      }
-      const data: AuthResponse = (await response.json())?.data;
+      const data: AuthResponse = await AuthService.refreshToken();
       setAuthData(data);
     } catch (error) {
       logout();
@@ -93,42 +79,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const login = async (credentials: LoginCredentials) => {
     setLoading(true);
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(credentials),
-    });
-
-    if (!response.ok) {
-      throw new Error("Login failed");
+    try {
+      const data: AuthResponse = await AuthService.login(credentials);
+      setAuthData(data);
+    } catch (err) {
+      throw new Error(`${(err as Error).message}`);
+    } finally {
+      setLoading(false);
     }
-
-    const data: AuthResponse = (await response.json())?.data;
-    setAuthData(data);
-    setLoading(false);
     return true;
   };
 
   const signup = async (credentials: SignupCredentials) => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/auth/signup`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("Signup failed");
+    try {
+      const data: AuthResponse = await AuthService.signup(credentials);
+      setAuthData(data);
+    } catch (err) {
+      throw new Error(`${(err as Error).message}`);
     }
-
-    const data: AuthResponse = (await response.json())?.data;
-    setAuthData(data);
   };
 
   const logout = () => {

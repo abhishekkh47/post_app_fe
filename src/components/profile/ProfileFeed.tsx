@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Post } from "../../types";
 import { PostList } from "../post/PostList";
+import { PostService } from "../../services";
 
 interface ProfileFeedProps {
   userId: string | undefined;
@@ -13,23 +14,7 @@ export const ProfileFeed: React.FC<ProfileFeedProps> = ({ userId }) => {
 
   const fetchPosts = async () => {
     try {
-      const endpoint = userId
-        ? `get-posts-by-user/${userId.toString()}`
-        : `get-my-posts`;
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/post/${endpoint}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch posts");
-      }
-
-      const data = (await response.json())?.data;
+      const data = await PostService.fetchPostsByUser(userId);
       setPosts(data.posts);
     } catch (err) {
       setError("Failed to load posts");

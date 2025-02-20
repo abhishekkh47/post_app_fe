@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Send } from "lucide-react";
 import { Comment } from "../../types";
+import { CommentService } from "../../services";
 
 interface CreateCommentProps {
   postId: string;
@@ -16,30 +17,11 @@ export const CreateComment: React.FC<CreateCommentProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/comment/create-comment`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({
-            postId,
-            content,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to create comment");
-      }
-
-      const data = (await response.json())?.data;
+      const data = await CommentService.createComment(postId, content);
       onCommentAdded(data.comment);
       setContent("");
     } catch (err) {
-      console.error("Failed to create comment:", err);
+      console.error(`Failed to comment: ${err}`);
     }
   };
 

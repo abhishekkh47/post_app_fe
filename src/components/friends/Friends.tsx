@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { ChatPopup } from "../chat/ChatPopup";
 import { useSocket } from "../../context/SocketContext";
 import { MessageSquare } from "lucide-react";
+import { ChatService, FollowService } from "../../services";
 
 export const Friends: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"followers" | "following">(
@@ -26,21 +27,17 @@ export const Friends: React.FC = () => {
   const fetchFriends = async (type: "followers" | "following") => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/follow/${type}/${user?._id}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      const obj = (await response.json())?.data;
-      const data = type == "followers" ? obj?.followers : obj?.following;
-      setFriends(data?.users || []);
+      if (user) {
+        const response = await FollowService.getFollowersOrFollowing(
+          user._id,
+          type
+        );
+        const data =
+          type == "followers" ? response?.followers : response?.following;
+        setFriends(data?.users || []);
+      }
     } catch (error) {
-      console.error("Error fetching friends:", error);
+      console.error((error as Error).message);
     } finally {
       setLoading(false);
     }
@@ -56,15 +53,7 @@ export const Friends: React.FC = () => {
 
     // Fetch messages for the selected user
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/chat/messages/${friend._id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      const data = (await response.json())?.data;
+      const data = await ChatService.getMessages(friend._id);
       setMessages(data.messages || []);
 
       // Mark messages as read
@@ -74,7 +63,7 @@ export const Friends: React.FC = () => {
         });
       }
     } catch (error) {
-      console.error("Error fetching messages:", error);
+      console.error((error as Error).message);
     }
   };
 
@@ -84,12 +73,12 @@ export const Friends: React.FC = () => {
 
     const newMessage: Message = {
       _id: Date.now().toString(), // You can generate this dynamically or use the server's ID
-      senderId: user!, // Assuming 'user' is the logged-in user
-      receiverId: selectedUser, // The selected user is the receiver
+      senderId: user!,
+      receiverId: selectedUser,
       content,
-      isRead: false, // Initially the message is not read
+      isRead: false,
       attachments,
-      createdAt: new Date().toISOString(), // Use ISO string for proper date format
+      createdAt: new Date().toISOString(),
     };
 
     // Update the messages state immediately with the new message

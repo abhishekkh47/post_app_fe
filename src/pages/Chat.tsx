@@ -4,6 +4,7 @@ import { ChatList } from "../components/chat/ChatList";
 import { ChatPopup } from "../components/chat/ChatPopup";
 import { useSocket } from "../context/SocketContext";
 import { User, Message, Conversation } from "../types";
+import { ChatService } from "../services";
 
 export const ChatPage: React.FC = () => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -13,27 +14,15 @@ export const ChatPage: React.FC = () => {
 
   useEffect(() => {
     // Fetch conversations
-    fetch(`${import.meta.env.VITE_API_URL}/chat/conversations`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setConversations(data.data.conversations));
+    ChatService.getConversations().then((data) =>
+      setConversations(data.conversations)
+    );
   }, []);
 
   const handleNewMessage = async () => {
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/chat/conversations`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
+    ChatService.getConversations().then((data) =>
+      setConversations(data.conversations)
     );
-
-    const data = (await response.json())?.data;
-    setConversations(data.conversations);
   };
 
   // Update messages when they are marked as read
@@ -108,16 +97,10 @@ export const ChatPage: React.FC = () => {
   const handleSelectConversation = async (user: User) => {
     setSelectedUser(user);
     // Fetch messages for selected conversation
-    const response = await fetch(
-      `${import.meta.env.VITE_API_URL}/chat/messages/${user._id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
-    const data = (await response.json())?.data;
+    const data = await ChatService.getMessages(user._id);
+    console.log("data : ", data);
     setMessages(data.messages);
+
     await handleNewMessage();
 
     if (!socket || !user) return;

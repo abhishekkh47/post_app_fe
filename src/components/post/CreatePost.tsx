@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Send } from "lucide-react";
+import { PostService } from "../../services";
 
 interface CreatePostProps {
   fetchPosts: () => void;
@@ -12,21 +13,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ fetchPosts }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/post/create-post`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({ post: content }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to create post");
-      }
+      await PostService.createPost(content);
 
       setContent("");
       setError("");
