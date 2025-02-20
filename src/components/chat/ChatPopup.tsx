@@ -12,7 +12,6 @@ interface ChatWindowProps {
   updateMessages: (messages: Message) => void;
   onSendMessage: (content: string, attachments?: string[]) => void;
   onClose: () => void;
-  className?: string;
 }
 
 export const ChatPopup: React.FC<ChatWindowProps> = ({

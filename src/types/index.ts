@@ -12,13 +12,13 @@ export interface User {
 }
 
 export interface Message {
-  _id: string;
+  _id?: string;
   senderId: User;
   receiverId: User;
   content: string;
   isRead: boolean;
   attachments?: string[];
-  createdAt: string;
+  createdAt?: string;
 }
 
 export interface Conversation {

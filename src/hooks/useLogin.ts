@@ -15,7 +15,7 @@ const useLogin = () => {
     try {
       const success = await login({ email, password });
       if (success) {
-        const from = (location.state as any)?.from?.pathname || "/";
+        const from = location.state?.from?.pathname || "/";
         navigate(from, { replace: true });
       }
     } catch (err) {
@@ -27,8 +27,8 @@ const useLogin = () => {
     setEmail(email);
   };
 
-  const updatePassword = (email: string) => {
-    setPassword(email);
+  const updatePassword = (password: string) => {
+    setPassword(password);
   };
 
   return {
@@ -38,6 +38,7 @@ const useLogin = () => {
     handleSubmit,
     updateEmail,
     updatePassword,
+    setError,
     navigate,
   };
 };

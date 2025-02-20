@@ -133,6 +133,7 @@ const useChat = () => {
     handleCloseChat,
     handleSendMessage,
     updateMessages,
+    setMessages,
   };
 };
 
