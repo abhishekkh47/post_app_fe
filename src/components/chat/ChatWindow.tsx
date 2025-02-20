@@ -1,8 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
+// Chat Window is deprecated
+import React from "react";
 import { User, Message } from "../../types";
 import { Send, Image, ArrowLeft } from "lucide-react";
 import { useSocket } from "../../context/SocketContext";
 import { useNavigate } from "react-router-dom";
+import { useMessages, useSocketListeners } from "../../hooks";
 
 interface ChatWindowProps {
   selectedUser: User | null;
@@ -21,48 +23,13 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
   onBackButtonClick,
   className,
 }) => {
-  const [newMessage, setNewMessage] = useState("");
-  const messagesEndRef = useRef<HTMLDivElement>(null);
   const { socket } = useSocket();
   const navigate = useNavigate();
 
-  // Listen for incoming messages from the WebSocket server
-  useEffect(() => {
-    if (socket) {
-      socket.on("new_message", (newMessage: Message) => {
-        if (selectedUser && newMessage.senderId._id === selectedUser._id) {
-          setMessages((prevMessages) => [...prevMessages, newMessage]);
-        }
-      });
-
-      // Cleanup when the component unmounts or the socket changes
-      return () => {
-        socket.off("new_message");
-      };
-    }
-  }, [selectedUser, socket, messages]);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const handleSend = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newMessage.trim()) {
-      onSendMessage(newMessage);
-      setNewMessage("");
-    }
-  };
-
-  const handleTyping = () => {
-    if (selectedUser && socket) {
-      socket.emit("typing", { receiverId: selectedUser._id });
-    }
-  };
+  const { messagesEndRef, handleTyping, newMessage, updateNewMessage } =
+    useMessages(selectedUser, socket);
+  // Use socket listeners
+  useSocketListeners(socket, setMessages, selectedUser);
 
   if (!selectedUser) {
     return;
@@ -72,6 +39,13 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
     //   </div>
     // );
   }
+  const handleSend = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newMessage.trim()) {
+      onSendMessage(newMessage);
+      updateNewMessage("");
+    }
+  };
 
   const onProfileClick = () => {
     navigate(`/profile/${selectedUser._id}`);
@@ -149,7 +123,7 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
             <input
               type="text"
               value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
+              onChange={(e) => updateNewMessage(e.target.value)}
               onKeyPress={handleTyping}
               placeholder="Type a message..."
               className="flex-1 rounded-full border border-gray-300 px-4 py-2 focus:outline-none focus:border-blue-500"
