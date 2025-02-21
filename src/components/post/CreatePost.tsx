@@ -1,27 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import { Send } from "lucide-react";
-import { PostService } from "../../services";
+import { useCreatePost } from "../../hooks";
 
 interface CreatePostProps {
   fetchPosts: () => void;
 }
 
 export const CreatePost: React.FC<CreatePostProps> = ({ fetchPosts }) => {
-  const [content, setContent] = useState("");
-  const [error, setError] = useState("");
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await PostService.createPost(content);
-
-      setContent("");
-      setError("");
-      fetchPosts();
-    } catch (err) {
-      setError("Failed to create post. Please try again.");
-    }
-  };
+  const { content, error, updateContent, handleSubmit } = useCreatePost({
+    fetchPosts,
+  });
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4 mb-4">
@@ -30,7 +18,7 @@ export const CreatePost: React.FC<CreatePostProps> = ({ fetchPosts }) => {
         <div className="flex items-start space-x-4">
           <textarea
             value={content}
-            onChange={(e) => setContent(e.target.value)}
+            onChange={(e) => updateContent(e.target.value)}
             placeholder="What's on your mind?"
             className="flex-1 p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             rows={3}
