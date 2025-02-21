@@ -6,3 +6,4 @@ export { default as useBrandAnimation } from "./useBrandAnimation";
 export { default as useChatPopup } from "./useChatPopup";
 export { default as useCommentList } from "./useCommentList";
 export { default as useCreateComment } from "./useCreateComment";
+export { default as useFriends } from "./useFriends";
