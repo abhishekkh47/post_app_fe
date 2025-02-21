@@ -11,3 +11,5 @@ export { default as useNavBar } from "./useNavBar";
 export { default as useCreatePost } from "./useCreatePost";
 export { default as usePostCard } from "./usePostCard";
 export { default as usePostFeed } from "./usePostFeed";
+export { default as useProfileFeed } from "./useProfileFeed";
+export { default as useUserProfile } from "./useUserProfile";
