@@ -1,15 +1,14 @@
 import Config from "../config";
+import { AuthService } from ".";
 
 class UserService {
-  token = `Bearer ${localStorage.getItem("token")}`;
-
   async fetchUserProfile(userId: string) {
     try {
       const response = await fetch(
         `${Config.API_URL}/user/get-profile/${userId}`,
         {
           headers: {
-            Authorization: this.token,
+            Authorization: AuthService.getToken(),
           },
         }
       );

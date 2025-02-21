@@ -1,15 +1,14 @@
 import Config from "../config";
+import { AuthService } from ".";
 
 class CommentService {
-  token = `Bearer ${localStorage.getItem("token")}`;
-
   async createComment(postId: string, content: string) {
     try {
       const response = await fetch(`${Config.API_URL}/comment/create-comment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: this.token,
+          Authorization: AuthService.getToken(),
         },
         body: JSON.stringify({
           postId,
@@ -33,7 +32,7 @@ class CommentService {
         {
           method: "DELETE",
           headers: {
-            Authorization: this.token,
+            Authorization: AuthService.getToken(),
           },
         }
       );
