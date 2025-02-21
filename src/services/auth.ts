@@ -2,6 +2,10 @@ import { LoginCredentials, SignupCredentials } from "../types";
 import Config from "../config";
 
 class AuthService {
+  getToken = () => {
+    return `Bearer ${localStorage.getItem("token")}`;
+  };
+
   async login(credentials: LoginCredentials) {
     try {
       const response = await fetch(`${Config.API_URL}/auth/login`, {
