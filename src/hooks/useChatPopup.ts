@@ -16,8 +16,8 @@ const useChatPopup = ({
   updateMessages,
   onSendMessage,
 }: UseChatProps) => {
-  const [newMessage, setNewMessage] = useState("");
-  const [isMinimized, setIsMinimized] = useState(false);
+  const [newMessage, setNewMessage] = useState<string>("");
+  const [isMinimized, setIsMinimized] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { socket } = useSocket();
   const navigate = useNavigate();
@@ -68,9 +68,13 @@ const useChatPopup = ({
     setIsMinimized((prevState) => !prevState);
   };
 
+  const updateNewMessage = (newMessage: string) => {
+    setNewMessage(newMessage);
+  };
+
   return {
     newMessage,
-    setNewMessage,
+    updateNewMessage,
     isMinimized,
     toggleMinimize,
     onSendMessage: handleSend,

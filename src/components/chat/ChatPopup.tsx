@@ -29,7 +29,7 @@ export const ChatPopup: React.FC<ChatWindowProps> = ({
 
   const {
     newMessage,
-    setNewMessage,
+    updateNewMessage,
     isMinimized,
     toggleMinimize,
     onSendMessage: handleSend,
@@ -126,7 +126,7 @@ export const ChatPopup: React.FC<ChatWindowProps> = ({
                 <input
                   type="text"
                   value={newMessage}
-                  onChange={(e) => setNewMessage(e.target.value)}
+                  onChange={(e) => updateNewMessage(e.target.value)}
                   onKeyDown={handleTyping}
                   placeholder="Type a message..."
                   className="flex-1 text-sm rounded-full border border-gray-300 px-3 py-1.5 focus:outline-none focus:border-blue-500"

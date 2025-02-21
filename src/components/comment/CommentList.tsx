@@ -2,7 +2,7 @@ import React from "react";
 import { Comment } from "../../types";
 import { useAuth } from "../../context/AuthContext";
 import { Trash2 } from "lucide-react";
-import { CommentService } from "../../services";
+import { useCommentList } from "../../hooks";
 
 interface CommentListProps {
   comments: Comment[];
@@ -14,15 +14,7 @@ export const CommentList: React.FC<CommentListProps> = ({
   onCommentDelete,
 }) => {
   const { user } = useAuth();
-
-  const handleDeleteComment = async (commentId: string) => {
-    try {
-      await CommentService.deleteComment(commentId);
-      onCommentDelete();
-    } catch (err) {
-      console.error((err as Error).message);
-    }
-  };
+  const { handleDeleteComment } = useCommentList({ onCommentDelete });
 
   return (
     <div className="space-y-4 mt-4">

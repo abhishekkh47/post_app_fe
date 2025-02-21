@@ -4,3 +4,5 @@ export { default as useLogin } from "./useLogin";
 export { default as useSignup } from "./useSignup";
 export { default as useBrandAnimation } from "./useBrandAnimation";
 export { default as useChatPopup } from "./useChatPopup";
+export { default as useCommentList } from "./useCommentList";
+export { default as useCreateComment } from "./useCreateComment";
