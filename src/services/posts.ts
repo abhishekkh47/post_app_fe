@@ -1,7 +1,9 @@
 import Config from "../config";
 
 class PostService {
-  token = `Bearer ${localStorage.getItem("token")}`;
+  getToken = () => {
+    return `Bearer ${localStorage.getItem("token")}`;
+  };
 
   async fetchPostsByUser(userId: string | undefined) {
     try {
@@ -10,7 +12,7 @@ class PostService {
         : `get-my-posts`;
       const response = await fetch(`${Config.API_URL}/post/${endpoint}`, {
         headers: {
-          Authorization: this.token,
+          Authorization: this.getToken(),
         },
       });
 
@@ -27,7 +29,7 @@ class PostService {
     try {
       const response = await fetch(`${Config.API_URL}/post/get-feed`, {
         headers: {
-          Authorization: this.token,
+          Authorization: this.getToken(),
         },
       });
 
@@ -46,7 +48,7 @@ class PostService {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: this.token,
+          Authorization: this.getToken(),
         },
         body: JSON.stringify({ post: content }),
       });
@@ -67,7 +69,7 @@ class PostService {
         {
           method: "DELETE",
           headers: {
-            Authorization: this.token,
+            Authorization: this.getToken(),
           },
         }
       );
@@ -88,7 +90,7 @@ class PostService {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
-            Authorization: this.token,
+            Authorization: this.getToken(),
           },
           body: JSON.stringify({ postId, post }),
         }
