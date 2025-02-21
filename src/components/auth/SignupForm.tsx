@@ -1,35 +1,9 @@
-import React, { useState } from "react";
-import { useAuth } from "../../context/AuthContext";
+import React from "react";
 import { Mail, Lock, User } from "lucide-react";
+import { useSignup } from "../../hooks";
 
 export const SignupForm: React.FC = () => {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    bio: "",
-    isPrivate: true,
-  });
-  const [error, setError] = useState("");
-  const { signup } = useAuth();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      await signup(formData);
-    } catch (err) {
-      setError("Signup failed. Please try again.");
-    }
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
+  const { error, formData, handleSubmit, handleChange } = useSignup();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
