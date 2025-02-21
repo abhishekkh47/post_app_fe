@@ -1,30 +1,19 @@
-import React, { useState } from "react";
-import { useAuth } from "../../context/AuthContext";
+import React from "react";
 import { Mail, Lock } from "lucide-react";
-import { useLocation, useNavigate } from "react-router-dom";
 import { AnimatedBrand } from "../brand/BrandAnimation";
 import { Footer } from "../footer/Footer";
+import { useLogin } from "../../hooks";
 
 export const LoginForm: React.FC = () => {
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const { login } = useAuth();
-  const location = useLocation();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const success = await login({ email, password });
-      if (success) {
-        const from = (location.state as any)?.from?.pathname || "/";
-        navigate(from, { replace: true });
-      }
-    } catch (err) {
-      setError("Invalid email or password");
-    }
-  };
+  const {
+    email,
+    error,
+    handleSubmit,
+    password,
+    updateEmail,
+    updatePassword,
+    navigate,
+  } = useLogin();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -54,7 +43,7 @@ export const LoginForm: React.FC = () => {
                       type="email"
                       required
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => updateEmail(e.target.value)}
                       className="flex-1 px-4 py-1 border-none focus:outline-none sm:text-sm"
                       placeholder="Email address"
                     />
@@ -67,7 +56,7 @@ export const LoginForm: React.FC = () => {
                       type="password"
                       required
                       value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      onChange={(e) => updatePassword(e.target.value)}
                       className="flex-1 px-4 py-1 border-none focus:outline-none sm:text-sm"
                       placeholder="Password"
                     />
