@@ -24,6 +24,10 @@ export const Friends: React.FC = () => {
     fetchFriends(activeTab);
   }, [activeTab]);
 
+  const updateMessages = (newMessage: Message) => {
+    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  };
+
   const fetchFriends = async (type: "followers" | "following") => {
     setLoading(true);
     try {
@@ -193,7 +197,7 @@ export const Friends: React.FC = () => {
         <ChatPopup
           selectedUser={selectedUser}
           messages={messages}
-          setMessages={setMessages}
+          updateMessages={updateMessages}
           onSendMessage={handleSendMessage}
           onClose={handleCloseChat}
         />
