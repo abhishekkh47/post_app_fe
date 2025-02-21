@@ -2,7 +2,7 @@ import React from "react";
 import { Mail, Lock, User } from "lucide-react";
 import { useSignup } from "../../hooks";
 
-export const SignupForm: React.FC = () => {
+const SignupForm: React.FC = () => {
   const { error, formData, handleSubmit, handleChange } = useSignup();
 
   return (
@@ -97,3 +97,5 @@ export const SignupForm: React.FC = () => {
     </div>
   );
 };
+
+export default SignupForm;

@@ -1,12 +1,12 @@
 import React from "react";
-import { PostList } from "../post/PostList";
+import { PostList } from "../post";
 import { useProfileFeed } from "../../hooks";
 
 interface ProfileFeedProps {
   userId: string | undefined;
 }
 
-export const ProfileFeed: React.FC<ProfileFeedProps> = ({ userId }) => {
+const ProfileFeed: React.FC<ProfileFeedProps> = ({ userId }) => {
   const { posts, loading, error, fetchPosts } = useProfileFeed({ userId });
 
   return (
@@ -21,3 +21,5 @@ export const ProfileFeed: React.FC<ProfileFeedProps> = ({ userId }) => {
     </div>
   );
 };
+
+export default ProfileFeed;

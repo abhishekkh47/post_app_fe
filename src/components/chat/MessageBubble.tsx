@@ -7,7 +7,7 @@ interface MessageProps {
   user: any;
 }
 
-export const MessageBubble: React.FC<MessageProps> = ({
+const MessageBubble: React.FC<MessageProps> = ({
   message,
   selectedUser,
   user,
@@ -55,3 +55,5 @@ export const MessageBubble: React.FC<MessageProps> = ({
     </div>
   );
 };
+
+export default MessageBubble;

@@ -8,8 +8,7 @@ import {
   Check,
   X,
 } from "lucide-react";
-import { CommentList } from "../comment/CommentList";
-import { CreateComment } from "../comment/CreateComment";
+import { CommentList, CreateComment } from "../comment";
 import { usePostCard } from "../../hooks";
 import { useAuth } from "../../context/AuthContext";
 
@@ -19,7 +18,7 @@ interface PostCardProps {
   fromHomePage: boolean;
 }
 
-export const PostCard: React.FC<PostCardProps> = ({
+const PostCard: React.FC<PostCardProps> = ({
   post,
   fetchPosts,
   fromHomePage,
@@ -142,3 +141,5 @@ export const PostCard: React.FC<PostCardProps> = ({
     </div>
   );
 };
+
+export default PostCard;

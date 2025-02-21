@@ -6,10 +6,7 @@ interface FollowButtonProps {
   onFollow: () => void;
 }
 
-export const FollowButton: React.FC<FollowButtonProps> = ({
-  following,
-  onFollow,
-}) => {
+const FollowButton: React.FC<FollowButtonProps> = ({ following, onFollow }) => {
   return (
     <button
       onClick={onFollow}
@@ -33,3 +30,5 @@ export const FollowButton: React.FC<FollowButtonProps> = ({
     </button>
   );
 };
+
+export default FollowButton;

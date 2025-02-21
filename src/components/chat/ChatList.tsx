@@ -9,7 +9,7 @@ interface ChatListProps {
   onSelectConversation: (user: User) => void;
 }
 
-export const ChatList: React.FC<ChatListProps> = ({
+const ChatList: React.FC<ChatListProps> = ({
   conversations,
   selectedUser,
   onSelectConversation,
@@ -74,3 +74,5 @@ export const ChatList: React.FC<ChatListProps> = ({
     </div>
   );
 };
+
+export default ChatList;

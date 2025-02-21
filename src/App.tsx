@@ -1,14 +1,11 @@
 import { AuthProvider } from "./context/AuthContext";
 import { SocketProvider } from "./context/SocketContext";
-import { LoginForm } from "./components/auth/LoginForm";
+import { LoginForm, SignupForm, ProtectedRoute } from "./components/auth";
 import { useAuth } from "./context/AuthContext";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { SignupForm } from "./components/auth/SignupForm";
-import { ProtectedRoute } from "./components/auth/ProtectedRoute";
-import { AuthenticatedLayout } from "./components/layout/AuthenticatedLayout";
-import { Profile } from "./pages/Profile";
-import { Home } from "./pages/Home";
-import { Friends } from "./components/friends/Friends";
+import { AuthenticatedLayout } from "./components/layout/";
+import { Profile, Home } from "./pages";
+import { Friends } from "./components/friends";
 
 const AppContent = () => {
   const { isAuthenticated } = useAuth();

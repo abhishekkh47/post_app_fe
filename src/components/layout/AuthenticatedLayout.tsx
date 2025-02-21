@@ -1,11 +1,11 @@
 import React from "react";
-import { NavBar } from "../navbar/Navbar";
+import { NavBar } from "../navbar";
 
 interface AuthenticatedLayoutProps {
   children: React.ReactNode;
 }
 
-export const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
+const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
   children,
 }) => {
   return (
@@ -15,3 +15,5 @@ export const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
     </>
   );
 };
+
+export default AuthenticatedLayout;

@@ -1,7 +1,6 @@
-import { Feed } from "./Feed";
-import { ChatPage } from "./Chat";
+import { Feed, ChatPage } from "./";
 
-export const Home: React.FC = () => {
+const Home: React.FC = () => {
   return (
     <div className="flex">
       <div className="flex-1">
@@ -13,3 +12,5 @@ export const Home: React.FC = () => {
     </div>
   );
 };
+
+export default Home;

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { UserProfile } from "../components/profile/UserProfile";
+import { UserProfile, ProfileFeed } from "../components/profile";
 import { useParams } from "react-router-dom";
-import { ProfileFeed } from "../components/profile/ProfileFeed";
 import { useAuth } from "../context/AuthContext";
 
-export const Profile: React.FC = () => {
+const Profile: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
   const { user } = useAuth();
   const [isPublicProfile, setIsPublicProfile] = useState(false);
@@ -31,3 +30,5 @@ export const Profile: React.FC = () => {
     </div>
   );
 };
+
+export default Profile;

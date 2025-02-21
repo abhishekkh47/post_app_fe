@@ -1,10 +1,10 @@
 import React from "react";
 import { Mail, Lock } from "lucide-react";
-import { AnimatedBrand } from "../brand/BrandAnimation";
-import { Footer } from "../footer/Footer";
+import { AnimatedBrand } from "../brand";
+import { Footer } from "../footer";
 import { useLogin } from "../../hooks";
 
-export const LoginForm: React.FC = () => {
+const LoginForm: React.FC = () => {
   const {
     email,
     error,
@@ -90,3 +90,5 @@ export const LoginForm: React.FC = () => {
     </div>
   );
 };
+
+export default LoginForm;

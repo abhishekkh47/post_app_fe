@@ -13,7 +13,7 @@ interface ChatWindowProps {
   className?: string;
 }
 
-export const ChatWindow: React.FC<ChatWindowProps> = ({
+const ChatWindow: React.FC<ChatWindowProps> = ({
   selectedUser,
   messages,
   setMessages,
@@ -167,3 +167,5 @@ export const ChatWindow: React.FC<ChatWindowProps> = ({
     </div>
   );
 };
+
+export default ChatWindow;

@@ -1,6 +1,5 @@
 import React from "react";
-import { UserStats } from "./UserStats";
-import { FollowButton } from "./FollowButton";
+import { UserStats, FollowButton } from "./";
 import { useUserProfile } from "../../hooks";
 
 interface UserProfileProps {
@@ -10,7 +9,7 @@ interface UserProfileProps {
   setFollowing: (following: boolean) => void;
 }
 
-export const UserProfile: React.FC<UserProfileProps> = ({
+const UserProfile: React.FC<UserProfileProps> = ({
   userId,
   setPublicProfile,
   following,
@@ -56,3 +55,5 @@ export const UserProfile: React.FC<UserProfileProps> = ({
     </div>
   );
 };
+
+export default UserProfile;

@@ -1,9 +1,8 @@
 import React from "react";
-import { CreatePost } from "./CreatePost";
-import { PostList } from "./PostList";
+import { CreatePost, PostList } from "./";
 import { usePostFeed } from "../../hooks";
 
-export const PostFeed: React.FC = () => {
+const PostFeed: React.FC = () => {
   const { posts, loading, error, fetchPosts } = usePostFeed();
 
   return (
@@ -19,3 +18,5 @@ export const PostFeed: React.FC = () => {
     </div>
   );
 };
+
+export default PostFeed;

@@ -5,7 +5,7 @@ interface UserStatsProps {
   profile: User;
 }
 
-export const UserStats: React.FC<UserStatsProps> = ({ profile }) => {
+const UserStats: React.FC<UserStatsProps> = ({ profile }) => {
   return (
     <div className="flex flex-row">
       <div className="flex flex-col pr-4">
@@ -23,3 +23,5 @@ export const UserStats: React.FC<UserStatsProps> = ({ profile }) => {
     </div>
   );
 };
+
+export default UserStats;

@@ -6,7 +6,7 @@ interface CreatePostProps {
   fetchPosts: () => void;
 }
 
-export const CreatePost: React.FC<CreatePostProps> = ({ fetchPosts }) => {
+const CreatePost: React.FC<CreatePostProps> = ({ fetchPosts }) => {
   const { content, error, updateContent, handleSubmit } = useCreatePost({
     fetchPosts,
   });
@@ -38,3 +38,5 @@ export const CreatePost: React.FC<CreatePostProps> = ({ fetchPosts }) => {
     </div>
   );
 };
+
+export default CreatePost;

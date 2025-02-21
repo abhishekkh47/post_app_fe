@@ -1,6 +1,6 @@
 import React from "react";
 import { Post } from "../../types";
-import { PostCard } from "./PostCard";
+import { PostCard } from "./";
 
 interface PostListProps {
   posts: Post[];
@@ -8,7 +8,7 @@ interface PostListProps {
   fromHomePage?: boolean;
 }
 
-export const PostList: React.FC<PostListProps> = ({
+const PostList: React.FC<PostListProps> = ({
   posts,
   fetchPosts,
   fromHomePage,
@@ -27,3 +27,5 @@ export const PostList: React.FC<PostListProps> = ({
     </div>
   );
 };
+
+export default PostList;

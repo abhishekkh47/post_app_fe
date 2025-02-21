@@ -9,7 +9,7 @@ interface CommentListProps {
   onCommentDelete: () => void;
 }
 
-export const CommentList: React.FC<CommentListProps> = ({
+const CommentList: React.FC<CommentListProps> = ({
   comments,
   onCommentDelete,
 }) => {
@@ -53,3 +53,5 @@ export const CommentList: React.FC<CommentListProps> = ({
     </div>
   );
 };
+
+export default CommentList;

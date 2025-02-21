@@ -11,14 +11,14 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../../image.png";
 import { Loader2 } from "lucide-react";
-import { SearchBar } from "./SearchBar";
+import { SearchBar } from "./";
 import { useNavBar } from "../../hooks";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const NavBar: React.FC = () => {
+const NavBar: React.FC = () => {
   const {
     user,
     navigation,
@@ -170,3 +170,5 @@ export const NavBar: React.FC = () => {
     </Disclosure>
   );
 };
+
+export default NavBar;

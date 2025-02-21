@@ -1,9 +1,8 @@
 import React from "react";
-import { ChatList } from "../components/chat/ChatList";
-import { ChatPopup } from "../components/chat/ChatPopup";
+import { ChatList, ChatPopup } from "../components/chat";
 import { useChat } from "../hooks";
 
-export const ChatPage: React.FC = () => {
+const ChatPage: React.FC = () => {
   const {
     conversations,
     handleCloseChat,
@@ -39,3 +38,5 @@ export const ChatPage: React.FC = () => {
     </div>
   );
 };
+
+export default ChatPage;

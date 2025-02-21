@@ -8,7 +8,7 @@ interface CreateCommentProps {
   onCommentAdded: (comment: Comment) => void;
 }
 
-export const CreateComment: React.FC<CreateCommentProps> = ({
+const CreateComment: React.FC<CreateCommentProps> = ({
   postId,
   onCommentAdded,
 }) => {
@@ -38,3 +38,5 @@ export const CreateComment: React.FC<CreateCommentProps> = ({
     </form>
   );
 };
+
+export default CreateComment;

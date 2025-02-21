@@ -1,6 +1,6 @@
 import { useBrandAnimation } from "../../hooks";
 
-export const AnimatedBrand = () => {
+const AnimatedBrand = () => {
   const { displayedText } = useBrandAnimation();
 
   return (
@@ -16,3 +16,5 @@ export const AnimatedBrand = () => {
     </div>
   );
 };
+
+export default AnimatedBrand;

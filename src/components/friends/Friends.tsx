@@ -1,9 +1,9 @@
 import React from "react";
-import { ChatPopup } from "../chat/ChatPopup";
+import { ChatPopup } from "../chat";
 import { MessageSquare } from "lucide-react";
 import { useFriends } from "../../hooks";
 
-export const Friends: React.FC = () => {
+const Friends: React.FC = () => {
   const {
     friends,
     loading,
@@ -101,3 +101,5 @@ export const Friends: React.FC = () => {
     </div>
   );
 };
+
+export default Friends;

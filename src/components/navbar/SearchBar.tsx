@@ -1,7 +1,7 @@
 import React from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
-export const SearchBar: React.FC = () => {
+const SearchBar: React.FC = () => {
   return (
     <div className="relative right-5 border border-slate-200 bg-white rounded-md flex flex-row items-center pr-20 py-2">
       <div>
@@ -15,3 +15,5 @@ export const SearchBar: React.FC = () => {
     </div>
   );
 };
+
+export default SearchBar;

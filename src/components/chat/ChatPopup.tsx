@@ -2,7 +2,7 @@ import React from "react";
 import { User, Message } from "../../types";
 import { Send, Image, Minimize2, X } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
-import { MessageBubble } from "./MessageBubble";
+import { MessageBubble } from ".";
 import { useChatPopup } from "../../hooks";
 
 interface ChatWindowProps {
@@ -14,7 +14,7 @@ interface ChatWindowProps {
   className?: string;
 }
 
-export const ChatPopup: React.FC<ChatWindowProps> = ({
+const ChatPopup: React.FC<ChatWindowProps> = ({
   selectedUser,
   messages,
   updateMessages,
@@ -146,3 +146,5 @@ export const ChatPopup: React.FC<ChatWindowProps> = ({
     </div>
   );
 };
+
+export default ChatPopup;
