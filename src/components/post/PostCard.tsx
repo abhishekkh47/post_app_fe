@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Post, Comment } from "../../types";
+import React from "react";
+import { Post } from "../../types";
 import {
   MessageCircle,
   Heart,
@@ -10,8 +10,8 @@ import {
 } from "lucide-react";
 import { CommentList } from "../comment/CommentList";
 import { CreateComment } from "../comment/CreateComment";
+import { usePostCard } from "../../hooks";
 import { useAuth } from "../../context/AuthContext";
-import { CommentService, PostService } from "../../services";
 
 interface PostCardProps {
   post: Post;
@@ -24,62 +24,19 @@ export const PostCard: React.FC<PostCardProps> = ({
   fetchPosts,
   fromHomePage,
 }) => {
-  const [showComments, setShowComments] = useState(false);
-  const [isEditing, setIsEditing] = useState(false);
-  const [updatedContent, setUpdatedContent] = useState(post.post);
-  const [ifUpdated, setIfUpdated] = useState(false);
-  const [comments, setComments] = useState<Comment[]>(post.comments || []);
   const { user } = useAuth();
-
-  const getComments = async () => {
-    try {
-      const data = await CommentService.getPostComments(post._id);
-      setComments(data.comments);
-    } catch (err) {
-      console.error("Failed to get comments:", err);
-    }
-  };
-
-  const handleCommentClick = () => {
-    setShowComments(!showComments);
-    if (!showComments) {
-      getComments();
-    }
-  };
-
-  const handleDelete = async () => {
-    try {
-      await PostService.deletePost(post._id);
-      fetchPosts();
-    } catch (err) {
-      console.error("Failed to delete post:", err);
-    }
-  };
-
-  const handleUpdate = async () => {
-    try {
-      await PostService.updatePost(post._id, updatedContent);
-      setIsEditing(false);
-      setIfUpdated(false);
-      fetchPosts();
-    } catch (err) {
-      console.error("Failed to update post:", err);
-    }
-  };
-
-  // update the post content and close text box
-  const checkUpdatedPost = (data: string) => {
-    if (updatedContent != data) {
-      setUpdatedContent(data);
-      setIfUpdated(true);
-    }
-  };
-
-  // refresh posts once the content is updated
-  const getPostsIfUpdated = () => {
-    if (ifUpdated) handleUpdate();
-    setIsEditing(false);
-  };
+  const {
+    showComments,
+    isEditing,
+    comments,
+    updatedContent,
+    getComments,
+    handleCommentClick,
+    handleDelete,
+    checkUpdatedPost,
+    getPostsIfUpdated,
+    updateIsEditing,
+  } = usePostCard({ post, fetchPosts });
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4">
@@ -119,7 +76,7 @@ export const PostCard: React.FC<PostCardProps> = ({
                   <Check className="relative h-5 w-5" />
                 </button>
                 <button
-                  onClick={() => setIsEditing(false)}
+                  onClick={() => updateIsEditing(false)}
                   className="hover:text-green-500"
                 >
                   <X className="relative h-5 w-5" />
@@ -129,7 +86,7 @@ export const PostCard: React.FC<PostCardProps> = ({
               user?._id === post?.userId?._id && (
                 <div className="flex space-x-2">
                   <button
-                    onClick={() => setIsEditing(true)}
+                    onClick={() => updateIsEditing(true)}
                     className="hover:text-green-500"
                   >
                     <PencilIcon className="relative h-5 w-5" />

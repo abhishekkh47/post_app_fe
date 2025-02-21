@@ -1,28 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { Post } from "../../types";
+import React from "react";
 import { CreatePost } from "./CreatePost";
 import { PostList } from "./PostList";
-import { PostService } from "../../services";
+import { usePostFeed } from "../../hooks";
 
 export const PostFeed: React.FC = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  const fetchPosts = async () => {
-    try {
-      const data = await PostService.getFeed();
-      setPosts(data.posts);
-    } catch (err) {
-      setError(`${(err as Error).message}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  const { posts, loading, error, fetchPosts } = usePostFeed();
 
   return (
     <div>

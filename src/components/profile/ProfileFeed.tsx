@@ -1,31 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Post } from "../../types";
+import React from "react";
 import { PostList } from "../post/PostList";
-import { PostService } from "../../services";
+import { useProfileFeed } from "../../hooks";
 
 interface ProfileFeedProps {
   userId: string | undefined;
 }
 
 export const ProfileFeed: React.FC<ProfileFeedProps> = ({ userId }) => {
-  const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-
-  const fetchPosts = async () => {
-    try {
-      const data = await PostService.fetchPostsByUser(userId);
-      setPosts(data.posts);
-    } catch (err) {
-      setError("Failed to load posts");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  const { posts, loading, error, fetchPosts } = useProfileFeed({ userId });
 
   return (
     <div>
