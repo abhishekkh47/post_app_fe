@@ -1,10 +1,9 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { User, Message } from "../../types";
 import { Send, Image, Minimize2, X } from "lucide-react";
-import { useSocket } from "../../context/SocketContext";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { MessageBubble } from "./MessageBubble";
+import { useChatPopup } from "../../hooks";
 
 interface ChatWindowProps {
   selectedUser: User | null;
@@ -22,62 +21,27 @@ export const ChatPopup: React.FC<ChatWindowProps> = ({
   onSendMessage,
   onClose,
 }) => {
-  const [newMessage, setNewMessage] = useState("");
-  const [isMinimized, setIsMinimized] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { socket } = useSocket();
-  const navigate = useNavigate();
   const { user } = useAuth();
-
-  // Listen for incoming messages from the WebSocket server
-  useEffect(() => {
-    if (socket) {
-      socket.on("new_message", (newMessage: Message) => {
-        if (selectedUser && newMessage.senderId._id === selectedUser._id) {
-          updateMessages(newMessage);
-        }
-      });
-
-      // Cleanup when the component unmounts or the socket changes
-      return () => {
-        socket.off("new_message");
-      };
-    }
-  }, [selectedUser, socket]);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const handleSend = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newMessage.trim()) {
-      onSendMessage(newMessage);
-      setNewMessage("");
-    }
-  };
-
-  const handleTyping = () => {
-    if (selectedUser && socket) {
-      socket.emit("typing", { receiverId: selectedUser._id });
-    }
-  };
 
   if (!selectedUser) {
     return;
   }
 
-  const onProfileClick = () => {
-    navigate(`/profile/${selectedUser._id}`);
-  };
-
-  const toggleMinimize = () => {
-    setIsMinimized(!isMinimized);
-  };
+  const {
+    newMessage,
+    setNewMessage,
+    isMinimized,
+    toggleMinimize,
+    onSendMessage: handleSend,
+    handleTyping,
+    onProfileClick,
+    messagesEndRef,
+  } = useChatPopup({
+    selectedUser,
+    messages,
+    updateMessages,
+    onSendMessage,
+  });
 
   return (
     <div className={`fixed bottom-4 right-4 z-50 `}>
