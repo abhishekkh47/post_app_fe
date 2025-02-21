@@ -1,8 +1,7 @@
 import Config from "../config";
+import { AuthService } from ".";
 
 class FollowService {
-  token = `Bearer ${localStorage.getItem("token")}`;
-
   async getFollowersOrFollowing(userId: string, type: string) {
     try {
       const response = await fetch(
@@ -11,7 +10,7 @@ class FollowService {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            Authorization: this.token,
+            Authorization: AuthService.getToken(),
           },
         }
       );
@@ -37,7 +36,7 @@ class FollowService {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: this.token,
+            Authorization: AuthService.getToken(),
           },
           body: JSON.stringify({
             followerId: data.followerId,

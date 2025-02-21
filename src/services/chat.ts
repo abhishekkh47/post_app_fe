@@ -1,13 +1,12 @@
 import Config from "../config";
+import { AuthService } from ".";
 
 class ChatService {
-  token = `Bearer ${localStorage.getItem("token")}`;
-
   async getConversations() {
     try {
       const response = await fetch(`${Config.API_URL}/chat/conversations`, {
         headers: {
-          Authorization: this.token,
+          Authorization: AuthService.getToken(),
         },
       });
       if (!response.ok) {
@@ -25,7 +24,7 @@ class ChatService {
         `${Config.API_URL}/chat/messages/${userId}`,
         {
           headers: {
-            Authorization: this.token,
+            Authorization: AuthService.getToken(),
           },
         }
       );
