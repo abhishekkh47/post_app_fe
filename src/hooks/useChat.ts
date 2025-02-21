@@ -16,22 +16,6 @@ const useChat = () => {
     );
   }, []);
 
-  const handleNewMessage = async () => {
-    ChatService.getConversations().then((data) =>
-      setConversations(data.conversations)
-    );
-  };
-
-  // Update messages when they are marked as read
-  const updateMessagesReadStatus = () => {
-    setMessages((prevMessages) =>
-      prevMessages.map((message) => ({
-        ...message,
-        isRead: true,
-      }))
-    );
-  };
-
   useEffect(() => {
     if (!socket) return;
     socket.connect();
@@ -90,6 +74,22 @@ const useChat = () => {
       socket.off("message_marked_read");
     };
   }, [socket, messages]);
+
+  const handleNewMessage = async () => {
+    ChatService.getConversations().then((data) =>
+      setConversations(data.conversations)
+    );
+  };
+
+  // Update messages when they are marked as read
+  const updateMessagesReadStatus = () => {
+    setMessages((prevMessages) =>
+      prevMessages.map((message) => ({
+        ...message,
+        isRead: true,
+      }))
+    );
+  };
 
   const handleSelectConversation = async (user: User) => {
     setSelectedUser(user);
