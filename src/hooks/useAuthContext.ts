@@ -11,8 +11,8 @@ import { removeAuthData, setAuthData } from "../utils";
 
 const useAuthContext = () => {
   const [user, setUser] = useState<User | null>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -38,6 +38,8 @@ const useAuthContext = () => {
     try {
       const data: AuthResponse = await AuthService.refreshToken();
       setAuthData(data);
+      setUser(data.user);
+      setIsAuthenticated(true);
     } catch (error) {
       logout();
       navigate("/");
@@ -45,15 +47,18 @@ const useAuthContext = () => {
   };
 
   const login = async (credentials: LoginCredentials) => {
-    setLoading(true);
+    // setLoading(true);
     try {
       const data: AuthResponse = await AuthService.login(credentials);
       setAuthData(data);
+      setUser(data.user);
+      setIsAuthenticated(true);
     } catch (err) {
       throw new Error(`${(err as Error).message}`);
-    } finally {
-      setLoading(false);
     }
+    // finally {
+    //   setLoading(false);
+    // }
     return true;
   };
 
@@ -61,6 +66,8 @@ const useAuthContext = () => {
     try {
       const data: AuthResponse = await AuthService.signup(credentials);
       setAuthData(data);
+      setUser(data.user);
+      setIsAuthenticated(true);
     } catch (err) {
       throw new Error(`${(err as Error).message}`);
     }
