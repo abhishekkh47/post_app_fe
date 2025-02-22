@@ -1,7 +1,10 @@
 import React from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+import { useSearch } from "../../hooks";
 
 const SearchBar: React.FC = () => {
+  const { updateSearch } = useSearch();
+
   return (
     <div className="relative right-5 border border-slate-200 bg-white rounded-md flex flex-row items-center pr-20 py-2">
       <div>
@@ -11,6 +14,7 @@ const SearchBar: React.FC = () => {
         className="relative left-4 w-full bg-white placeholder:text-slate-400 text-slate-700 transition duration-300 ease focus:outline-none "
         type="text"
         placeholder="Search"
+        onChange={(e) => updateSearch(e.target.value)}
       />
     </div>
   );
