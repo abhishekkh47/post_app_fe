@@ -28,7 +28,7 @@ const CommentList: React.FC<CommentListProps> = ({
             />
           ) : (
             <div className="h-8 w-8 rounded-full bg-blue-200">
-              {comment?.userId?.firstName[0]}
+              {comment?.userId?.firstName[0]?.toUpperCase()}
             </div>
           )}
           <div className="flex-1 bg-gray-50 rounded-lg p-3">
