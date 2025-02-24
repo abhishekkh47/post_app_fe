@@ -102,7 +102,7 @@ const NavBar: React.FC = () => {
                     />
                   ) : (
                     <div className="size-8 rounded-full bg-pink-400 flex items-center justify-center text-lg border border-white">
-                      {user?.firstName[0]}
+                      {user?.firstName[0]?.toUpperCase()}
                     </div>
                   )}
                 </MenuButton>

@@ -50,7 +50,7 @@ const PostCard: React.FC<PostCardProps> = ({
           ) : (
             // <div className="h-10 w-10 rounded-full bg-gray-200" />
             <div className="h-10 w-10 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
-              {post?.userId?.firstName[0]}
+              {post?.userId?.firstName[0]?.toUpperCase()}
             </div>
           )}
           <div>

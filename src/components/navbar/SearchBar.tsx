@@ -1,9 +1,10 @@
 import React from "react";
 import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { useSearch } from "../../hooks";
+import { SearchResultDropdown } from ".";
 
 const SearchBar: React.FC = () => {
-  const { updateSearch } = useSearch();
+  const { search, users, updateSearch } = useSearch();
 
   return (
     <div className="relative right-5 border border-slate-200 bg-white rounded-md flex flex-row items-center pr-20 py-2">
@@ -16,6 +17,7 @@ const SearchBar: React.FC = () => {
         placeholder="Search"
         onChange={(e) => updateSearch(e.target.value)}
       />
+      {search && users.length && <SearchResultDropdown users={users} />}
     </div>
   );
 };

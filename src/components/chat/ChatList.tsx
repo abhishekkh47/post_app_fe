@@ -47,7 +47,7 @@ const ChatList: React.FC<ChatListProps> = ({
               ) : (
                 <div className="w-12 h-12 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
                   {/* <MessageCircle className="w-6 h-6 text-gray-400" /> */}
-                  {conversation.userDetails?.firstName[0]}
+                  {conversation.userDetails?.firstName[0]?.toUpperCase()}
                 </div>
               )}
               <div className="flex-1 min-w-0">

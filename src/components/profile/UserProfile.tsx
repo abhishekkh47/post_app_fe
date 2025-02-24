@@ -38,7 +38,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
         ) : (
           // <div className="h-20 w-20 rounded-full bg-gray-200" />
           <div className="h-20 w-20 rounded-full bg-blue-300 flex items-center justify-center text-[50px] border border-black">
-            {profile?.firstName[0]}
+            {profile?.firstName[0]?.toUpperCase()}
           </div>
         )}
         <div className="flex-1">

@@ -9,8 +9,8 @@ const useSearch = () => {
   useEffect(() => {
     if (search) {
       const searchUser = async () => {
-        const respose = await UserService.searchUserProfile(search);
-        setUsers([...respose]);
+        const response = await UserService.searchUserProfile(search);
+        setUsers([...response.users]);
       };
       searchUser();
     }
@@ -20,7 +20,7 @@ const useSearch = () => {
     setSearch(queryString);
   };
 
-  return { users, updateSearch };
+  return { search, users, updateSearch };
 };
 
 export default useSearch;

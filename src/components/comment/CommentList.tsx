@@ -27,7 +27,9 @@ const CommentList: React.FC<CommentListProps> = ({
               className="h-8 w-8 rounded-full object-cover"
             />
           ) : (
-            <div className="h-8 w-8 rounded-full bg-gray-200" />
+            <div className="h-8 w-8 rounded-full bg-blue-200">
+              {comment?.userId?.firstName[0]}
+            </div>
           )}
           <div className="flex-1 bg-gray-50 rounded-lg p-3">
             <div className="flex items-center justify-between">

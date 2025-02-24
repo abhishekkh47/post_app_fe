@@ -65,7 +65,7 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
             ) : (
               // <div className="w-8 h-8 rounded-full bg-gray-200" />
               <div className="size-8 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
-                {selectedUser?.firstName[0]}
+                {selectedUser?.firstName[0]?.toUpperCase()}
               </div>
             )}
             <span className="font-medium text-sm">
