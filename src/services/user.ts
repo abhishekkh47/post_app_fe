@@ -1,18 +1,11 @@
-import Config from "../config";
-import { AuthService } from ".";
+import { GET_SERVICE, PATH_SLUGS, USER } from "../utils";
 
 class UserService {
   async fetchUserProfile(userId: string) {
     try {
-      const response = await fetch(
-        `${Config.API_URL}/user/get-profile/${userId}`,
-        {
-          headers: {
-            Authorization: AuthService.getToken(),
-          },
-        }
+      const response = await GET_SERVICE(
+        USER.GET_PROFILE.replace(PATH_SLUGS.USERID, userId)
       );
-
       if (!response.ok) {
         throw new Error("Failed to fetch profile");
       }
@@ -24,15 +17,9 @@ class UserService {
 
   async searchUserProfile(search: string) {
     try {
-      const response = await fetch(
-        `${Config.API_URL}/user/search-user?search=${search}`,
-        {
-          headers: {
-            Authorization: AuthService.getToken(),
-          },
-        }
+      const response = await GET_SERVICE(
+        USER.SEARCH_USER.replace(PATH_SLUGS.SEARCH, search)
       );
-
       if (!response.ok) {
         throw new Error("Failed to fetch profile");
       }

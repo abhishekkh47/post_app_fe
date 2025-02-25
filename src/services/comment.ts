@@ -1,21 +1,21 @@
-import Config from "../config";
-import { AuthService } from ".";
+import {
+  POST_SERVICE,
+  GET_SERVICE,
+  DELETE_SERVICE,
+  COMMENT,
+  PATH_SLUGS,
+} from "../utils";
 
 class CommentService {
   async createComment(postId: string, content: string) {
     try {
-      const response = await fetch(`${Config.API_URL}/comment/create-comment`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: AuthService.getToken(),
-        },
-        body: JSON.stringify({
+      const response = await POST_SERVICE(
+        COMMENT.CREATE_COMMENT,
+        JSON.stringify({
           postId,
           content,
-        }),
-      });
-
+        })
+      );
       if (!response.ok) {
         throw new Error("Failed to create comment");
       }
@@ -27,14 +27,8 @@ class CommentService {
 
   async deleteComment(commentId: string) {
     try {
-      const response = await fetch(
-        `${Config.API_URL}/comment/delete-comment/${commentId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: AuthService.getToken(),
-          },
-        }
+      const response = await DELETE_SERVICE(
+        COMMENT.DELETE_COMMENT.replace(PATH_SLUGS.COMMENTID, commentId)
       );
 
       if (!response.ok) {
@@ -47,14 +41,8 @@ class CommentService {
 
   async getPostComments(postId: string) {
     try {
-      const response = await fetch(
-        `${Config.API_URL}/comment/get-post-comments/${postId}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
+      const response = await GET_SERVICE(
+        COMMENT.GET_POST_COMMENTS.replace(PATH_SLUGS.POSTID, postId)
       );
 
       if (!response.ok) {

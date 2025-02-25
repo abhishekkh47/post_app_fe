@@ -1,5 +1,5 @@
 import { LoginCredentials, SignupCredentials } from "../types";
-import Config from "../config";
+import { AUTH, SIGNUP_LOGIN_SERVICE, POST_SERVICE } from "../utils";
 
 class AuthService {
   getToken = () => {
@@ -8,13 +8,7 @@ class AuthService {
 
   async login(credentials: LoginCredentials) {
     try {
-      const response = await fetch(`${Config.API_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
+      const response = await SIGNUP_LOGIN_SERVICE(AUTH.LOGIN, credentials);
 
       if (!response.ok) {
         throw new Error("Login failed");
@@ -27,13 +21,7 @@ class AuthService {
 
   async signup(credentials: SignupCredentials) {
     try {
-      const response = await fetch(`${Config.API_URL}/auth/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(credentials),
-      });
+      const response = await SIGNUP_LOGIN_SERVICE(AUTH.SIGNUP, credentials);
 
       if (!response.ok) {
         throw new Error("Signup failed");
@@ -46,14 +34,7 @@ class AuthService {
 
   async refreshToken() {
     try {
-      const refreshToken = localStorage.getItem("refreshToken");
-      const response = await fetch(`${Config.API_URL}/auth/refresh-token`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ refreshToken }),
-      });
+      const response = await POST_SERVICE(AUTH.REFRESH_TOKEN, this.getToken());
       if (!response.ok) {
         throw new Error("Session expired");
       }

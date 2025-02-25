@@ -1,5 +1,12 @@
 import Config from "../config";
-import { AuthService } from ".";
+import {
+  POSTS,
+  GET_SERVICE,
+  POST_SERVICE,
+  DELETE_SERVICE,
+  PATH_SLUGS,
+  PUT_SERVICE,
+} from "../utils";
 
 class PostService {
   async fetchPostsByUser(userId: string | undefined) {
@@ -7,12 +14,9 @@ class PostService {
       const endpoint = userId
         ? `get-posts-by-user/${userId.toString()}`
         : `get-my-posts`;
-      const response = await fetch(`${Config.API_URL}/post/${endpoint}`, {
-        headers: {
-          Authorization: AuthService.getToken(),
-        },
-      });
-
+      const response = await GET_SERVICE(
+        `${Config.API_URL}/post/v1/${endpoint}`
+      );
       if (!response.ok) {
         throw new Error("Failed to fetch posts");
       }
@@ -24,12 +28,7 @@ class PostService {
 
   async getFeed() {
     try {
-      const response = await fetch(`${Config.API_URL}/post/get-feed`, {
-        headers: {
-          Authorization: AuthService.getToken(),
-        },
-      });
-
+      const response = await GET_SERVICE(POSTS.GET_FEED);
       if (!response.ok) {
         throw new Error("Failed to load feed");
       }
@@ -41,15 +40,10 @@ class PostService {
 
   async createPost(content: string) {
     try {
-      const response = await fetch(`${Config.API_URL}/post/create-post`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: AuthService.getToken(),
-        },
-        body: JSON.stringify({ post: content }),
-      });
-
+      const response = await POST_SERVICE(
+        POSTS.CREATE_POST,
+        JSON.stringify({ post: content })
+      );
       if (!response.ok) {
         throw new Error("Failed to create post");
       }
@@ -61,16 +55,9 @@ class PostService {
 
   async deletePost(postId: string) {
     try {
-      const response = await fetch(
-        `${Config.API_URL}/post/delete-post/${postId}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: AuthService.getToken(),
-          },
-        }
+      const response = await DELETE_SERVICE(
+        POSTS.DELETE_POST.replace(PATH_SLUGS.POSTID, postId)
       );
-
       if (!response.ok) {
         throw new Error("Failed to delete post");
       }
@@ -81,18 +68,10 @@ class PostService {
 
   async updatePost(postId: string, post: string) {
     try {
-      const response = await fetch(
-        `${Config.API_URL}/post/edit-or-update-post`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: AuthService.getToken(),
-          },
-          body: JSON.stringify({ postId, post }),
-        }
+      const response = await PUT_SERVICE(
+        POSTS.UPDATE_POST,
+        JSON.stringify({ postId, post })
       );
-
       if (!response.ok) {
         throw new Error("Failed to update post");
       }

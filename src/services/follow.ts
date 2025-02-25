@@ -1,19 +1,21 @@
-import Config from "../config";
-import { AuthService } from ".";
+import {
+  GET_SERVICE,
+  POST_SERVICE,
+  FOLLOW,
+  FRIENDS,
+  PATH_SLUGS,
+} from "../utils";
 
 class FollowService {
   async getFollowersOrFollowing(userId: string, type: string) {
     try {
-      const response = await fetch(
-        `${Config.API_URL}/follow/${type}/${userId}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: AuthService.getToken(),
-          },
-        }
+      const response = await GET_SERVICE(
+        (type == FRIENDS.FOLLOWERS
+          ? FOLLOW.FOLLOWERS
+          : FOLLOW.FOLLOWING
+        ).replace(PATH_SLUGS.USERID, userId)
       );
+
       if (!response.ok) {
         throw new Error(`Failed to ${type} user`);
       }
@@ -28,21 +30,12 @@ class FollowService {
     data: { followerId: string; followeeId: string }
   ) {
     try {
-      const response = await fetch(
-        `${Config.API_URL}/follow/${
-          following ? "unfollow-user" : "follow-user"
-        }`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: AuthService.getToken(),
-          },
-          body: JSON.stringify({
-            followerId: data.followerId,
-            followeeId: data.followeeId,
-          }),
-        }
+      const response = await POST_SERVICE(
+        following ? FOLLOW.UNFOLLOW : FOLLOW.FOLLOW,
+        JSON.stringify({
+          followerId: data.followerId,
+          followeeId: data.followeeId,
+        })
       );
 
       if (!response.ok) {

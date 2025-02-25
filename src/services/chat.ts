@@ -1,14 +1,9 @@
-import Config from "../config";
-import { AuthService } from ".";
+import { CHAT, GET_SERVICE, PATH_SLUGS } from "../utils";
 
 class ChatService {
   async getConversations() {
     try {
-      const response = await fetch(`${Config.API_URL}/chat/conversations`, {
-        headers: {
-          Authorization: AuthService.getToken(),
-        },
-      });
+      const response = await GET_SERVICE(CHAT.GET_CONVERSATION);
       if (!response.ok) {
         throw new Error("Failed to get conversations");
       }
@@ -20,13 +15,8 @@ class ChatService {
 
   async getMessages(userId: string) {
     try {
-      const response = await fetch(
-        `${Config.API_URL}/chat/messages/${userId}`,
-        {
-          headers: {
-            Authorization: AuthService.getToken(),
-          },
-        }
+      const response = await GET_SERVICE(
+        CHAT.GET_MESSAGE.replace(PATH_SLUGS.USERID, userId)
       );
       if (!response.ok) {
         throw new Error("Failed to load chat");
