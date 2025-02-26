@@ -38,4 +38,7 @@ export const POSTS = {
 export const USER = {
   GET_PROFILE: `${API_URL}/user/v1/get-profile/${PATH_SLUGS.USERID}`,
   SEARCH_USER: `${API_URL}/user/v1/search-user?search=${PATH_SLUGS.SEARCH}`,
+  NOTIFY: `${API_URL}/user/v1/notify`,
+  DELETE_ACCOUNT: `${API_URL}/user/v1/delete-user`,
+  TOGGLE_PROFILE_TYPE: `${API_URL}/user/v1/toggle-profile-type`,
 };

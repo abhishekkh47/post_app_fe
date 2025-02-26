@@ -1,4 +1,4 @@
-import { GET_SERVICE, PATH_SLUGS, USER } from "../utils";
+import { GET_SERVICE, PATH_SLUGS, PUT_SERVICE, USER } from "../utils";
 
 class UserService {
   async fetchUserProfile(userId: string) {
@@ -19,6 +19,36 @@ class UserService {
     try {
       const response = await GET_SERVICE(
         USER.SEARCH_USER.replace(PATH_SLUGS.SEARCH, search)
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch profile");
+      }
+      return (await response.json())?.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async toggleProfileType(status: boolean) {
+    try {
+      const response = await PUT_SERVICE(
+        USER.TOGGLE_PROFILE_TYPE,
+        JSON.stringify({ status })
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch profile");
+      }
+      return (await response.json())?.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async deleteAccount() {
+    try {
+      const response = await PUT_SERVICE(
+        USER.TOGGLE_PROFILE_TYPE,
+        JSON.stringify({ status })
       );
       if (!response.ok) {
         throw new Error("Failed to fetch profile");

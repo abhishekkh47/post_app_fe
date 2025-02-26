@@ -6,7 +6,7 @@ import {
   SignupCredentials,
 } from "../types";
 import { useNavigate } from "react-router-dom";
-import { AuthService } from "../services";
+import { AuthService, UserService } from "../services";
 import { removeAuthData, setAuthData } from "../utils";
 
 const useAuthContext = () => {

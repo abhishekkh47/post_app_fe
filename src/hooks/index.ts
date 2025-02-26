@@ -14,3 +14,4 @@ export { default as usePostFeed } from "./usePostFeed";
 export { default as useProfileFeed } from "./useProfileFeed";
 export { default as useUserProfile } from "./useUserProfile";
 export { default as useSearch } from "./useSearch";
+export { default as useSettings } from "./useSettings";

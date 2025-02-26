@@ -15,10 +15,12 @@ const useNavBar = () => {
       setSelected("Friends");
     } else if (location.pathname === "/projects") {
       setSelected("Projects");
-    } else if (location.pathname === "/calendar") {
-      setSelected("Calendar");
-    } else {
+    } else if (location.pathname === `/settings/${user?._id}`) {
+      setSelected("Settings");
+    } else if (location.pathname === "/") {
       setSelected("Home"); // Default is home
+    } else {
+      setSelected("");
     }
   }, [location.pathname]); // Re-run when the location (URL) changes
 
@@ -27,6 +29,9 @@ const useNavBar = () => {
   };
   const handleFriendsClick = async () => {
     navigate(`/friends`);
+  };
+  const handleSettingsClick = async () => {
+    navigate(`/settings/${user?._id}`);
   };
   const navigation = [
     {
@@ -42,7 +47,12 @@ const useNavBar = () => {
       onClick: handleFriendsClick,
     },
     { name: "Projects", href: "#", current: false },
-    { name: "Calendar", href: "#", current: false },
+    {
+      name: "Settings",
+      href: `/settings/${user?._id}`,
+      current: false,
+      onClick: handleSettingsClick,
+    },
   ];
 
   const handleLogOutClick = (e: React.MouseEvent) => {
