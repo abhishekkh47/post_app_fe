@@ -3,16 +3,19 @@ import { UserService } from "../services";
 import { useAuth } from "../context/AuthContext";
 
 const useSettings = () => {
-  const { logout, user } = useAuth();
-  console.log("user?.isPrivate : ", user?.isPrivate);
+  const { logout, user, togglePrivateProfile } = useAuth();
   const [publicProfileToggle, setPublicProfileToggle] = useState<boolean>(
     !user?.isPrivate
   );
 
+  const updatePublicProfileToggle = (publicProfileToggle: boolean) => {
+    setPublicProfileToggle(publicProfileToggle);
+  };
+
   const handleProfileToggle = async () => {
     try {
-      await UserService.toggleProfileType(publicProfileToggle);
-      setPublicProfileToggle(!publicProfileToggle);
+      await togglePrivateProfile(publicProfileToggle);
+      updatePublicProfileToggle(!publicProfileToggle);
     } catch (error) {
       console.error((error as Error).message);
     }

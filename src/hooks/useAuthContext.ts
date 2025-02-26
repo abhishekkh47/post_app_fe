@@ -73,6 +73,31 @@ const useAuthContext = () => {
     }
   };
 
+  const updateUser = async () => {
+    try {
+      if (user) {
+        const response: User = (await UserService.fetchUserProfile(user?._id))
+          .userDetails;
+        console.log("response : ", response);
+        if (response) {
+          console.log("SETTING USER  : >>", user);
+          localStorage.setItem("user", JSON.stringify(response));
+          setUser(response);
+          console.log("USER SET  : >>", user);
+        }
+      }
+    } catch (error) {
+      throw new Error(`${(error as Error).message}`);
+    }
+  };
+
+  const togglePrivateProfile = async (currentStatus: boolean) => {
+    if (user) {
+      await UserService.toggleProfileType(currentStatus);
+      await updateUser();
+    }
+  };
+
   const logout = () => {
     removeAuthData();
     setUser(null);
@@ -87,6 +112,7 @@ const useAuthContext = () => {
     user,
     isAuthenticated,
     loading,
+    togglePrivateProfile,
   };
 };
 

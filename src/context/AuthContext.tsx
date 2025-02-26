@@ -10,6 +10,7 @@ interface AuthContextType {
   logout: () => void;
   refreshToken: () => Promise<void>;
   loading: boolean;
+  togglePrivateProfile: (currentStatus: boolean) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -20,6 +21,7 @@ const AuthContext = createContext<AuthContextType>({
   logout: () => {},
   refreshToken: async () => {},
   loading: false,
+  togglePrivateProfile: async () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -35,6 +37,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     logout,
     signup,
     refreshToken,
+    togglePrivateProfile,
   } = useAuthContext();
 
   return (
@@ -47,6 +50,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         logout,
         refreshToken,
         loading,
+        togglePrivateProfile,
       }}
     >
       {children}
