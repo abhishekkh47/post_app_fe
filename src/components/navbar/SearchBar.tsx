@@ -14,10 +14,13 @@ const SearchBar: React.FC = () => {
       <input
         className="relative left-4 w-full bg-white placeholder:text-slate-400 text-slate-700 transition duration-300 ease focus:outline-none "
         type="text"
+        value={search}
         placeholder="Search"
         onChange={(e) => updateSearch(e.target.value)}
       />
-      {search && users.length && <SearchResultDropdown users={users} />}
+      {search && users.length && (
+        <SearchResultDropdown users={users} updateSearch={updateSearch} />
+      )}
     </div>
   );
 };
