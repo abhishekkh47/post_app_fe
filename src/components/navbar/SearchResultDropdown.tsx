@@ -1,5 +1,6 @@
 import React from "react";
 import { User } from "../../types";
+import { useFriends } from "../../hooks";
 
 interface SearchResultDropdownProps {
   users: User[];
@@ -7,6 +8,7 @@ interface SearchResultDropdownProps {
 const SearchResultDropdown: React.FC<SearchResultDropdownProps> = ({
   users,
 }) => {
+  const { handleFriendClick } = useFriends();
   return (
     <ul className="absolute top-full left-0 bg-white border border-gray-300 rounded mt-1 w-full max-h-60 overflow-y-auto shadow-lg z-10">
       {users.map((user) => (
@@ -28,7 +30,7 @@ const SearchResultDropdown: React.FC<SearchResultDropdownProps> = ({
           <div className="flex-1">
             <span
               className="font-medium text-gray-800"
-              //   onClick={() => handleFriendClick(user._id)}
+              onClick={() => handleFriendClick(user._id)}
             >
               {user.firstName} {user.lastName}
             </span>
