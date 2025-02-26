@@ -7,15 +7,20 @@ const useSettings = () => {
   const [publicProfileToggle, setPublicProfileToggle] = useState<boolean>(
     !user?.isPrivate
   );
+  const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
 
-  const updatePublicProfileToggle = (publicProfileToggle: boolean) => {
-    setPublicProfileToggle(publicProfileToggle);
+  const updatePublicProfileToggle = () => {
+    setPublicProfileToggle(!publicProfileToggle);
+  };
+
+  const updateOpenDeleteDialog = () => {
+    setOpenDeleteDialog(!openDeleteDialog);
   };
 
   const handleProfileToggle = async () => {
     try {
       await togglePrivateProfile(publicProfileToggle);
-      updatePublicProfileToggle(!publicProfileToggle);
+      updatePublicProfileToggle();
     } catch (error) {
       console.error((error as Error).message);
     }
@@ -30,7 +35,18 @@ const useSettings = () => {
     }
   };
 
-  return { publicProfileToggle, handleProfileToggle, handleDeleteClick };
+  const handleDelete = () => {
+    updateOpenDeleteDialog();
+    handleDeleteClick();
+  };
+
+  return {
+    publicProfileToggle,
+    openDeleteDialog,
+    handleProfileToggle,
+    updateOpenDeleteDialog,
+    handleDelete,
+  };
 };
 
 export default useSettings;

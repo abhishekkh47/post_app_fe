@@ -1,4 +1,10 @@
-import { GET_SERVICE, PATH_SLUGS, PUT_SERVICE, USER } from "../utils";
+import {
+  DELETE_SERVICE,
+  GET_SERVICE,
+  PATH_SLUGS,
+  PUT_SERVICE,
+  USER,
+} from "../utils";
 
 class UserService {
   async fetchUserProfile(userId: string) {
@@ -46,10 +52,7 @@ class UserService {
 
   async deleteAccount() {
     try {
-      const response = await PUT_SERVICE(
-        USER.TOGGLE_PROFILE_TYPE,
-        JSON.stringify({ status })
-      );
+      const response = await DELETE_SERVICE(USER.DELETE_ACCOUNT);
       if (!response.ok) {
         throw new Error("Failed to fetch profile");
       }

@@ -1,9 +1,15 @@
 import React from "react";
 import { useSettings } from "../hooks";
+import { DeleteAccount } from "../components/dialog";
 
 const Settings: React.FC = () => {
-  const { publicProfileToggle, handleProfileToggle, handleDeleteClick } =
-    useSettings();
+  const {
+    publicProfileToggle,
+    openDeleteDialog,
+    handleProfileToggle,
+    updateOpenDeleteDialog,
+    handleDelete,
+  } = useSettings();
 
   return (
     <div className="max-w-2xl mx-auto py-8 px-8">
@@ -42,9 +48,16 @@ const Settings: React.FC = () => {
       </div>
       <div className="bg-white rounded-lg shadow-md p-5 mt-3">
         <div className="label flex items-center text-lg font-medium text-red-600 justify-center">
-          <button onClick={handleDeleteClick}>Delete Account</button>
+          <button onClick={updateOpenDeleteDialog}>Delete Account</button>
         </div>
       </div>
+      {openDeleteDialog && (
+        <DeleteAccount
+          open={openDeleteDialog}
+          handleOpen={updateOpenDeleteDialog}
+          deleteAccount={handleDelete}
+        />
+      )}
     </div>
   );
 };
