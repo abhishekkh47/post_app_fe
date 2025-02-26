@@ -5,12 +5,17 @@ import { useSearchResultDropdown } from "../../hooks";
 interface SearchResultDropdownProps {
   users: User[];
   updateSearch: (search: string) => void;
+  searchRef: React.RefObject<HTMLInputElement | null>;
 }
 const SearchResultDropdown: React.FC<SearchResultDropdownProps> = ({
   users,
   updateSearch,
+  searchRef,
 }) => {
-  const { onSearchSelection } = useSearchResultDropdown({ updateSearch });
+  const { onSearchSelection } = useSearchResultDropdown({
+    updateSearch,
+    searchRef,
+  });
 
   return (
     <ul className="absolute top-full left-0 bg-white border border-gray-300 rounded mt-1 w-full max-h-60 overflow-y-auto shadow-lg z-10">

@@ -1,10 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { UserService } from "../services";
 import { User } from "../types";
 
 const useSearch = () => {
   const [search, setSearch] = useState<string>("");
   const [users, setUsers] = useState<User[]>([]);
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (searchRef.current) {
+      searchRef.current.value = search;
+    }
+  }, [search]);
 
   useEffect(() => {
     if (search) {
@@ -20,7 +27,7 @@ const useSearch = () => {
     setSearch(queryString);
   };
 
-  return { search, users, updateSearch };
+  return { search, users, searchRef, updateSearch };
 };
 
 export default useSearch;
