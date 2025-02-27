@@ -1,14 +1,41 @@
-import React from "react";
+import React, { useState } from "react";
 import { INotification } from "../../types";
+import { NOTIFICATION_TAB } from "../../utils";
 
 interface INotificationList {
   notifications: INotification[];
 }
 
 const NotificationList: React.FC<INotificationList> = ({ notifications }) => {
+  const [activeTab, setActiveTab] = useState<string>(NOTIFICATION_TAB.ALL);
+  const updateActiveTab = (tab: string) => {
+    setActiveTab(tab);
+  };
   return (
-    <ul className="absolute mt-4 mr-50 bg-white rounded-md z-50 w-60">
-      <div className="text-black text-lg font-semibold">Notifications</div>
+    <ul className="absolute mt-4 mr-50 bg-white rounded-md z-50 w-64">
+      <div className="text-black text-lg font-bold justify-self-start mx-2 mt-1">
+        Notifications
+      </div>
+      <div className="flex space-x-2 mx-2">
+        <button
+          className={`border text-gray-600 px-1 rounded-xl ${
+            activeTab === NOTIFICATION_TAB.ALL ? "bg-indigo-500 text-white" : ""
+          }`}
+          onClick={() => updateActiveTab(NOTIFICATION_TAB.ALL)}
+        >
+          All
+        </button>
+        <button
+          className={`border text-gray-600 px-1 rounded-xl ${
+            activeTab === NOTIFICATION_TAB.UNREAD
+              ? "bg-indigo-500 text-white"
+              : ""
+          }`}
+          onClick={() => updateActiveTab(NOTIFICATION_TAB.UNREAD)}
+        >
+          Unread
+        </button>
+      </div>
       {notifications?.length &&
         notifications.map((notification) => {
           const sender = notification?.senderId;
@@ -19,7 +46,7 @@ const NotificationList: React.FC<INotificationList> = ({ notifications }) => {
                   <img
                     src={sender?.profile_pic}
                     alt={sender?.firstName[0]}
-                    className="w-9 h-9 rounded-full object-cover"
+                    className="w-9 h-9 min-w-9 rounded-full object-cover"
                   />
                 ) : (
                   <div className="size-9 rounded-full bg-blue-300 flex items-center justify-center text-sm border border-black">
@@ -27,7 +54,12 @@ const NotificationList: React.FC<INotificationList> = ({ notifications }) => {
                   </div>
                 )}
               </div>
-              <span className="text-left">{`${sender.firstName} ${notification.message}`}</span>
+              <span className="text-left flex-1">
+                <p className="font-semibold">{`${sender.firstName} ${sender.lastName}`}</p>
+                <p>{`${notification.message}`}</p>
+                {/* {`${sender.firstName} ${notification.message}`} */}
+              </span>
+              <div className="w-3 h-3 min-w-3 bg-pink-500 rounded-full"></div>
             </li>
           );
         })}
