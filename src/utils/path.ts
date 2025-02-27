@@ -41,4 +41,5 @@ export const USER = {
   NOTIFY: `${API_URL}/user/v1/notify`,
   DELETE_ACCOUNT: `${API_URL}/user/v1/delete-user`,
   TOGGLE_PROFILE_TYPE: `${API_URL}/user/v1/toggle-profile-type`,
+  GET_NOTIFICATIONS: `${API_URL}/user/v1/get-notifications`,
 };

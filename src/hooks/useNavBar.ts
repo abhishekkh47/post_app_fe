@@ -1,13 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 const useNavBar = () => {
   const { logout, user } = useAuth();
-  const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [selected, setSelected] = useState("Home");
+  const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
+  const [selected, setSelected] = useState<string>("Home");
+  const [openNotification, setOpenNotification] = useState<boolean>(false);
+  const notificationRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const closeOpenNotifications = (e: any) => {
+    if (openNotification && !notificationRef.current?.contains(e.target)) {
+      setOpenNotification(false);
+    }
+  };
+  document.addEventListener("mousedown", closeOpenNotifications);
 
   useEffect(() => {
     // Update the selected navigation item based on the current route path
@@ -32,6 +41,9 @@ const useNavBar = () => {
   };
   const handleSettingsClick = async () => {
     navigate(`/settings/${user?._id}`);
+  };
+  const handleProfileClick = async () => {
+    navigate(`/profile/${user?._id}`);
   };
   const navigation = [
     {
@@ -67,17 +79,19 @@ const useNavBar = () => {
       setIsLoggingOut(false);
     }
   };
-  const handleProfileClick = async () => {
-    navigate(`/profile/${user?._id}`);
-  };
 
+  const toggleNotificationList = () => {
+    setOpenNotification(!openNotification);
+  };
   return {
     user,
     navigation,
     isLoggingOut,
     selected,
+    openNotification,
     handleLogOutClick,
     handleProfileClick,
+    toggleNotificationList,
   };
 };
 

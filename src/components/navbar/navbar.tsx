@@ -11,7 +11,7 @@ import {
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../../image.png";
 import { Loader2 } from "lucide-react";
-import { SearchBar } from "./";
+import { NotificationList, SearchBar } from "./";
 import { useNavBar } from "../../hooks";
 
 function classNames(...classes: any) {
@@ -24,8 +24,10 @@ const NavBar: React.FC = () => {
     navigation,
     isLoggingOut,
     selected,
+    openNotification,
     handleLogOutClick,
     handleProfileClick,
+    toggleNotificationList,
   } = useNavBar();
 
   return (
@@ -81,11 +83,13 @@ const NavBar: React.FC = () => {
             <SearchBar />
             <button
               type="button"
-              className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
+              className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden w-10"
+              onClick={toggleNotificationList}
             >
               <span className="absolute -inset-1.5" />
               <span className="sr-only">View notifications</span>
               <BellIcon aria-hidden="true" className="size-6" />
+              {openNotification && <NotificationList />}
             </button>
 
             {/* Profile dropdown */}
