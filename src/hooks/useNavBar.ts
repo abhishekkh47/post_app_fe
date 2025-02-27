@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import useClickOutside from "./useClickOutside";
 
 const useNavBar = () => {
   const { logout, user } = useAuth();
@@ -10,13 +11,6 @@ const useNavBar = () => {
   const notificationRef = useRef<HTMLDivElement | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
-
-  const closeOpenNotifications = (e: any) => {
-    if (openNotification && !notificationRef.current?.contains(e.target)) {
-      setOpenNotification(false);
-    }
-  };
-  document.addEventListener("mousedown", closeOpenNotifications);
 
   useEffect(() => {
     // Update the selected navigation item based on the current route path
@@ -80,6 +74,13 @@ const useNavBar = () => {
     }
   };
 
+  /**
+   * close notification dropdown when clicked somewhere else on the screen
+   */
+  useClickOutside(notificationRef, openNotification, () => {
+    toggleNotificationList();
+  });
+
   const toggleNotificationList = () => {
     setOpenNotification(!openNotification);
   };
@@ -89,6 +90,7 @@ const useNavBar = () => {
     isLoggingOut,
     selected,
     openNotification,
+    notificationRef,
     handleLogOutClick,
     handleProfileClick,
     toggleNotificationList,
