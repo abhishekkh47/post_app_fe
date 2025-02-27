@@ -8,7 +8,7 @@ const useNavBar = () => {
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const [selected, setSelected] = useState<string>("Home");
   const [openNotification, setOpenNotification] = useState<boolean>(false);
-  const notificationRef = useRef<HTMLDivElement | null>(null);
+  const notificationRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
 

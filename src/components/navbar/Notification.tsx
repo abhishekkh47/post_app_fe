@@ -1,14 +1,18 @@
 import React from "react";
 import { BellIcon } from "@heroicons/react/24/outline";
 import { NotificationList } from "./";
-import { useNavBar, useNotification } from "../../hooks";
+import { useClickOutside, useNavBar, useNotification } from "../../hooks";
 
 const Notification: React.FC = () => {
   const { notificationRef, openNotification, toggleNotificationList } =
     useNavBar();
   const { notifications, getNotifications } = useNotification();
+  useClickOutside(notificationRef, openNotification, () => {
+    toggleNotificationList(); // Explicitly close the dropdown
+  });
 
-  const handleNotificationClick = () => {
+  const handleNotificationClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
     getNotifications();
     toggleNotificationList();
   };
@@ -23,7 +27,11 @@ const Notification: React.FC = () => {
         {/* <span className="absolute -inset-1.5" />
         <span className="sr-only">View notifications</span> */}
         <BellIcon aria-hidden="true" className="size-6" />
-        {openNotification && <NotificationList notifications={notifications} />}
+        {openNotification && (
+          <div className="absolute right-0 top-10">
+            <NotificationList notifications={notifications} />
+          </div>
+        )}
       </button>
     </div>
   );
