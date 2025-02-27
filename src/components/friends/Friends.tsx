@@ -57,13 +57,19 @@ const Friends: React.FC = () => {
             {friends.map((friend) => (
               <li
                 key={friend._id}
-                className="flex items-center space-x-4 p-3 bg-white rounded-lg shadow"
+                className="flex items-center space-x-4 p-3 bg-white rounded-lg shadow cursor-pointer"
               >
-                <img
-                  src={friend.profile_pic}
-                  alt={friend.firstName}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
+                {friend?.profile_pic ? (
+                  <img
+                    src={friend?.profile_pic}
+                    alt={friend?.firstName[0]}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="size-12 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
+                    {friend?.firstName[0]?.toUpperCase()}
+                  </div>
+                )}
                 <div className="flex-1">
                   <span
                     className="font-medium text-gray-800"

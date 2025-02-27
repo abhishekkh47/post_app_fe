@@ -27,7 +27,7 @@ class UserService {
         USER.SEARCH_USER.replace(PATH_SLUGS.SEARCH, search)
       );
       if (!response.ok) {
-        throw new Error("Failed to fetch profile");
+        throw new Error("Failed to load profile");
       }
       return (await response.json())?.data;
     } catch (error) {
@@ -42,7 +42,7 @@ class UserService {
         JSON.stringify({ status })
       );
       if (!response.ok) {
-        throw new Error("Failed to fetch profile");
+        throw new Error("Failed to update");
       }
       return (await response.json())?.data;
     } catch (error) {
@@ -54,7 +54,19 @@ class UserService {
     try {
       const response = await DELETE_SERVICE(USER.DELETE_ACCOUNT);
       if (!response.ok) {
-        throw new Error("Failed to fetch profile");
+        throw new Error("Cannot complete action at the moment");
+      }
+      return (await response.json())?.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async getNotifications() {
+    try {
+      const response = await GET_SERVICE(USER.GET_NOTIFICATIONS);
+      if (!response.ok) {
+        throw new Error("Failed to laod notifications");
       }
       return (await response.json())?.data;
     } catch (error) {

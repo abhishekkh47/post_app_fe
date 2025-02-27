@@ -17,3 +17,4 @@ export { default as useSearch } from "./useSearch";
 export { default as useSettings } from "./useSettings";
 export { default as useSearchResultDropdown } from "./useSearchResultDropdown";
 export { default as useClickOutside } from "./useClickOutside";
+export { default as useNotification } from "./useNotification";
