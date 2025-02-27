@@ -95,7 +95,6 @@ const useChat = () => {
     setSelectedUser(user);
     // Fetch messages for selected conversation
     const data = await ChatService.getMessages(user._id);
-    console.log("data : ", data);
     setMessages(data.messages);
 
     await handleNewMessage();

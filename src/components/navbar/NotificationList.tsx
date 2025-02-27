@@ -1,33 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import { INotification } from "../../types";
 import { NOTIFICATION_TAB } from "../../utils";
-import { useNavBar } from "../../hooks";
+import { useNotificationList } from "../../hooks";
 
 interface INotificationList {
   notifications: INotification[];
 }
 
 const NotificationList: React.FC<INotificationList> = ({ notifications }) => {
-  const { toggleNotificationList } = useNavBar();
-  const [activeTab, setActiveTab] = useState<string>(NOTIFICATION_TAB.ALL);
-  const updateActiveTab = (tab: string, e: React.MouseEvent) => {
-    e.stopPropagation();
-    setActiveTab(tab);
-  };
+  const { activeTab, updateActiveTab, handleNotificationClick } =
+    useNotificationList();
 
-  const handleNotificationClick = (notificationId: string) => {
-    // navigate(`/noti-nav/${notificationId}`); // Navigate to notification page
-    console.log("notificationId : ", notificationId);
-    toggleNotificationList(); // Close dropdown after navigation
-  };
   return (
     <ul className="absolute mt-4 mr-50 bg-white rounded-md z-50 w-64">
       <div className="text-black text-lg font-bold justify-self-start mx-2 mt-1">
         Notifications
       </div>
       <div className="flex space-x-2 mx-2">
-        <button
-          className={`border text-gray-600 px-1 rounded-xl ${
+        <div
+          className={`border text-gray-600 px-2 rounded-xl ${
             activeTab === NOTIFICATION_TAB.ALL ? "bg-indigo-500 text-white" : ""
           }`}
           onClick={(e) => {
@@ -36,9 +27,9 @@ const NotificationList: React.FC<INotificationList> = ({ notifications }) => {
           }}
         >
           All
-        </button>
-        <button
-          className={`border text-gray-600 px-1 rounded-xl ${
+        </div>
+        <div
+          className={`border text-gray-600 px-2 rounded-xl ${
             activeTab === NOTIFICATION_TAB.UNREAD
               ? "bg-indigo-500 text-white"
               : ""
@@ -49,7 +40,7 @@ const NotificationList: React.FC<INotificationList> = ({ notifications }) => {
           }}
         >
           Unread
-        </button>
+        </div>
       </div>
       {notifications?.length &&
         notifications.map((notification) => {
@@ -62,7 +53,7 @@ const NotificationList: React.FC<INotificationList> = ({ notifications }) => {
               <li
                 key={notification?._id}
                 className="flex flex-row space-x-2 items-center text-black p-2 cursor-pointer hover:bg-gray-100"
-                onClick={() => handleNotificationClick(notification?._id)}
+                onClick={() => handleNotificationClick(notification)}
               >
                 <div>
                   {sender?.profile_pic ? (
