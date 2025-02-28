@@ -5,18 +5,12 @@ import { FollowService, UserService } from "../services";
 
 interface UserProfileProps {
   userId: string | undefined;
-  setPublicProfile: (isPublic: boolean) => void;
-  following: boolean;
-  setFollowing: (following: boolean) => void;
 }
 
-const useUserProfile = ({
-  userId,
-  setPublicProfile,
-  following,
-  setFollowing,
-}: UserProfileProps) => {
+const useUserProfile = ({ userId }: UserProfileProps) => {
   const [profile, setProfile] = useState<User | null>(null);
+  const [isPublicProfile, setIsPublicProfile] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(false);
   const { user } = useAuth();
 
   // get user profile
@@ -28,32 +22,40 @@ const useUserProfile = ({
           data = await UserService.fetchUserProfile(userId);
         }
         setProfile(data?.userDetails);
-        setFollowing(data?.isFollowing);
-        setPublicProfile(data?.userDetails?.isPrivate === false);
+        setIsFollowing(data?.isFollowing);
+        setIsPublicProfile(data?.userDetails?.isPrivate === false);
       } catch (err) {
         console.error("Failed to fetch profile:", err);
       }
     };
 
     fetchProfile();
-  }, [userId, setPublicProfile]);
+  }, [userId, setIsPublicProfile]);
 
   // follow and unfollow a user
   const handleFollow = async () => {
     try {
       if (user?._id && userId)
-        await FollowService.followOrUnfollowUser(following, {
+        await FollowService.followOrUnfollowUser(isFollowing, {
           followerId: user?._id,
           followeeId: userId,
         });
 
-      setFollowing(!following);
+      setIsFollowing(!isFollowing);
     } catch (err) {
       console.error("Failed to follow/unfollow:", err);
     }
   };
 
-  return { user, profile, handleFollow };
+  return {
+    user,
+    profile,
+    isPublicProfile,
+    isFollowing,
+    setIsPublicProfile,
+    setIsFollowing,
+    handleFollow,
+  };
 };
 
 export default useUserProfile;

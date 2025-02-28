@@ -4,22 +4,11 @@ import { useUserProfile } from "../../hooks";
 
 interface UserProfileProps {
   userId: string | undefined;
-  setPublicProfile: (isPublic: boolean) => void;
-  following: boolean;
-  setFollowing: (following: boolean) => void;
 }
 
-const UserProfile: React.FC<UserProfileProps> = ({
-  userId,
-  setPublicProfile,
-  following,
-  setFollowing,
-}) => {
-  const { user, profile, handleFollow } = useUserProfile({
+const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
+  const { user, profile, handleFollow, isFollowing } = useUserProfile({
     userId,
-    setPublicProfile,
-    following,
-    setFollowing,
   });
 
   if (!profile) {
@@ -48,7 +37,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           <UserStats profile={profile} />
         </div>
         {user?._id !== profile._id && (
-          <FollowButton following={following} onFollow={handleFollow} />
+          <FollowButton following={isFollowing} onFollow={handleFollow} />
         )}
       </div>
       {profile.bio && <p className="text-gray-600 mt-1">{profile.bio}</p>}
