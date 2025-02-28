@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { PostService } from "../services";
+import { useAuth } from "../context/AuthContext";
 
 interface CreatePostProps {
   fetchPosts: () => void;
@@ -8,11 +9,13 @@ interface CreatePostProps {
 const useCreatePost = ({ fetchPosts }: CreatePostProps) => {
   const [content, setContent] = useState("");
   const [error, setError] = useState("");
+  const { updateUser } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       await PostService.createPost(content);
+      updateUser();
 
       setContent("");
       setError("");

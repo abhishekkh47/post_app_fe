@@ -1,15 +1,23 @@
 import React from "react";
 import { UserStats, FollowButton } from "./";
-import { useUserProfile } from "../../hooks";
+import { User } from "../../types";
 
 interface UserProfileProps {
-  userId: string | undefined;
+  user: User | null;
+  profile: User | null;
+  isFollowing: boolean;
+  handleFollow: () => {};
 }
 
-const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
-  const { user, profile, handleFollow, isFollowing } = useUserProfile({
-    userId,
-  });
+const UserProfile: React.FC<UserProfileProps> = ({
+  user,
+  profile,
+  handleFollow,
+  isFollowing,
+}) => {
+  // const { user, profile, handleFollow, isFollowing } = useUserProfile({
+  //   userId,
+  // });
 
   if (!profile) {
     return <div>Loading profile...</div>;
@@ -34,7 +42,7 @@ const UserProfile: React.FC<UserProfileProps> = ({ userId }) => {
           <h2 className="text-2xl font-bold">
             {profile.firstName} {profile.lastName}
           </h2>
-          <UserStats profile={profile} />
+          <UserStats profile={user?._id !== profile._id ? profile : user} />
         </div>
         {user?._id !== profile._id && (
           <FollowButton following={isFollowing} onFollow={handleFollow} />

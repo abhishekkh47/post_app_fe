@@ -11,24 +11,23 @@ const useUserProfile = ({ userId }: UserProfileProps) => {
   const [profile, setProfile] = useState<User | null>(null);
   const [isPublicProfile, setIsPublicProfile] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
 
   // get user profile
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        let data = null;
-        if (userId) {
-          data = await UserService.fetchUserProfile(userId);
-        }
-        setProfile(data?.userDetails);
-        setIsFollowing(data?.isFollowing);
-        setIsPublicProfile(data?.userDetails?.isPrivate === false);
-      } catch (err) {
-        console.error("Failed to fetch profile:", err);
+  const fetchProfile = async () => {
+    try {
+      let data = null;
+      if (userId) {
+        data = await UserService.fetchUserProfile(userId);
       }
-    };
-
+      setProfile(data?.userDetails);
+      setIsFollowing(data?.isFollowing);
+      setIsPublicProfile(data?.userDetails?.isPrivate === false);
+    } catch (err) {
+      console.error("Failed to fetch profile:", err);
+    }
+  };
+  useEffect(() => {
     fetchProfile();
   }, [userId, setIsPublicProfile]);
 
@@ -41,6 +40,8 @@ const useUserProfile = ({ userId }: UserProfileProps) => {
           followeeId: userId,
         });
 
+      fetchProfile();
+      updateUser();
       setIsFollowing(!isFollowing);
     } catch (err) {
       console.error("Failed to follow/unfollow:", err);

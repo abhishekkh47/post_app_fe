@@ -11,6 +11,7 @@ interface AuthContextType {
   refreshToken: () => Promise<void>;
   loading: boolean;
   togglePrivateProfile: (currentStatus: boolean) => Promise<void>;
+  updateUser: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
@@ -22,6 +23,7 @@ const AuthContext = createContext<AuthContextType>({
   refreshToken: async () => {},
   loading: false,
   togglePrivateProfile: async () => {},
+  updateUser: async () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -38,6 +40,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     signup,
     refreshToken,
     togglePrivateProfile,
+    updateUser,
   } = useAuthContext();
 
   return (
@@ -51,6 +54,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         refreshToken,
         loading,
         togglePrivateProfile,
+        updateUser,
       }}
     >
       {children}

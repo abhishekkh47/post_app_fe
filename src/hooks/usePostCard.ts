@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { CommentService, PostService } from "../services";
 import { Post, Comment } from "../types";
+import { useAuth } from "../context/AuthContext";
 
 interface PostCardProps {
   post: Post;
@@ -13,7 +14,7 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
   const [updatedContent, setUpdatedContent] = useState(post.post);
   const [ifUpdated, setIfUpdated] = useState(false);
   const [comments, setComments] = useState<Comment[]>(post.comments || []);
-  //   const { user } = useAuth();
+  const { updateUser } = useAuth();
 
   const getComments = async () => {
     try {
@@ -35,6 +36,7 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
     try {
       await PostService.deletePost(post._id);
       fetchPosts();
+      updateUser();
     } catch (err) {
       console.error("Failed to delete post:", err);
     }

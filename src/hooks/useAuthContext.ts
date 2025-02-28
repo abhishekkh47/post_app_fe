@@ -113,6 +113,7 @@ const useAuthContext = () => {
     isAuthenticated,
     loading,
     togglePrivateProfile,
+    updateUser,
   };
 };
 
