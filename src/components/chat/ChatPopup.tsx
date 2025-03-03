@@ -32,6 +32,7 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
     handleTyping,
     onProfileClick,
     messagesEndRef,
+    isTyping,
   } = useChatPopup({
     selectedUser,
     messages,
@@ -109,6 +110,14 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
                 </div>
               ))}
               <div ref={messagesEndRef} />
+              {/* Typing Indicator */}
+              {isTyping && (
+                <div className="flex items-center justify-left space-x-2 mt-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-gray-400 animate-pulse"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-gray-400 animate-pulse delay-150"></div>
+                  <div className="w-2.5 h-2.5 rounded-full bg-gray-400 animate-pulse delay-300"></div>
+                </div>
+              )}
             </div>
 
             {/* Input */}

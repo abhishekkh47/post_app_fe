@@ -18,6 +18,7 @@ const useChatPopup = ({
 }: UseChatProps) => {
   const [newMessage, setNewMessage] = useState<string>("");
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
+  const [isTyping, setIsTyping] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { socket } = useSocket();
   const navigate = useNavigate();
@@ -43,6 +44,26 @@ const useChatPopup = ({
   };
 
   useEffect(() => {
+    if (socket) {
+      socket.on("user_typing", (userId: string) => {
+        if (selectedUser) {
+          console.log("USER TYPING : ", userId);
+          updateTypingStatus(true);
+
+          setTimeout(() => {
+            updateTypingStatus(false);
+          }, 3000);
+        }
+      });
+
+      // Cleanup when the component unmounts or the socket changes
+      return () => {
+        socket.off("user_typing");
+      };
+    }
+  }, [selectedUser, socket]);
+
+  useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
@@ -55,7 +76,7 @@ const useChatPopup = ({
   };
 
   const handleTyping = () => {
-    if (selectedUser && socket) {
+    if (selectedUser && socket && newMessage.length) {
       socket.emit("typing", { receiverId: selectedUser._id });
     }
   };
@@ -72,6 +93,10 @@ const useChatPopup = ({
     setNewMessage(newMessage);
   };
 
+  const updateTypingStatus = (status: boolean) => {
+    setIsTyping(status);
+  };
+
   return {
     newMessage,
     updateNewMessage,
@@ -81,6 +106,7 @@ const useChatPopup = ({
     handleTyping,
     onProfileClick,
     messagesEndRef,
+    isTyping,
   };
 };
 
