@@ -28,7 +28,7 @@ const useChat = () => {
         return [...prev, message];
       });
       // Update conversations list
-      await handleNewMessage();
+      await handleNewMessage(message);
     });
 
     socket.on("message_sent", async (message: Message) => {
@@ -75,10 +75,18 @@ const useChat = () => {
     };
   }, [socket, messages]);
 
-  const handleNewMessage = async () => {
+  const handleNewMessage = async (message: Message | null = null) => {
     ChatService.getConversations().then((data) =>
       setConversations(data.conversations)
     );
+    if (
+      socket &&
+      message &&
+      selectedUser?._id == message.senderId._id &&
+      !message.isRead
+    ) {
+      handleSelectConversation(selectedUser);
+    }
   };
 
   // Update messages when they are marked as read

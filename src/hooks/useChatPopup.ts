@@ -45,14 +45,13 @@ const useChatPopup = ({
 
   useEffect(() => {
     if (socket) {
-      socket.on("user_typing", (userId: string) => {
-        if (selectedUser) {
-          console.log("USER TYPING : ", userId);
+      socket.on("user_typing", (data: { userId: string }) => {
+        if (selectedUser?._id == data.userId) {
           updateTypingStatus(true);
 
           setTimeout(() => {
             updateTypingStatus(false);
-          }, 3000);
+          }, 1500);
         }
       });
 
