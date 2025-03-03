@@ -6,6 +6,7 @@ export const PATH_SLUGS = {
   POSTID: "#postId",
   COMMENTID: "#commentId",
   SEARCH: "#search",
+  NOTIFICATION_ID: "#notificationId",
 };
 
 export const AUTH = {
@@ -41,5 +42,8 @@ export const USER = {
   NOTIFY: `${API_URL}/user/v1/notify`,
   DELETE_ACCOUNT: `${API_URL}/user/v1/delete-user`,
   TOGGLE_PROFILE_TYPE: `${API_URL}/user/v1/toggle-profile-type`,
-  GET_NOTIFICATIONS: `${API_URL}/user/v1/get-notifications`,
+};
+export const NOTIFICATION = {
+  GET_NOTIFICATIONS: `${API_URL}/notification/v1/get-notifications`,
+  READ_NOTIFICATION: `${API_URL}/notification/v1/read-notification`,
 };

@@ -3,8 +3,9 @@ import { NOTIFICATION_TAB } from "../utils";
 import useNavBar from "./useNavBar";
 import { useNavigate } from "react-router-dom";
 import { INotification } from "../types";
+import { NotificationService } from "../services";
 
-const useNavigationList = () => {
+const useNotificationList = () => {
   const { toggleNotificationList } = useNavBar();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string>(NOTIFICATION_TAB.ALL);
@@ -14,12 +15,23 @@ const useNavigationList = () => {
     setActiveTab(tab);
   };
 
-  const handleNotificationClick = (notification: INotification) => {
+  const handleNotificationClick = async (notification: INotification) => {
     navigate(`/profile/${notification?.senderId?._id}`);
     toggleNotificationList(); // Close dropdown after navigation
+    if (!notification.isRead) {
+      await readNotification(notification._id);
+    }
   };
 
-  return { activeTab, updateActiveTab, handleNotificationClick };
+  const readNotification = async (notificationId: string) => {
+    await NotificationService.readNotifications(notificationId);
+  };
+
+  return {
+    activeTab,
+    updateActiveTab,
+    handleNotificationClick,
+  };
 };
 
-export default useNavigationList;
+export default useNotificationList;

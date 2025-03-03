@@ -6,14 +6,14 @@ import { useClickOutside, useNavBar, useNotification } from "../../hooks";
 const Notification: React.FC = () => {
   const { notificationRef, openNotification, toggleNotificationList } =
     useNavBar();
-  const { notifications, getNotifications } = useNotification();
+  const { notifications, unreadNotificationCount } = useNotification();
+
   useClickOutside(notificationRef, openNotification, () => {
     toggleNotificationList(); // Explicitly close the dropdown
   });
 
-  const handleNotificationClick = (e: React.MouseEvent) => {
+  const handleNotificationIconClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    getNotifications();
     toggleNotificationList();
   };
 
@@ -21,14 +21,22 @@ const Notification: React.FC = () => {
     <div ref={notificationRef}>
       <button
         type="button"
-        className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden size-8"
-        onClick={handleNotificationClick}
+        className="relative rounded-full bg-gray-800 p-0 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden size-8"
+        onClick={handleNotificationIconClick}
+        aria-label="Cart"
       >
-        {/* <span className="absolute -inset-1.5" />
-        <span className="sr-only">View notifications</span> */}
-        <BellIcon aria-hidden="true" className="size-6" />
+        {Number(unreadNotificationCount) > 0 && (
+          <span className="absolute -inset-1 object-right-top -mr-6">
+            <div className="inline-flex items-center justify-center h-4 w-4 px-0 border-1 border-white rounded-full text-[8px] font-medium bg-red-500 text-white">
+              {Number(unreadNotificationCount) < 10
+                ? unreadNotificationCount.toString()
+                : "9+"}
+            </div>
+          </span>
+        )}
+        <BellIcon aria-hidden="true" className="size-8" />
         {openNotification && (
-          <div className="absolute right-0 top-10">
+          <div className="absolute right-10 top-10">
             <NotificationList notifications={notifications} />
           </div>
         )}

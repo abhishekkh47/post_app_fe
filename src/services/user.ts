@@ -61,17 +61,5 @@ class UserService {
       throw new Error((error as Error).message);
     }
   }
-
-  async getNotifications() {
-    try {
-      const response = await GET_SERVICE(USER.GET_NOTIFICATIONS);
-      if (!response.ok) {
-        throw new Error("Failed to laod notifications");
-      }
-      return (await response.json())?.data;
-    } catch (error) {
-      throw new Error((error as Error).message);
-    }
-  }
 }
 export default new UserService();

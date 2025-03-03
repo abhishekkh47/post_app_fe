@@ -72,10 +72,8 @@ const NotificationList: React.FC<INotificationList> = ({ notifications }) => {
                   <p className="font-semibold">{`${sender.firstName} ${sender.lastName}`}</p>
                   <p>{`${notification.message}`}</p>
                 </span>
-                {!notification?.isRead ? (
+                {!notification?.isRead && (
                   <div className="w-3 h-3 min-w-3 bg-indigo-500 rounded-full"></div>
-                ) : (
-                  ""
                 )}
               </li>
             );
