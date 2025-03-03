@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Message, User } from "../types";
 import { useSocket } from "../context/SocketContext";
 import { useNavigate } from "react-router-dom";
+import { WS_EVENTS } from "../utils";
 
 interface UseChatProps {
   selectedUser: User | null;
@@ -23,10 +24,17 @@ const useChatPopup = ({
   const { socket } = useSocket();
   const navigate = useNavigate();
 
+  const {
+    CHAT: {
+      LISTENER: { NEW_MESSAGE, USER_TYPING },
+      EMITTER: { TYPING },
+    },
+  } = WS_EVENTS;
+
   // Listen for incoming messages from the WebSocket server
   useEffect(() => {
     if (socket) {
-      socket.on("new_message", (newMessage: Message) => {
+      socket.on(NEW_MESSAGE, (newMessage: Message) => {
         if (selectedUser && newMessage.senderId._id === selectedUser._id) {
           updateMessages(newMessage);
         }
@@ -34,7 +42,7 @@ const useChatPopup = ({
 
       // Cleanup when the component unmounts or the socket changes
       return () => {
-        socket.off("new_message");
+        socket.off(NEW_MESSAGE);
       };
     }
   }, [selectedUser, socket]);
@@ -45,7 +53,7 @@ const useChatPopup = ({
 
   useEffect(() => {
     if (socket) {
-      socket.on("user_typing", (data: { userId: string }) => {
+      socket.on(USER_TYPING, (data: { userId: string }) => {
         if (selectedUser?._id == data.userId) {
           updateTypingStatus(true);
 
@@ -57,7 +65,7 @@ const useChatPopup = ({
 
       // Cleanup when the component unmounts or the socket changes
       return () => {
-        socket.off("user_typing");
+        socket.off(USER_TYPING);
       };
     }
   }, [selectedUser, socket]);
@@ -76,7 +84,7 @@ const useChatPopup = ({
 
   const handleTyping = () => {
     if (selectedUser && socket && newMessage.length) {
-      socket.emit("typing", { receiverId: selectedUser._id });
+      socket.emit(TYPING, { receiverId: selectedUser._id });
     }
   };
 

@@ -2,12 +2,19 @@ import { useState, useEffect } from "react";
 import { useSocket } from "../context/SocketContext";
 import { User, Message, Conversation } from "../types";
 import { ChatService } from "../services";
+import { WS_EVENTS } from "../utils";
 
 const useChat = () => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const { socket } = useSocket();
+  const {
+    CHAT: {
+      LISTENER: { MESSAGE_MARKED_READ, MESSAGE_SENT, NEW_MESSAGE },
+      EMITTER: { PRIVATE_MSG, MARK_READ },
+    },
+  } = WS_EVENTS;
 
   useEffect(() => {
     // Fetch conversations
@@ -20,7 +27,7 @@ const useChat = () => {
     if (!socket) return;
     socket.connect();
 
-    socket.on("new_message", async (message: Message) => {
+    const handleMessage = async (message: Message) => {
       setMessages((prev) => {
         if (prev.some((m) => m._id === message._id)) {
           return prev;
@@ -29,49 +36,21 @@ const useChat = () => {
       });
       // Update conversations list
       await handleNewMessage(message);
-    });
-
-    socket.on("message_sent", async (message: Message) => {
-      setMessages((prev) => {
-        if (prev.some((m) => m._id === message._id)) {
-          return prev;
-        }
-        return [...prev, message];
-      });
-      await handleNewMessage();
-    });
-
-    return () => {
-      socket.off("new_message");
-      socket.off("message_sent");
     };
-  }, [socket, messages]);
 
-  useEffect(() => {
-    if (!socket) return;
-    socket.connect();
-
-    socket.on("messages_read", async (message: Message) => {
-      setMessages((prev) => [...prev, message]);
-      await handleNewMessage();
-    });
-
-    return () => {
-      socket.off("messages_read");
-    };
-  }, [socket, messages]);
-
-  useEffect(() => {
-    if (!socket) return;
-    socket.connect();
-
-    socket.on("message_marked_read", async () => {
+    const handleMarkReadMessages = async () => {
       updateMessagesReadStatus();
       await handleNewMessage();
-    });
+    };
+
+    socket.on(NEW_MESSAGE, handleMessage);
+    socket.on(MESSAGE_SENT, handleMessage);
+    socket.on(MESSAGE_MARKED_READ, handleMarkReadMessages);
 
     return () => {
-      socket.off("message_marked_read");
+      socket.off(NEW_MESSAGE);
+      socket.off(MESSAGE_SENT);
+      socket.off(MESSAGE_MARKED_READ);
     };
   }, [socket, messages]);
 
@@ -108,7 +87,7 @@ const useChat = () => {
     await handleNewMessage();
 
     if (!socket || !user) return;
-    socket.emit("mark_read", {
+    socket.emit(MARK_READ, {
       receiverId: user._id,
     });
   };
@@ -121,7 +100,7 @@ const useChat = () => {
   const handleSendMessage = (content: string, attachments?: string[]) => {
     if (!socket || !selectedUser) return;
 
-    socket.emit("private_message", {
+    socket.emit(PRIVATE_MSG, {
       receiverId: selectedUser._id,
       content,
       attachments,
