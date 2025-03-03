@@ -23,10 +23,6 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
 }) => {
   const { user } = useAuth();
 
-  if (!selectedUser) {
-    return;
-  }
-
   const {
     newMessage,
     updateNewMessage,
@@ -42,6 +38,10 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
     updateMessages,
     onSendMessage,
   });
+
+  if (!selectedUser) {
+    return;
+  }
 
   return (
     <div className={`fixed bottom-4 right-4 z-50 `}>
