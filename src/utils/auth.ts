@@ -1,7 +1,7 @@
 import { AuthResponse } from "../types";
 
 export const setAuthData = (data: AuthResponse) => {
-  const expiryTime = Date.now() + 60 * 60 * 1000;
+  const expiryTime = Date.now() + 60 * 60 * 1000 * 10; // 10 hours
   localStorage.setItem("token", data.token);
   localStorage.setItem("refreshToken", data.refreshToken);
   localStorage.setItem("user", JSON.stringify(data.user));

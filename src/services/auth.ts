@@ -5,6 +5,9 @@ class AuthService {
   getToken = () => {
     return `Bearer ${localStorage.getItem("token")}`;
   };
+  getRefreshToken = () => {
+    return `${localStorage.getItem("refreshToken")}`;
+  };
 
   async login(credentials: LoginCredentials) {
     try {
@@ -34,7 +37,10 @@ class AuthService {
 
   async refreshToken() {
     try {
-      const response = await POST_SERVICE(AUTH.REFRESH_TOKEN, this.getToken());
+      const response = await POST_SERVICE(
+        AUTH.REFRESH_TOKEN,
+        JSON.stringify({ refreshToken: this.getRefreshToken() })
+      );
       if (!response.ok) {
         throw new Error("Session expired");
       }
