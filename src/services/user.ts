@@ -21,6 +21,18 @@ class UserService {
     }
   }
 
+  async getAllUsers() {
+    try {
+      const response = await GET_SERVICE(USER.GET_ALL_USERS);
+      if (!response.ok) {
+        throw new Error("Failed to load users");
+      }
+      return (await response.json())?.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
+
   async searchUserProfile(search: string) {
     try {
       const response = await GET_SERVICE(
