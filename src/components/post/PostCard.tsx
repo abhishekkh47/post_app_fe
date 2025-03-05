@@ -29,12 +29,14 @@ const PostCard: React.FC<PostCardProps> = ({
     isEditing,
     comments,
     updatedContent,
+    reaction,
     getComments,
     handleCommentClick,
     handleDelete,
     checkUpdatedPost,
     getPostsIfUpdated,
     updateIsEditing,
+    updateReaction,
   } = usePostCard({ post, fetchPosts });
 
   return (
@@ -113,8 +115,11 @@ const PostCard: React.FC<PostCardProps> = ({
 
       {/* Like and comment icons */}
       <div className="flex items-center space-x-4 text-gray-500">
-        <button className="flex items-center space-x-1 hover:text-blue-500">
-          <Heart className="h-5 w-5" />
+        <button
+          className="flex items-center space-x-1 hover:text-blue-500"
+          onClick={updateReaction}
+        >
+          <Heart className={`h-5 w-5 ${reaction ? "fill-red-500" : ""}`} />
           <span>Like</span>
         </button>
         <button

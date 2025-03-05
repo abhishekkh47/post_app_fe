@@ -35,6 +35,8 @@ export const POSTS = {
   CREATE_POST: `${API_URL}/post/v1/create-post`,
   DELETE_POST: `${API_URL}/post/v1/delete-post/${PATH_SLUGS.POSTID}`,
   UPDATE_POST: `${API_URL}/post/v1/edit-or-update-post`,
+  LIKE_POST: `${API_URL}/post/v1/like-post`,
+  DISLIKE_POST: `${API_URL}/post/v1/dislike-post`,
 };
 export const USER = {
   GET_PROFILE: `${API_URL}/user/v1/get-profile/${PATH_SLUGS.USERID}`,

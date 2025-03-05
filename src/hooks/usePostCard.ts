@@ -14,6 +14,7 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
   const [updatedContent, setUpdatedContent] = useState(post.post);
   const [ifUpdated, setIfUpdated] = useState(false);
   const [comments, setComments] = useState<Comment[]>(post.comments || []);
+  const [reaction, setReaction] = useState<boolean>(false);
   const { updateUser } = useAuth();
 
   const getComments = async () => {
@@ -71,11 +72,16 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
     setIsEditing(bool);
   };
 
+  const updateReaction = () => {
+    setReaction(!reaction);
+  };
+
   return {
     showComments,
     isEditing,
     comments,
     updatedContent,
+    reaction,
     getComments,
     handleCommentClick,
     handleDelete,
@@ -83,6 +89,7 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
     checkUpdatedPost,
     getPostsIfUpdated,
     updateIsEditing,
+    updateReaction,
   };
 };
 

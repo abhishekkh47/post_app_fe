@@ -79,5 +79,33 @@ class PostService {
       throw new Error((error as Error).message);
     }
   }
+
+  async likePost(postId: string) {
+    try {
+      const response = await POST_SERVICE(
+        POSTS.LIKE_POST,
+        JSON.stringify({ postId })
+      );
+      if (!response.ok) {
+        throw new Error("Failed to update post");
+      }
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async dislikePost(postId: string) {
+    try {
+      const response = await POST_SERVICE(
+        POSTS.DISLIKE_POST,
+        JSON.stringify({ postId })
+      );
+      if (!response.ok) {
+        throw new Error("Failed to update post");
+      }
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
 }
 export default new PostService();
