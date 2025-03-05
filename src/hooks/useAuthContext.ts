@@ -78,12 +78,9 @@ const useAuthContext = () => {
       if (user) {
         const response: User = (await UserService.fetchUserProfile(user?._id))
           .userDetails;
-        console.log("response : ", response);
         if (response) {
-          console.log("SETTING USER  : >>", user);
           localStorage.setItem("user", JSON.stringify(response));
           setUser(response);
-          console.log("USER SET  : >>", user);
         }
       }
     } catch (error) {

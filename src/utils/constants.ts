@@ -17,3 +17,5 @@ export const WS_EVENTS = {
     },
   },
 };
+
+export const TEXT_EDITOR_ALLOWED_CHAR = 500;
