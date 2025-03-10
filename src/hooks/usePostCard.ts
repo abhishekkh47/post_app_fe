@@ -72,7 +72,12 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
     setIsEditing(bool);
   };
 
-  const updateReaction = () => {
+  const updateReaction = async (postId: string, currentStatus: boolean) => {
+    if (!currentStatus) {
+      await PostService.likePost(postId);
+    } else {
+      await PostService.dislikePost(postId);
+    }
     setReaction(!reaction);
   };
 

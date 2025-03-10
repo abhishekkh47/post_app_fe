@@ -8,6 +8,8 @@ export interface Post {
   createdAt: string;
   comments?: Comment[];
   edited?: boolean;
+  reactions: number;
+  liked: boolean;
 }
 
 export interface Comment {

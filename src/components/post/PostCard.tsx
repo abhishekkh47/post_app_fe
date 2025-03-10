@@ -117,10 +117,10 @@ const PostCard: React.FC<PostCardProps> = ({
       <div className="flex items-center space-x-4 text-gray-500">
         <button
           className="flex items-center space-x-1 hover:text-blue-500"
-          onClick={updateReaction}
+          onClick={() => updateReaction(post._id, post.liked)}
         >
-          <Heart className={`h-5 w-5 ${reaction ? "fill-red-500" : ""}`} />
-          <span>Like</span>
+          <Heart className={`h-5 w-5 ${post.liked ? "fill-red-500" : ""}`} />
+          <span>{post.reactions}</span>
         </button>
         <button
           // onClick={() => setShowComments(!showComments)}
