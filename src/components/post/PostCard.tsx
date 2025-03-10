@@ -130,7 +130,7 @@ const PostCard: React.FC<PostCardProps> = ({
           className="flex items-center space-x-1 hover:text-blue-500"
         >
           <MessageCircle className="h-5 w-5" />
-          <span>Comment</span>
+          <span>{comments.count}</span>
         </button>
       </div>
 
@@ -142,7 +142,10 @@ const PostCard: React.FC<PostCardProps> = ({
             // onCommentAdded={handleCommentAdded}
             onCommentAdded={getComments}
           />
-          <CommentList comments={comments} onCommentDelete={getComments} />
+          <CommentList
+            comments={comments.commentList}
+            onCommentDelete={getComments}
+          />
         </div>
       )}
     </div>

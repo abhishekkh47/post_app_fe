@@ -6,7 +6,8 @@ export interface Post {
   post: string;
   type: string;
   createdAt: string;
-  comments?: Comment[];
+  commentList?: Comment[];
+  comments: number;
   edited?: boolean;
   reactions: number;
   liked: boolean;

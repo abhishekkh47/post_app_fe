@@ -13,7 +13,10 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedContent, setUpdatedContent] = useState(post.post);
   const [ifUpdated, setIfUpdated] = useState(false);
-  const [comments, setComments] = useState<Comment[]>(post.comments || []);
+  const [comments, setComments] = useState<{
+    commentList: Comment[];
+    count: number;
+  }>({ commentList: post.commentList || [], count: post.comments || 0 });
   const [reaction, setReaction] = useState<{ status: boolean; count: number }>({
     status: post.liked,
     count: post.reactions,
@@ -23,7 +26,10 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
   const getComments = async () => {
     try {
       const data = await CommentService.getPostComments(post._id);
-      setComments(data.comments);
+      setComments({
+        commentList: data.comments,
+        count: data?.comments?.length || 0,
+      });
     } catch (err) {
       console.error("Failed to get comments:", err);
     }
