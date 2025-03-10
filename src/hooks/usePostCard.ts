@@ -14,7 +14,10 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
   const [updatedContent, setUpdatedContent] = useState(post.post);
   const [ifUpdated, setIfUpdated] = useState(false);
   const [comments, setComments] = useState<Comment[]>(post.comments || []);
-  const [reaction, setReaction] = useState<boolean>(false);
+  const [reaction, setReaction] = useState<{ status: boolean; count: number }>({
+    status: post.liked,
+    count: post.reactions,
+  });
   const { updateUser } = useAuth();
 
   const getComments = async () => {
@@ -75,10 +78,11 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
   const updateReaction = async (postId: string, currentStatus: boolean) => {
     if (!currentStatus) {
       await PostService.likePost(postId);
+      setReaction({ status: !reaction.status, count: reaction.count + 1 });
     } else {
       await PostService.dislikePost(postId);
+      setReaction({ status: !reaction.status, count: reaction.count - 1 });
     }
-    setReaction(!reaction);
   };
 
   return {
