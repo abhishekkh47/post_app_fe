@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { User } from "../../types";
-import { useCreateChatGroup } from "../../hooks";
+import { ChatService } from "../../services";
 
 interface CreateChatGroupProps {
-  isOpen: any;
-  onClose: any;
-  users: any;
+  isOpen: boolean;
+  onClose: () => void;
+  users: User[];
   modalPage: number;
   updateModalPage: (page: number) => void;
 }
@@ -17,16 +17,91 @@ const CreateChatGroup: React.FC<CreateChatGroupProps> = ({
   modalPage,
   updateModalPage,
 }) => {
-  const {
-    selectedMembers,
-    groupDescription,
-    handleMemberToggle,
-    handleFileChange,
-    handleGroupDescriptionChange,
-    handleSubmit,
-    handleCancel,
-  } = useCreateChatGroup(onClose);
+  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
+  const [groupName, setGroupName] = useState("");
+  const [groupDescription, setGroupDescription] = useState("");
+  const [groupPic, setGroupPic] = useState<File | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
+  const handleMemberToggle = (userId: string) => {
+    setSelectedMembers((prev) =>
+      prev.includes(userId)
+        ? prev.filter((id) => id !== userId)
+        : [...prev, userId]
+    );
+  };
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setGroupPic(event.target.files[0]);
+    }
+  };
+
+  const handleGroupDescriptionChange = (
+    event: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
+    setGroupDescription(event.target.value);
+  };
+
+  const handleGroupNameChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setGroupName(event.target.value);
+  };
+
+  const handleSubmit = async () => {
+    if (selectedMembers.length === 0) {
+      setError("Please select at least one member");
+      return;
+    }
+
+    if (!groupName.trim()) {
+      setError("Group name is required");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("name", groupName);
+      formData.append("description", groupDescription);
+      formData.append("members", JSON.stringify(selectedMembers));
+
+      if (groupPic) {
+        formData.append("profilePic", groupPic);
+      }
+
+      const response = await ChatService.createChatGroup(formData);
+
+      if (response) {
+        resetForm();
+        onClose(); // Close modal on success
+      }
+    } catch (error) {
+      console.error("Error creating group chat", error);
+      setError("Failed to create group chat. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const resetForm = () => {
+    setSelectedMembers([]);
+    setGroupName("");
+    setGroupDescription("");
+    setGroupPic(null);
+    setError(null);
+  };
+
+  const handleCancel = () => {
+    resetForm();
+    onClose();
+  };
+
+  // Don't render anything if modal isn't open
   if (!isOpen) return null;
 
   return (
@@ -62,19 +137,35 @@ const CreateChatGroup: React.FC<CreateChatGroupProps> = ({
                 Cancel
               </button>
               <button
-                className="bg-blue-500 text-white py-2 px-4 rounded"
+                className="bg-blue-500 text-white py-2 px-4 rounded disabled:bg-blue-300"
                 onClick={() => updateModalPage(2)} // Move to the second modal page
+                disabled={selectedMembers.length < 1 ? true : false}
               >
                 Next
               </button>
+              {error && (
+                <div
+                  className="error-message"
+                  style={{ color: "red", padding: "10px" }}
+                >
+                  {error}
+                </div>
+              )}
             </div>
           </div>
         )}
 
-        {/* Second Modal Page: Group Description & Profile Pic */}
+        {/* Second Modal Page: Group Details */}
         {modalPage === 2 && (
           <div className="mt-4">
             <h3 className="mb-2">Group Details</h3>
+            <input
+              type="text"
+              value={groupName}
+              onChange={handleGroupNameChange}
+              placeholder="Group name"
+              className="w-full border border-gray-300 rounded-md p-2 mb-4"
+            />
             <textarea
               value={groupDescription}
               onChange={handleGroupDescriptionChange}
@@ -82,7 +173,6 @@ const CreateChatGroup: React.FC<CreateChatGroupProps> = ({
               className="w-full p-2 border border-gray-300 rounded-lg mb-4"
             />
             <input type="file" onChange={handleFileChange} className="mb-4" />
-            {/* </div> */}
 
             <div className="flex justify-end space-x-2 mt-4">
               <button
@@ -92,8 +182,12 @@ const CreateChatGroup: React.FC<CreateChatGroupProps> = ({
                 Cancel
               </button>
               <button
-                className="bg-blue-500 text-white py-2 px-4 rounded"
+                className="bg-blue-500 text-white py-2 px-4 rounded disabled:bg-blue-300"
                 onClick={handleSubmit}
+                type="button"
+                disabled={
+                  !groupName || !groupDescription || isSubmitting ? true : false
+                }
               >
                 Create Group
               </button>

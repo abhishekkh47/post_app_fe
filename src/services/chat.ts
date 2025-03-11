@@ -29,13 +29,17 @@ class ChatService {
 
   async createChatGroup(formData: any) {
     try {
+      const groupDetails: any = {};
+      for (var data of formData) {
+        if (data[0] == "members") {
+          groupDetails[data[0]] = JSON.parse(data[1]);
+        } else {
+          groupDetails[data[0]] = data[1];
+        }
+      }
       const response = await POST_SERVICE(
         CHAT.CREATE_GROUP,
-        JSON.stringify({
-          name: formData.name,
-          members: formData.members,
-          description: formData.description,
-        })
+        JSON.stringify(groupDetails)
       );
       if (!response.ok) {
         throw new Error("Failed to create group");
