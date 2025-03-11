@@ -45,6 +45,18 @@ class FollowService {
       throw new Error((error as Error).message);
     }
   }
+
+  async getFriends() {
+    try {
+      const response = await GET_SERVICE(FOLLOW.FRIENDS);
+      if (!response.ok) {
+        throw new Error("Failed to load friends");
+      }
+      return (await response.json())?.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
 }
 
 export default new FollowService();
