@@ -1,7 +1,9 @@
 import React from "react";
 import { User, Conversation } from "../../types";
-// import { MessageCircle } from "lucide-react";
+import { LucideUsers2 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { useChatList } from "../../hooks";
+import CreateChatGroup from "./CreateChatGroup";
 
 interface ChatListProps {
   conversations: Conversation[];
@@ -15,11 +17,29 @@ const ChatList: React.FC<ChatListProps> = ({
   onSelectConversation,
 }) => {
   const { user } = useAuth();
+  const {
+    isModalOpen,
+    openModal,
+    closeModal,
+    friends,
+    modalPage,
+    updateModalPage,
+  } = useChatList();
 
   return (
     <div className="w-full overflow-y-auto">
-      <div className="p-4 border-b border-gray-200">
-        <h2 className="text-xl font-semibold">Messages</h2>
+      <div className="flex flex-row p-4 border-b border-gray-200">
+        <h2 className="flex-1 text-xl font-semibold">Messages</h2>
+        <button onClick={openModal}>
+          <LucideUsers2 />
+        </button>
+        <CreateChatGroup
+          isOpen={isModalOpen}
+          onClose={closeModal}
+          users={friends} // Pass the list of users to choose from
+          modalPage={modalPage}
+          updateModalPage={updateModalPage}
+        />
       </div>
       <div className="divide-y divide-gray-200">
         {conversations?.map((conversation) => (

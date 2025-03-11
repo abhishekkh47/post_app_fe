@@ -18,6 +18,7 @@ export const AUTH = {
 export const CHAT = {
   GET_CONVERSATION: `${API_URL}/chat/v1/conversations`,
   GET_MESSAGE: `${API_URL}/chat/v1/messages/${PATH_SLUGS.USERID}`,
+  CREATE_GROUP: `${API_URL}/chat/v1/create-chat-group`,
 };
 export const COMMENT = {
   CREATE_COMMENT: `${API_URL}/comment/v1/create-comment`,
@@ -29,6 +30,7 @@ export const FOLLOW = {
   UNFOLLOW: `${API_URL}/follow/v1/unfollow-user`,
   FOLLOWERS: `${API_URL}/follow/v1/followers/${PATH_SLUGS.USERID}`,
   FOLLOWING: `${API_URL}/follow/v1/following/${PATH_SLUGS.USERID}`,
+  FRIENDS: `${API_URL}/follow/v1/my-friends`,
 };
 export const POSTS = {
   GET_FEED: `${API_URL}/post/v1/get-feed`,
