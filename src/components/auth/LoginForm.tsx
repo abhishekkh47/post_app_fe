@@ -46,6 +46,7 @@ const LoginForm: React.FC = () => {
                       onChange={(e) => updateEmail(e.target.value)}
                       className="flex-1 px-4 py-1 border-none focus:outline-none sm:text-sm"
                       placeholder="Email address"
+                      autoComplete="email"
                     />
                   </div>
 
@@ -59,6 +60,7 @@ const LoginForm: React.FC = () => {
                       onChange={(e) => updatePassword(e.target.value)}
                       className="flex-1 px-4 py-1 border-none focus:outline-none sm:text-sm"
                       placeholder="Password"
+                      autoComplete="current-password"
                     />
                   </div>
                 </div>

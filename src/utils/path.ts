@@ -7,6 +7,7 @@ export const PATH_SLUGS = {
   COMMENTID: "#commentId",
   SEARCH: "#search",
   NOTIFICATION_ID: "#notificationId",
+  GROUP_ID: "#groupId",
 };
 
 export const AUTH = {
@@ -51,4 +52,14 @@ export const USER = {
 export const NOTIFICATION = {
   GET_NOTIFICATIONS: `${API_URL}/notification/v1/get-notifications`,
   READ_NOTIFICATION: `${API_URL}/notification/v1/read-notification`,
+};
+export const GROUP_CHAT = {
+  GET_GROUPS: `${API_URL}/group/v1/`,
+  CREATE_GROUP: `${API_URL}/group/v1/create-group`,
+  DELETE_GROUP: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}`,
+  GET_GROUP_BY_ID: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}`,
+  UPDATE_GROUP: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}`,
+  ADD_GROUP_MEMBERS: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}/members`,
+  REMOVE_GROUP_MEMBER: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}/members/${PATH_SLUGS.USERID}`,
+  GET_GROUP_MESSAGE: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}/messages`,
 };

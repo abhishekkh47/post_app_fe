@@ -1,35 +1,71 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { User, Conversation } from "../../types";
 import { LucideUsers2 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { useChatList } from "../../hooks";
 import CreateChatGroup from "./CreateChatGroup";
+import { GroupManagement } from ".";
+import { FollowService } from "../../services";
 
 interface ChatListProps {
+  user: User;
   conversations: Conversation[];
   selectedUser: User | null;
   onSelectConversation: (user: User) => void;
 }
 
 const ChatList: React.FC<ChatListProps> = ({
+  user,
   conversations,
   selectedUser,
   onSelectConversation,
 }) => {
-  const { user } = useAuth();
-  const {
-    isModalOpen,
-    openModal,
-    closeModal,
-    friends,
-    modalPage,
-    updateModalPage,
-  } = useChatList();
+  // const {
+  //   isModalOpen,
+  //   openModal,
+  //   closeModal,
+  //   friends,
+  //   modalPage,
+  //   updateModalPage,
+  // } = useChatList({ user });
+  const [friends, setFriends] = useState<User[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalPage, setModalPage] = useState(1);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => {
+    setIsModalOpen(false);
+    updateModalPage(1);
+  };
+
+  useEffect(() => {
+    fetchFriends();
+  }, []);
+
+  const fetchFriends = async () => {
+    try {
+      if (user) {
+        const myFriends = await FollowService.getFriends();
+        setFriends(myFriends.friends || []);
+      }
+    } catch (error) {
+      console.error((error as Error).message);
+    }
+  };
+
+  const handleGroupChatClick = async () => {
+    return CreateChatGroup;
+  };
+
+  const updateModalPage = (page: number) => {
+    setModalPage(page);
+  };
 
   return (
     <div className="w-full overflow-y-auto">
       <div className="flex flex-row p-4 border-b border-gray-200">
         <h2 className="flex-1 text-xl font-semibold">Messages</h2>
+        {/* <GroupManagement users={friends} user={user} /> */}
         <button onClick={openModal}>
           <LucideUsers2 />
         </button>
@@ -39,6 +75,7 @@ const ChatList: React.FC<ChatListProps> = ({
           users={friends} // Pass the list of users to choose from
           modalPage={modalPage}
           updateModalPage={updateModalPage}
+          user={user}
         />
       </div>
       <div className="divide-y divide-gray-200">

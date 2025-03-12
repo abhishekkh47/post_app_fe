@@ -4,7 +4,10 @@ import { useAuth } from "../context/AuthContext";
 import { FollowService } from "../services";
 import { CreateChatGroup } from "../components/chat";
 
-const useChatList = () => {
+interface useChatListProps {
+  user: User;
+}
+const useChatList = ({ user }: useChatListProps) => {
   const [friends, setFriends] = useState<User[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalPage, setModalPage] = useState(1);
@@ -14,7 +17,6 @@ const useChatList = () => {
     setIsModalOpen(false);
     updateModalPage(1);
   };
-  const { user } = useAuth();
 
   useEffect(() => {
     fetchFriends();

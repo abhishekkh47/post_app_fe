@@ -1,8 +1,13 @@
 import React from "react";
 import { ChatList, ChatPopup } from "../components/chat";
 import { useChat } from "../hooks";
+import { User } from "../types";
 
-const ChatPage: React.FC = () => {
+interface ChatPageProps {
+  user: User;
+}
+
+const ChatPage: React.FC<ChatPageProps> = ({ user }) => {
   const {
     conversations,
     handleCloseChat,
@@ -16,6 +21,7 @@ const ChatPage: React.FC = () => {
   return (
     <div className="relative h-screen flex">
       <ChatList
+      user={user}
         conversations={conversations}
         selectedUser={selectedUser}
         onSelectConversation={handleSelectConversation}
