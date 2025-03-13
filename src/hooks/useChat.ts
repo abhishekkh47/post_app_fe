@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSocket } from "../context/SocketContext";
 import { User, Message, Conversation, Group } from "../types";
 import { ChatService, GroupChatService } from "../services";
-import { WS_EVENTS } from "../utils";
+import { CHAT_TYPE, WS_EVENTS } from "../utils";
 
 const useChat = () => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
@@ -15,6 +15,10 @@ const useChat = () => {
     CHAT: {
       LISTENER: { MESSAGE_MARKED_READ, MESSAGE_SENT, NEW_MESSAGE },
       EMITTER: { PRIVATE_MSG, MARK_READ },
+    },
+    GROUP: {
+      LISTENER: { GROUP_NEW_MESSAGE, GROUP_MESSAGE_SENT },
+      EMITTER: { GROUP_MSG },
     },
   } = WS_EVENTS;
 
@@ -30,7 +34,7 @@ const useChat = () => {
     if (!socket) return;
     socket.connect();
 
-    const handleMessage = async (message: Message) => {
+    const handleMessage = async (message: Message | any) => {
       setMessages((prev) => {
         if (prev.some((m) => m._id === message._id)) {
           return prev;
@@ -40,6 +44,16 @@ const useChat = () => {
       // Update conversations list
       await handleNewMessage(message);
     };
+    const handleGroupMessage = async (group: Group | any) => {
+      setMessages((prev) => {
+        if (prev.some((m) => m._id === group._id)) {
+          return prev;
+        }
+        return [...prev, group];
+      });
+      // Update conversations list
+      await handleNewGroupMessage(group);
+    };
 
     const handleMarkReadMessages = async () => {
       updateMessagesReadStatus();
@@ -48,7 +62,9 @@ const useChat = () => {
 
     socket.on(NEW_MESSAGE, handleMessage);
     socket.on(MESSAGE_SENT, handleMessage);
+    socket.on(GROUP_NEW_MESSAGE, handleGroupMessage);
     socket.on(MESSAGE_MARKED_READ, handleMarkReadMessages);
+    socket.on(GROUP_MESSAGE_SENT, handleMarkReadMessages);
 
     return () => {
       socket.off(NEW_MESSAGE);
@@ -65,10 +81,20 @@ const useChat = () => {
     if (
       socket &&
       message &&
-      selectedUser?._id == message.senderId._id &&
+      selectedUser &&
+      selectedUser?._id == message?.senderId?._id &&
       !message.isRead
     ) {
       handleSelectConversation(selectedUser);
+    }
+  };
+  const handleNewGroupMessage = async (group: Group | null = null) => {
+    ChatService.getConversations().then((data) => {
+      setConversations(data.conversations);
+      setGroups(data.groupConversations);
+    });
+    if (socket && group && selectedGroup) {
+      handleSelectGroupChat(selectedGroup);
     }
   };
 
@@ -83,6 +109,7 @@ const useChat = () => {
   };
 
   const handleSelectConversation = async (user: User) => {
+    setSelectedGroup(null);
     setSelectedUser(user);
     // Fetch messages for selected conversation
     const data = await ChatService.getMessages(user._id);
@@ -102,14 +129,26 @@ const useChat = () => {
     setMessages([]);
   };
 
-  const handleSendMessage = (content: string, attachments?: string[]) => {
-    if (!socket || !selectedUser) return;
+  const handleSendMessage = (
+    content: string,
+    attachments?: string[],
+    type: string = CHAT_TYPE.INDIVIDUAL
+  ) => {
+    if (!socket || (!selectedUser && !selectedGroup)) return;
 
-    socket.emit(PRIVATE_MSG, {
-      receiverId: selectedUser._id,
-      content,
-      attachments,
-    });
+    if (type === CHAT_TYPE.INDIVIDUAL && selectedUser) {
+      socket.emit(PRIVATE_MSG, {
+        receiverId: selectedUser._id,
+        content,
+        attachments,
+      });
+    } else if (type === CHAT_TYPE.GROUP && selectedGroup) {
+      socket.emit(GROUP_MSG, {
+        groupId: selectedGroup._id,
+        content,
+        attachments,
+      });
+    }
   };
 
   const updateMessages = (newMessage: Message) => {
@@ -117,6 +156,7 @@ const useChat = () => {
   };
 
   const handleSelectGroupChat = async (group: Group) => {
+    setSelectedUser(null);
     setSelectedGroup(group);
     const data = await GroupChatService.getGroupMessages(group._id);
     setMessages(data.messages);
@@ -127,7 +167,10 @@ const useChat = () => {
     socket.emit(MARK_READ, {
       receiverId: group._id,
     });
-    return "CreateChatGroup";
+  };
+
+  const updateSelectedUser = (user: User | null) => {
+    setSelectedUser(user);
   };
 
   return {
@@ -141,6 +184,7 @@ const useChat = () => {
     handleSendMessage,
     updateMessages,
     handleSelectGroupChat,
+    updateSelectedUser,
   };
 };
 

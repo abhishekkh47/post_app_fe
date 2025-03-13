@@ -16,6 +16,7 @@ const Friends: React.FC = () => {
     handleMessageClick,
     handleSendMessage,
     handleCloseChat,
+    selectedGroup,
   } = useFriends();
 
   return (
@@ -101,6 +102,7 @@ const Friends: React.FC = () => {
           updateMessages={updateMessages}
           onSendMessage={handleSendMessage}
           onClose={handleCloseChat}
+          selectedGroup={selectedGroup}
         />
       )}
       {/* </div> */}

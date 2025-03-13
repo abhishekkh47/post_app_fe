@@ -2,14 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import { Group, Message, User } from "../types";
 import { useSocket } from "../context/SocketContext";
 import { useNavigate } from "react-router-dom";
-import { WS_EVENTS } from "../utils";
+import { CHAT_TYPE, WS_EVENTS } from "../utils";
 
 interface UseChatProps {
   selectedUser: User | null;
   selectedGroup: Group | null;
   messages: Message[];
   updateMessages: (newMessage: Message) => void;
-  onSendMessage: (content: string, attachments?: string[]) => void;
+  onSendMessage: (
+    content: string,
+    attachments?: string[],
+    type?: string
+  ) => void;
 }
 
 const useChatPopup = ({
@@ -47,7 +51,7 @@ const useChatPopup = ({
         socket.off(NEW_MESSAGE);
       };
     }
-  }, [selectedUser, socket]);
+  }, [selectedUser, selectedGroup, socket]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -76,10 +80,13 @@ const useChatPopup = ({
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = (e: React.FormEvent) => {
+  const handleSend = (
+    e: React.FormEvent,
+    type: string = CHAT_TYPE.INDIVIDUAL
+  ) => {
     e.preventDefault();
     if (newMessage.trim()) {
-      onSendMessage(newMessage);
+      onSendMessage(newMessage, [], type);
       setNewMessage("");
     }
   };
@@ -111,7 +118,7 @@ const useChatPopup = ({
     updateNewMessage,
     isMinimized,
     toggleMinimize,
-    onSendMessage: handleSend,
+    handleSend,
     handleTyping,
     onProfileClick,
     messagesEndRef,

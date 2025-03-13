@@ -37,3 +37,19 @@ export interface Group {
     }
   ];
 }
+
+export interface GroupMessage {
+  _id: string;
+  senderId: Partial<User>;
+  groupId: {
+    name: string;
+    _id: string;
+  };
+  content: string;
+  readBy: {
+    readAt: string;
+    userId: string;
+  };
+  attachments?: string[];
+  createdAt: string;
+}

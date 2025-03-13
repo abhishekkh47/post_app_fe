@@ -5,6 +5,7 @@ import { useSocket } from "../context/SocketContext";
 import { useAuth } from "../context/AuthContext";
 import { ChatService, FollowService } from "../services";
 import { WS_EVENTS } from "../utils";
+import useChat from "./useChat";
 
 const useFriends = () => {
   const [activeTab, setActiveTab] = useState<"followers" | "following">(
@@ -17,6 +18,13 @@ const useFriends = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { socket } = useSocket();
+  const {
+    // selectedUser,
+    selectedGroup,
+    // handleCloseChat,
+    // updateSelectedUser,
+    // updateMessages,
+  } = useChat();
 
   const {
     CHAT: {
@@ -139,6 +147,7 @@ const useFriends = () => {
     selectedUser,
     messages,
     activeTab,
+    selectedGroup,
     updateActiveTab,
     updateMessages,
     handleFriendClick,

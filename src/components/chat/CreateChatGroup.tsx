@@ -88,7 +88,6 @@ const CreateChatGroup: React.FC<CreateChatGroupProps> = ({
       setLoading(true);
       // const response = await fetch("/api/groups");
       const response = await GroupChatService.getGroups();
-      console.log("response : ", response);
       setGroups(response.groups);
     } catch (error) {
       console.error("Error fetching groups:", error);

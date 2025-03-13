@@ -4,12 +4,17 @@ import { Send, Image, Minimize2, X } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { MessageBubble } from ".";
 import { useChatPopup } from "../../hooks";
+import { CHAT_TYPE } from "../../utils";
 
 interface ChatWindowProps {
   selectedUser: User | null;
   messages: Message[];
   updateMessages: (messages: Message) => void;
-  onSendMessage: (content: string, attachments?: string[]) => void;
+  onSendMessage: (
+    content: string,
+    attachments?: string[],
+    type?: string
+  ) => void;
   onClose: () => void;
   selectedGroup: Group | null;
   className?: string;
@@ -30,7 +35,7 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
     updateNewMessage,
     isMinimized,
     toggleMinimize,
-    onSendMessage: handleSend,
+    handleSend,
     handleTyping,
     onProfileClick,
     messagesEndRef,
@@ -43,7 +48,6 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
     onSendMessage,
   });
 
-  console.log("selectedGroup : ", selectedGroup);
   if (!selectedUser && !selectedGroup) {
     return;
   }
@@ -126,7 +130,12 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
 
             {/* Input */}
             <form
-              onSubmit={handleSend}
+              onSubmit={(e) =>
+                handleSend(
+                  e,
+                  selectedGroup ? CHAT_TYPE.GROUP : CHAT_TYPE.INDIVIDUAL
+                )
+              }
               className="p-3 border-t border-gray-200"
             >
               <div className="flex items-center space-x-2">
