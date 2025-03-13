@@ -70,6 +70,8 @@ const useChat = () => {
       socket.off(NEW_MESSAGE);
       socket.off(MESSAGE_SENT);
       socket.off(MESSAGE_MARKED_READ);
+      socket.off(GROUP_NEW_MESSAGE);
+      socket.off(GROUP_MESSAGE_SENT);
     };
   }, [socket, messages]);
 
