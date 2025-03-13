@@ -19,3 +19,21 @@ export interface Conversation {
   };
   unreadCount?: number;
 }
+
+export interface Group {
+  _id: string;
+  name: string;
+  description: string;
+  createdBy: string;
+  members: [
+    {
+      userId: string;
+      role: string;
+      _id: string;
+      email: string;
+      firstName: string;
+      lastName: string;
+      profile_pic: string;
+    }
+  ];
+}

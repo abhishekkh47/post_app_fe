@@ -3,19 +3,15 @@ import { Check, CheckCheck } from "lucide-react";
 
 interface MessageProps {
   message: any;
-  selectedUser: any;
   user: any;
 }
 
-const MessageBubble: React.FC<MessageProps> = ({
-  message,
-  selectedUser,
-  user,
-}) => {
+const MessageBubble: React.FC<MessageProps> = ({ message, user }) => {
   return (
     <div
       className={`max-w-[70%] rounded-lg p-2 ${
-        message.senderId._id === selectedUser._id
+        // message.senderId._id === selectedUser?._id ||
+        message.senderId._id !== user?._id
           ? "bg-gray-100"
           : "bg-blue-500 text-white"
       }`}
@@ -27,7 +23,8 @@ const MessageBubble: React.FC<MessageProps> = ({
         </span>
         <span
           className={`inline-flex items-center gap-1 text-[10px] flex-shrink-0 ${
-            message.senderId._id === selectedUser._id
+            // message.senderId._id === selectedUser?._id ||
+            message.senderId._id !== user?._id
               ? "text-gray-500"
               : "text-gray-200"
           }`}

@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { useSocket } from "../context/SocketContext";
-import { User, Message, Conversation } from "../types";
-import { ChatService } from "../services";
+import { User, Message, Conversation, Group } from "../types";
+import { ChatService, GroupChatService } from "../services";
 import { WS_EVENTS } from "../utils";
 
 const useChat = () => {
   const [conversations, setConversations] = useState<Conversation[]>([]);
+  const [groups, setGroups] = useState<Conversation[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
   const [messages, setMessages] = useState<Message[]>([]);
   const { socket } = useSocket();
   const {
@@ -18,9 +20,10 @@ const useChat = () => {
 
   useEffect(() => {
     // Fetch conversations
-    ChatService.getConversations().then((data) =>
-      setConversations(data.conversations)
-    );
+    ChatService.getConversations().then((data) => {
+      setConversations(data.conversations);
+      setGroups(data.groupConversations);
+    });
   }, []);
 
   useEffect(() => {
@@ -55,9 +58,10 @@ const useChat = () => {
   }, [socket, messages]);
 
   const handleNewMessage = async (message: Message | null = null) => {
-    ChatService.getConversations().then((data) =>
-      setConversations(data.conversations)
-    );
+    ChatService.getConversations().then((data) => {
+      setConversations(data.conversations);
+      setGroups(data.groupConversations);
+    });
     if (
       socket &&
       message &&
@@ -94,6 +98,7 @@ const useChat = () => {
 
   const handleCloseChat = () => {
     setSelectedUser(null);
+    setSelectedGroup(null);
     setMessages([]);
   };
 
@@ -111,14 +116,31 @@ const useChat = () => {
     setMessages((prevMessages) => [...prevMessages, newMessage]);
   };
 
+  const handleSelectGroupChat = async (group: Group) => {
+    setSelectedGroup(group);
+    const data = await GroupChatService.getGroupMessages(group._id);
+    setMessages(data.messages);
+
+    await handleNewMessage();
+
+    if (!socket || !group) return;
+    socket.emit(MARK_READ, {
+      receiverId: group._id,
+    });
+    return "CreateChatGroup";
+  };
+
   return {
     conversations,
+    groups,
     selectedUser,
     messages,
+    selectedGroup,
     handleSelectConversation,
     handleCloseChat,
     handleSendMessage,
     updateMessages,
+    handleSelectGroupChat,
   };
 };
 

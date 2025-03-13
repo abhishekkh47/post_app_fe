@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import { Message, User } from "../types";
+import { Group, Message, User } from "../types";
 import { useSocket } from "../context/SocketContext";
 import { useNavigate } from "react-router-dom";
 import { WS_EVENTS } from "../utils";
 
 interface UseChatProps {
   selectedUser: User | null;
+  selectedGroup: Group | null;
   messages: Message[];
   updateMessages: (newMessage: Message) => void;
   onSendMessage: (content: string, attachments?: string[]) => void;
@@ -13,6 +14,7 @@ interface UseChatProps {
 
 const useChatPopup = ({
   selectedUser,
+  selectedGroup,
   messages,
   updateMessages,
   onSendMessage,

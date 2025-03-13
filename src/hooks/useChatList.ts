@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { User } from "../types";
-import { useAuth } from "../context/AuthContext";
 import { FollowService } from "../services";
-import { CreateChatGroup } from "../components/chat";
 
 interface useChatListProps {
   user: User;
@@ -33,10 +31,6 @@ const useChatList = ({ user }: useChatListProps) => {
     }
   };
 
-  const handleGroupChatClick = async () => {
-    return CreateChatGroup;
-  };
-
   const updateModalPage = (page: number) => {
     setModalPage(page);
   };
@@ -47,7 +41,6 @@ const useChatList = ({ user }: useChatListProps) => {
     modalPage,
     openModal,
     closeModal,
-    handleGroupChatClick,
     fetchFriends,
     updateModalPage,
   };

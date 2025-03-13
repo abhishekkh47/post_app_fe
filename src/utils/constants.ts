@@ -39,3 +39,7 @@ export const WS_EVENTS = {
     },
   },
 };
+export const CHAT_TYPE = {
+  INDIVIDUAL: "individual",
+  GROUP: "group",
+};

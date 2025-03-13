@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { User, Conversation } from "../../types";
+import { User, Conversation, Group } from "../../types";
 import { LucideUsers2 } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
-import { useChatList } from "../../hooks";
+// import { useChatList } from "../../hooks";
 import CreateChatGroup from "./CreateChatGroup";
-import { GroupManagement } from ".";
+// import { GroupManagement } from ".";
 import { FollowService } from "../../services";
 
 interface ChatListProps {
   user: User;
   conversations: Conversation[];
+  groups: any[];
   selectedUser: User | null;
   onSelectConversation: (user: User) => void;
+  onSelectGroup: (group: Group) => void;
 }
 
 const ChatList: React.FC<ChatListProps> = ({
   user,
   conversations,
+  groups,
   selectedUser,
   onSelectConversation,
+  onSelectGroup,
 }) => {
   // const {
   //   isModalOpen,
@@ -51,10 +54,6 @@ const ChatList: React.FC<ChatListProps> = ({
     } catch (error) {
       console.error((error as Error).message);
     }
-  };
-
-  const handleGroupChatClick = async () => {
-    return CreateChatGroup;
   };
 
   const updateModalPage = (page: number) => {
@@ -114,6 +113,51 @@ const ChatList: React.FC<ChatListProps> = ({
                 </p>
                 <p className="text-sm text-gray-500 truncate">
                   {conversation.lastMessage.content}
+                </p>
+              </div>
+              {!conversation.lastMessage?.isRead &&
+                (conversation?.lastMessage?.senderId !== user?._id ? (
+                  <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                    {conversation?.unreadCount}
+                  </div>
+                ) : (
+                  <div className="w-3 h-3 bg-pink-500 rounded-full"></div>
+                ))}
+            </div>
+          </div>
+        ))}
+        {groups?.map((conversation) => (
+          <div
+            key={conversation._id}
+            className={`p-4 cursor-pointer hover:bg-gray-50 transition-colors ${
+              selectedUser?._id === conversation.members[0]._id
+                ? "bg-gray-100"
+                : ""
+            }`}
+            // Only update the selectedUser State when a different user is selected
+            onClick={() =>
+              selectedUser?._id !== conversation?.members[0]?._id
+                ? onSelectGroup(conversation)
+                : {}
+            }
+          >
+            <div className="flex items-center space-x-3">
+              {conversation?.userDetails?.profile_pic ? (
+                <img
+                  src={conversation?.userDetails?.profile_pic}
+                  alt={`${conversation.name[0]}`}
+                  className="w-12 h-12 rounded-full object-cover"
+                />
+              ) : (
+                <div className="w-12 h-12 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
+                  {/* <MessageCircle className="w-6 h-6 text-gray-400" /> */}
+                  {conversation.name[0]?.toUpperCase()}
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="font-medium truncate">{conversation.name}</p>
+                <p className="text-sm text-gray-500 truncate">
+                  {conversation?.lastMessage?.content}
                 </p>
               </div>
               {!conversation.lastMessage?.isRead &&
