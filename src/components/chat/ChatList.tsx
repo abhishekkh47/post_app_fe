@@ -161,7 +161,8 @@ const ChatList: React.FC<ChatListProps> = ({
                 </p>
               </div>
               {!conversation.lastMessage?.isRead &&
-                (conversation?.lastMessage?.senderId !== user?._id ? (
+                (conversation?.unreadCount &&
+                conversation?.lastMessage?.senderId !== user?._id ? (
                   <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
                     {conversation?.unreadCount}
                   </div>
