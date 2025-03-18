@@ -27,17 +27,15 @@ const useChatPopup = ({
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { socket } = useSocket();
+  const { socket, notifyTyping, notifyGroupTyping } = useSocket();
   const navigate = useNavigate();
 
   const {
     CHAT: {
       LISTENER: { NEW_MESSAGE, USER_TYPING },
-      EMITTER: { TYPING },
     },
     GROUP: {
       LISTENER: { GROUP_NEW_MESSAGE, GROUP_USER_TYPING },
-      EMITTER: { GROUP_TYPING },
     },
   } = WS_EVENTS;
 
@@ -115,15 +113,18 @@ const useChatPopup = ({
 
   const handleTyping = () => {
     if (selectedUser && socket && newMessage.length) {
-      socket.emit(TYPING, { receiverId: selectedUser._id });
+      notifyTyping(selectedUser._id);
     }
     if (selectedGroup && socket && newMessage.length) {
-      socket.emit(GROUP_TYPING, { groupId: selectedGroup._id });
+      notifyGroupTyping(selectedGroup._id);
     }
   };
 
   const onProfileClick = () => {
     navigate(`/profile/${selectedUser?._id}`);
+  };
+  const onGroupClick = () => {
+    navigate(`/group/${selectedGroup?._id}`);
   };
 
   const toggleMinimize = () => {
@@ -148,6 +149,7 @@ const useChatPopup = ({
     onProfileClick,
     messagesEndRef,
     isTyping,
+    onGroupClick,
   };
 };
 

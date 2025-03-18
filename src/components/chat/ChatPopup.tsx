@@ -40,6 +40,7 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
     onProfileClick,
     messagesEndRef,
     isTyping,
+    onGroupClick,
   } = useChatPopup({
     selectedUser,
     selectedGroup,
@@ -63,7 +64,7 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
         <div className="p-3 border-b border-gray-200 flex items-center justify-between bg-white rounded-t-lg">
           <div
             className="flex items-center space-x-2 cursor-pointer"
-            onClick={onProfileClick}
+            onClick={selectedUser ? onProfileClick : onGroupClick}
           >
             {selectedUser?.profile_pic ? (
               <img

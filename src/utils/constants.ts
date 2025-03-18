@@ -43,3 +43,9 @@ export const CHAT_TYPE = {
   INDIVIDUAL: "individual",
   GROUP: "group",
 };
+export const CHAT_GROUP_DIALOG = {
+  DELETE_CHAT: "DELETE_CHAT",
+  LEAVE_GROUP: "LEAVE_GROUP",
+  DELETE_CHAT_DESC: `The people who messaged you can still see the conversation and can message you again unles you block them`,
+  LEAVE_GROUP_DESC: `When you leave, you will no longer be able to see the chat history. You won't be able to send or receive messanes unless someone add you back to the group. No one will be notified that you left the group.`,
+};

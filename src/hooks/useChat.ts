@@ -10,11 +10,17 @@ const useChat = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
   const [messages, setMessages] = useState<Message[] | any>([]);
-  const { socket } = useSocket();
+  const {
+    socket,
+    sendPrivateMessage,
+    markAsRead,
+    sendGroupMessage,
+    markGroupMessageAsRead,
+  } = useSocket();
   const {
     CHAT: {
       LISTENER: { MESSAGE_MARKED_READ, MESSAGE_SENT, NEW_MESSAGE },
-      EMITTER: { PRIVATE_MSG, MARK_READ },
+      // EMITTER: { PRIVATE_MSG, MARK_READ },
     },
     GROUP: {
       LISTENER: {
@@ -22,7 +28,7 @@ const useChat = () => {
         GROUP_NEW_MESSAGE,
         GROUP_MESSAGE_SENT,
       },
-      EMITTER: { GROUP_MSG, GROUP_MARK_READ },
+      // EMITTER: { GROUP_MSG, GROUP_MARK_READ },
     },
   } = WS_EVENTS;
 
@@ -130,9 +136,7 @@ const useChat = () => {
     await handleNewMessage();
 
     if (!socket || !user) return;
-    socket.emit(MARK_READ, {
-      receiverId: user._id,
-    });
+    markAsRead(user._id);
   };
 
   const handleCloseChat = () => {
@@ -143,23 +147,15 @@ const useChat = () => {
 
   const handleSendMessage = (
     content: string,
-    attachments?: string[],
+    attachments: string[] = [],
     type: string = CHAT_TYPE.INDIVIDUAL
   ) => {
     if (!socket || (!selectedUser && !selectedGroup)) return;
 
     if (type === CHAT_TYPE.INDIVIDUAL && selectedUser) {
-      socket.emit(PRIVATE_MSG, {
-        receiverId: selectedUser._id,
-        content,
-        attachments,
-      });
+      sendPrivateMessage(selectedUser._id, content, attachments);
     } else if (type === CHAT_TYPE.GROUP && selectedGroup) {
-      socket.emit(GROUP_MSG, {
-        groupId: selectedGroup._id,
-        content,
-        attachments,
-      });
+      sendGroupMessage(selectedGroup._id, content, attachments);
     }
   };
 
@@ -177,10 +173,7 @@ const useChat = () => {
     await handleNewMessage();
 
     if (!socket || !group) return;
-    socket.emit(GROUP_MARK_READ, {
-      groupId: group._id,
-      messageId: data[messageLength - 1]?._id,
-    });
+    markGroupMessageAsRead(group._id, data[messageLength - 1]?._id);
   };
 
   const updateSelectedUser = (user: User | null) => {

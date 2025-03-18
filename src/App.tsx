@@ -4,7 +4,7 @@ import { LoginForm, SignupForm, ProtectedRoute } from "./components/auth";
 import { useAuth } from "./context/AuthContext";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthenticatedLayout } from "./components/layout/";
-import { Profile, Home, Settings } from "./pages";
+import { Profile, Home, Settings, GroupDetails } from "./pages";
 import { Friends } from "./components/friends";
 
 const AppContent = () => {
@@ -65,6 +65,18 @@ const AppContent = () => {
             <AuthenticatedLayout>
               <Settings />
             </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      ></Route>
+      <Route
+        path="/group/:groupId"
+        element={
+          <ProtectedRoute>
+            <SocketProvider>
+              <AuthenticatedLayout>
+                <GroupDetails />
+              </AuthenticatedLayout>
+            </SocketProvider>
           </ProtectedRoute>
         }
       ></Route>

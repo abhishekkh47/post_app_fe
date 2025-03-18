@@ -127,5 +127,19 @@ class GroupChatService {
       throw new Error((error as Error).message);
     }
   }
+
+  async getGroupDetails(groupId: string) {
+    try {
+      const response = await GET_SERVICE(
+        GROUP_CHAT.GET_GROUP_DETAILS.replace(PATH_SLUGS.GROUP_ID, groupId)
+      );
+      if (!response.ok) {
+        throw new Error("An error occurred");
+      }
+      return (await response.json())?.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
 }
 export default new GroupChatService();

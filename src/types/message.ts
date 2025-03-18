@@ -25,6 +25,7 @@ export interface Group {
   name: string;
   description: string;
   createdBy: string;
+  profile_pic: string;
   members: [
     {
       userId: string;
