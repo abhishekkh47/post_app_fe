@@ -9,7 +9,7 @@ const useChat = () => {
   const [groups, setGroups] = useState<Conversation[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedGroup, setSelectedGroup] = useState<Group | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[] | any>([]);
   const { socket } = useSocket();
   const {
     CHAT: {
@@ -17,8 +17,12 @@ const useChat = () => {
       EMITTER: { PRIVATE_MSG, MARK_READ },
     },
     GROUP: {
-      LISTENER: { GROUP_NEW_MESSAGE, GROUP_MESSAGE_SENT },
-      EMITTER: { GROUP_MSG },
+      LISTENER: {
+        GROUP_MESSAGE_MARKED_READ,
+        GROUP_NEW_MESSAGE,
+        GROUP_MESSAGE_SENT,
+      },
+      EMITTER: { GROUP_MSG, GROUP_MARK_READ },
     },
   } = WS_EVENTS;
 
@@ -35,8 +39,8 @@ const useChat = () => {
     socket.connect();
 
     const handleMessage = async (message: Message | any) => {
-      setMessages((prev) => {
-        if (prev.some((m) => m._id === message._id)) {
+      setMessages((prev: any) => {
+        if (prev.some((m: any) => m._id === message._id)) {
           return prev;
         }
         return [...prev, message];
@@ -45,8 +49,8 @@ const useChat = () => {
       await handleNewMessage(message);
     };
     const handleGroupMessage = async (group: Group | any) => {
-      setMessages((prev) => {
-        if (prev.some((m) => m._id === group._id)) {
+      setMessages((prev: any) => {
+        if (prev.some((m: any) => m._id === group._id)) {
           return prev;
         }
         return [...prev, group];
@@ -59,11 +63,16 @@ const useChat = () => {
       updateMessagesReadStatus();
       await handleNewMessage();
     };
+    const handleMarkReadGroupMessages = async () => {
+      updateMessagesReadStatus();
+      await handleNewGroupMessage();
+    };
 
     socket.on(NEW_MESSAGE, handleMessage);
     socket.on(MESSAGE_SENT, handleMessage);
     socket.on(GROUP_NEW_MESSAGE, handleGroupMessage);
     socket.on(MESSAGE_MARKED_READ, handleMarkReadMessages);
+    socket.on(GROUP_MESSAGE_MARKED_READ, handleMarkReadGroupMessages);
     socket.on(GROUP_MESSAGE_SENT, handleMarkReadMessages);
 
     return () => {
@@ -72,6 +81,7 @@ const useChat = () => {
       socket.off(MESSAGE_MARKED_READ);
       socket.off(GROUP_NEW_MESSAGE);
       socket.off(GROUP_MESSAGE_SENT);
+      socket.off(GROUP_MESSAGE_MARKED_READ);
     };
   }, [socket, messages]);
 
@@ -102,8 +112,8 @@ const useChat = () => {
 
   // Update messages when they are marked as read
   const updateMessagesReadStatus = () => {
-    setMessages((prevMessages) =>
-      prevMessages.map((message) => ({
+    setMessages((prevMessages: any) =>
+      prevMessages.map((message: any) => ({
         ...message,
         isRead: true,
       }))
@@ -154,20 +164,22 @@ const useChat = () => {
   };
 
   const updateMessages = (newMessage: Message) => {
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+    setMessages((prevMessages: any) => [...prevMessages, newMessage]);
   };
 
   const handleSelectGroupChat = async (group: Group) => {
     setSelectedUser(null);
     setSelectedGroup(group);
-    const data = await GroupChatService.getGroupMessages(group._id);
-    setMessages(data.messages);
+    const data = (await GroupChatService.getGroupMessages(group._id))?.messages;
+    setMessages(data);
 
+    const messageLength = data?.length;
     await handleNewMessage();
 
     if (!socket || !group) return;
-    socket.emit(MARK_READ, {
-      receiverId: group._id,
+    socket.emit(GROUP_MARK_READ, {
+      groupId: group._id,
+      messageId: data[messageLength - 1]?._id,
     });
   };
 
