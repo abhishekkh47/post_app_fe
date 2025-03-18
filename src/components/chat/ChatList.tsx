@@ -11,6 +11,7 @@ interface ChatListProps {
   conversations: Conversation[];
   groups: any[];
   selectedUser: User | null;
+  selectedGroup: Group | null;
   onSelectConversation: (user: User) => void;
   onSelectGroup: (group: Group) => void;
 }
@@ -20,6 +21,7 @@ const ChatList: React.FC<ChatListProps> = ({
   conversations,
   groups,
   selectedUser,
+  selectedGroup,
   onSelectConversation,
   onSelectGroup,
 }) => {
@@ -83,7 +85,7 @@ const ChatList: React.FC<ChatListProps> = ({
             key={conversation._id}
             className={`p-4 cursor-pointer hover:bg-gray-50 transition-colors ${
               selectedUser?._id === conversation.userDetails._id
-                ? "bg-gray-100"
+                ? "bg-gray-300"
                 : ""
             }`}
             // Only update the selectedUser State when a different user is selected
@@ -130,13 +132,11 @@ const ChatList: React.FC<ChatListProps> = ({
           <div
             key={conversation._id}
             className={`p-4 cursor-pointer hover:bg-gray-50 transition-colors ${
-              selectedUser?._id === conversation.members[0]._id
-                ? "bg-gray-100"
-                : ""
+              selectedGroup?._id === conversation._id ? "bg-gray-300" : ""
             }`}
-            // Only update the selectedUser State when a different user is selected
+            // Only update the selectedGroup State when a different group is selected
             onClick={() =>
-              selectedUser?._id !== conversation?.members[0]?._id
+              selectedGroup?._id !== conversation._id
                 ? onSelectGroup(conversation)
                 : {}
             }

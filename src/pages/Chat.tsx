@@ -28,6 +28,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ user }) => {
         conversations={conversations}
         groups={groups}
         selectedUser={selectedUser}
+        selectedGroup={selectedGroup}
         onSelectConversation={handleSelectConversation}
         onSelectGroup={handleSelectGroupChat}
       />

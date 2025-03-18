@@ -89,7 +89,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const joinGroup = useCallback(
     (groupId: string) => {
       if (socket && isConnected) {
-        socket.emit(WS_EVENTS.GROUP.LISTENER.JOIN_GROUP, { groupId });
+        socket.emit(WS_EVENTS.GROUP.EMITTER.JOIN_GROUP, { groupId });
       }
     },
     [socket, isConnected]
@@ -97,7 +97,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const leaveGroup = useCallback(
     (groupId: string) => {
       if (socket && isConnected) {
-        socket.emit(WS_EVENTS.GROUP.LISTENER.LEAVE_GROUP, { groupId });
+        socket.emit(WS_EVENTS.GROUP.EMITTER.LEAVE_GROUP, { groupId });
       }
     },
     [socket, isConnected]
@@ -105,7 +105,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const sendGroupMessage = useCallback(
     (groupId: string, content: string, attachments: string[] = []) => {
       if (socket && isConnected) {
-        socket.emit(GROUP.LISTENER.GROUP_MSG, {
+        socket.emit(GROUP.EMITTER.GROUP_MSG, {
           groupId,
           content,
           attachments,
@@ -117,7 +117,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const notifyGroupTyping = useCallback(
     (groupId: string) => {
       if (socket && isConnected) {
-        socket.emit(GROUP.LISTENER.GROUP_TYPING, { groupId });
+        socket.emit(GROUP.EMITTER.GROUP_TYPING, { groupId });
       }
     },
     [socket, isConnected]
@@ -125,7 +125,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const markGroupMessageAsRead = useCallback(
     (groupId: string, messageId: string) => {
       if (socket && isConnected) {
-        socket.emit(GROUP.LISTENER.GROUP_MARK_READ, { groupId, messageId });
+        socket.emit(GROUP.EMITTER.GROUP_MARK_READ, { groupId, messageId });
       }
     },
     [socket, isConnected]

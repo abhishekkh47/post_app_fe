@@ -35,6 +35,10 @@ const useChatPopup = ({
       LISTENER: { NEW_MESSAGE, USER_TYPING },
       EMITTER: { TYPING },
     },
+    GROUP: {
+      LISTENER: { GROUP_NEW_MESSAGE, GROUP_USER_TYPING },
+      EMITTER: { GROUP_TYPING },
+    },
   } = WS_EVENTS;
 
   // Listen for incoming messages from the WebSocket server
@@ -46,9 +50,16 @@ const useChatPopup = ({
         }
       });
 
+      socket.on(GROUP_NEW_MESSAGE, (newMessage: Message) => {
+        if (selectedGroup && newMessage.senderId._id === selectedGroup._id) {
+          updateMessages(newMessage);
+        }
+      });
+
       // Cleanup when the component unmounts or the socket changes
       return () => {
         socket.off(NEW_MESSAGE);
+        socket.off(GROUP_NEW_MESSAGE);
       };
     }
   }, [selectedUser, selectedGroup, socket]);
@@ -69,12 +80,23 @@ const useChatPopup = ({
         }
       });
 
+      socket.on(GROUP_USER_TYPING, (data: { groupId: string }) => {
+        if (selectedGroup?._id == data.groupId) {
+          updateTypingStatus(true);
+
+          setTimeout(() => {
+            updateTypingStatus(false);
+          }, 1500);
+        }
+      });
+
       // Cleanup when the component unmounts or the socket changes
       return () => {
         socket.off(USER_TYPING);
+        socket.off(GROUP_USER_TYPING);
       };
     }
-  }, [selectedUser, socket]);
+  }, [selectedUser, selectedGroup, socket]);
 
   useEffect(() => {
     scrollToBottom();
@@ -94,6 +116,9 @@ const useChatPopup = ({
   const handleTyping = () => {
     if (selectedUser && socket && newMessage.length) {
       socket.emit(TYPING, { receiverId: selectedUser._id });
+    }
+    if (selectedGroup && socket && newMessage.length) {
+      socket.emit(GROUP_TYPING, { groupId: selectedGroup._id });
     }
   };
 

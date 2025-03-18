@@ -23,7 +23,6 @@ export const WS_EVENTS = {
   },
   GROUP: {
     LISTENER: {
-      GROUP_TYPING: "group_typing",
       GROUP_NEW_MESSAGE: "group_new_message",
       GROUP_JOINED: "group_joined",
       GROUP_LEFT: "group_left",
@@ -36,6 +35,7 @@ export const WS_EVENTS = {
       LEAVE_GROUP: "leave_group",
       GROUP_MSG: "group_message",
       GROUP_MARK_READ: "group_mark_read",
+      GROUP_TYPING: "group_typing",
     },
   },
 };
