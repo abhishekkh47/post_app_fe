@@ -64,25 +64,6 @@ const CreateChatGroup: React.FC<CreateChatGroupProps> = ({
     setGroupName(event.target.value);
   };
 
-  // const handleSubmit = async () => {
-  //   const formData = new FormData();
-  //   formData.append("description", groupDescription);
-  //   formData.append("members", JSON.stringify(selectedMembers));
-  //   if (groupPic) {
-  //     formData.append("profilePic", groupPic);
-  //   }
-
-  //   try {
-  //     const response = await ChatService.createChatGroup(formData);
-  //     if (response.status === 200) {
-  //       // Handle successful group creation (e.g., update UI)
-  //       onClose(); // Close modal
-  //     }
-  //   } catch (error) {
-  //     console.error("Error creating group chat", error);
-  //   }
-  // };
-
   const fetchGroups = async () => {
     try {
       setLoading(true);
@@ -128,14 +109,6 @@ const CreateChatGroup: React.FC<CreateChatGroupProps> = ({
       console.error("Error creating group:", error);
     }
   };
-
-  // const handleUserToggle = (userId: string) => {
-  //   if (selectedUsers.includes(userId)) {
-  //     setSelectedUsers((prev) => prev.filter((id) => id !== userId));
-  //   } else {
-  //     setSelectedUsers((prev) => [...prev, userId]);
-  //   }
-  // };
 
   const handleGroupClick = (groupId: string) => {
     navigate(`/groups/${groupId}`);

@@ -13,15 +13,15 @@ interface ILeaveGroup {
   open: boolean;
   groupId: string;
   handleOpen: () => void;
-  leaveGroup: (groupId: string) => void;
+  handler: (groupId: string) => void;
   type: string;
 }
 
-const LeaveGroup: React.FC<ILeaveGroup> = ({
+const ChatAction: React.FC<ILeaveGroup> = ({
   open,
   groupId,
   handleOpen,
-  leaveGroup,
+  handler,
   type,
 }) => {
   const { DELETE_CHAT, LEAVE_GROUP_DESC, DELETE_CHAT_DESC } = CHAT_GROUP_DIALOG;
@@ -68,7 +68,7 @@ const LeaveGroup: React.FC<ILeaveGroup> = ({
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
                 type="button"
-                onClick={() => leaveGroup(groupId)}
+                onClick={() => handler(groupId)}
                 className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto"
               >
                 {type === DELETE_CHAT ? `Delete` : `Leave`}
@@ -89,4 +89,4 @@ const LeaveGroup: React.FC<ILeaveGroup> = ({
   );
 };
 
-export default LeaveGroup;
+export default ChatAction;

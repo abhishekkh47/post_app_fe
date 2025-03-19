@@ -15,6 +15,7 @@ const GroupDetails: React.FC = () => {
     updateOpenDeleteChatDialog,
     updateOpenLeaveGroupDialog,
     deleteChat,
+    addMemberToGroupChat,
   } = useGroupProfile({ groupId });
 
   if (!groupId) {
@@ -31,6 +32,7 @@ const GroupDetails: React.FC = () => {
           user={user}
           groupProfile={groupProfile}
           onProfileClick={onProfileClick}
+          addMemberToGroupChat={addMemberToGroupChat}
         />
       </div>
       <div className="mt-4">

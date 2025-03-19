@@ -1,6 +1,6 @@
 import React from "react";
 import { Group, User } from "../../types";
-import { LeaveGroup } from "../dialog";
+import { ChatAction } from "../dialog";
 import { CHAT_GROUP_DIALOG } from "../../utils";
 
 interface GroupFooterProps {
@@ -37,11 +37,11 @@ const GroupFooter: React.FC<GroupFooterProps> = ({
         </div>
       </div>
       {openDeleteChatDialog && (
-        <LeaveGroup
+        <ChatAction
           open={openDeleteChatDialog}
           groupId={groupProfile._id}
           handleOpen={updateDeleteChatDialog}
-          leaveGroup={deleteChat}
+          handler={deleteChat}
           type={DELETE_CHAT}
         />
       )}
@@ -51,11 +51,11 @@ const GroupFooter: React.FC<GroupFooterProps> = ({
         </div>
       </div>
       {openLeaveGroupDialog && (
-        <LeaveGroup
+        <ChatAction
           open={openLeaveGroupDialog}
           groupId={groupProfile._id}
           handleOpen={updateLeaveGroupDialog}
-          leaveGroup={onLeaveGroup}
+          handler={onLeaveGroup}
           type={LEAVE_GROUP}
         />
       )}

@@ -58,8 +58,9 @@ const useGroupProfile = ({ groupId }: GroupProfileProps) => {
     navigate(`/profile/${userId}`);
   };
 
-  const onLeaveGroup = (groupId: string) => {
-    navigate(`/group/${groupId}`);
+  const onLeaveGroup = async (groupId: string) => {
+    if (user) await GroupChatService.removeGroupMember(groupId, user?._id);
+    navigate(`/`);
   };
 
   const updateOpenDeleteChatDialog = () => {
@@ -72,6 +73,10 @@ const useGroupProfile = ({ groupId }: GroupProfileProps) => {
 
   const deleteChat = (groupId: string) => {
     navigate(`/group/${groupId}`);
+  };
+
+  const addMemberToGroupChat = async (groupId: string, userId: string[]) => {
+    await GroupChatService.addGroupMembers(groupId, userId);
   };
 
   return {
@@ -89,6 +94,7 @@ const useGroupProfile = ({ groupId }: GroupProfileProps) => {
     updateOpenDeleteChatDialog,
     updateOpenLeaveGroupDialog,
     deleteChat,
+    addMemberToGroupChat,
   };
 };
 

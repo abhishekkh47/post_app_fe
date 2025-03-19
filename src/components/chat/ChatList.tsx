@@ -169,7 +169,7 @@ const ChatList: React.FC<ChatListProps> = ({
                 ) : (
                   conversation.lastMessage &&
                   conversation.lastMessage?.senderId === user?._id &&
-                  conversation.lastMessage?.readBy?.length !=
+                  conversation.lastMessage?.readBy?.length <
                     conversation?.members?.length && (
                     <div className="w-3 h-3 bg-pink-500 rounded-full"></div>
                   )

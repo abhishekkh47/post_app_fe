@@ -82,11 +82,11 @@ class GroupChatService {
     }
   }
 
-  async addGroupMembers(groupId: string, members: string) {
+  async addGroupMembers(groupId: string, members: string[]) {
     try {
       const response = await POST_SERVICE(
         GROUP_CHAT.ADD_GROUP_MEMBERS.replace(PATH_SLUGS.GROUP_ID, groupId),
-        JSON.stringify({ members })
+        JSON.stringify({ members: members[0] })
       );
       if (!response.ok) {
         throw new Error("Failed to load chat");
