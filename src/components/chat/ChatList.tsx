@@ -14,6 +14,7 @@ interface ChatListProps {
   selectedGroup: Group | null;
   onSelectConversation: (user: User) => void;
   onSelectGroup: (group: Group) => void;
+  newGroupCreated: () => void;
 }
 
 const ChatList: React.FC<ChatListProps> = ({
@@ -24,6 +25,7 @@ const ChatList: React.FC<ChatListProps> = ({
   selectedGroup,
   onSelectConversation,
   onSelectGroup,
+  newGroupCreated,
 }) => {
   // const {
   //   isModalOpen,
@@ -77,6 +79,7 @@ const ChatList: React.FC<ChatListProps> = ({
           modalPage={modalPage}
           updateModalPage={updateModalPage}
           user={user}
+          newGroupCreated={newGroupCreated}
         />
       </div>
       <div className="divide-y divide-gray-200">

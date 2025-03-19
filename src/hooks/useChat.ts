@@ -180,6 +180,13 @@ const useChat = () => {
     setSelectedUser(user);
   };
 
+  const newGroupCreated = () => {
+    ChatService.getConversations().then((data) => {
+      setConversations(data.conversations);
+      setGroups(data.groupConversations);
+    });
+  };
+
   return {
     conversations,
     groups,
@@ -192,6 +199,7 @@ const useChat = () => {
     updateMessages,
     handleSelectGroupChat,
     updateSelectedUser,
+    newGroupCreated,
   };
 };
 

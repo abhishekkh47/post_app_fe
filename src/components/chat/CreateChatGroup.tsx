@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { User } from "../../types";
-import { useNavigate } from "react-router-dom";
 import { GroupChatService } from "../../services";
 
 interface Group {
@@ -22,6 +21,7 @@ interface CreateChatGroupProps {
   modalPage: number;
   updateModalPage: (page: number) => void;
   user: User;
+  newGroupCreated: () => void;
 }
 
 const CreateChatGroup: React.FC<CreateChatGroupProps> = ({
@@ -31,18 +31,13 @@ const CreateChatGroup: React.FC<CreateChatGroupProps> = ({
   modalPage,
   updateModalPage,
   user,
+  newGroupCreated,
 }) => {
   if (!isOpen) return null;
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const [groupDescription, setGroupDescription] = useState<string>("");
   const [groupName, setGroupName] = useState<string>("");
   const [groupPic, setGroupPic] = useState<string | null>(null);
-
-  const [groups, setGroups] = useState<Group[]>([]);
-  const [loading, setLoading] = useState(true);
-  // const [showCreateForm, setShowCreateForm] = useState(false);
-  // const [selectedUsers, setSelectedUsers] = useState<string[]>([]);
-  const navigate = useNavigate();
 
   const handleMemberToggle = (userId: string) => {
     if (selectedMembers.includes(userId)) {
@@ -64,19 +59,6 @@ const CreateChatGroup: React.FC<CreateChatGroupProps> = ({
     setGroupName(event.target.value);
   };
 
-  const fetchGroups = async () => {
-    try {
-      setLoading(true);
-      // const response = await fetch("/api/groups");
-      const response = await GroupChatService.getGroups();
-      setGroups(response.groups);
-    } catch (error) {
-      console.error("Error fetching groups:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleCreateGroup = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -85,69 +67,27 @@ const CreateChatGroup: React.FC<CreateChatGroupProps> = ({
     }
 
     try {
-      const response = await GroupChatService.createGroup(
+      await GroupChatService.createGroup(
         groupName,
         groupDescription,
         selectedMembers
       );
 
-      const newGroup = response.group;
-
-      // Add the new group to the list
-      setGroups((prev) => [...prev, newGroup]);
-
+      newGroupCreated();
       // Reset form
       setGroupName("");
       setGroupDescription("");
       setSelectedMembers([]);
       onClose();
-      // setShowCreateForm(false);
-
-      // Navigate to the new group
-      // navigate(`/groups/${newGroup._id}`);
     } catch (error) {
       console.error("Error creating group:", error);
     }
-  };
-
-  const handleGroupClick = (groupId: string) => {
-    navigate(`/groups/${groupId}`);
   };
 
   const isGroupAdmin = (group: Group) => {
     return group.members.some(
       (member) => member.userId === user._id && member.role === "admin"
     );
-  };
-
-  const handleDeleteGroup = async (groupId: string, e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent navigation to group
-
-    if (!confirm("Are you sure you want to delete this group?")) {
-      return;
-    }
-
-    try {
-      await GroupChatService.deleteGroup(groupId);
-
-      // Remove group from list
-      setGroups((prev) => prev.filter((group) => group._id !== groupId));
-    } catch (error) {
-      console.error("Error deleting group:", error);
-    }
-  };
-
-  const handleLeaveGroup = async (groupId: string, e: React.MouseEvent) => {
-    e.stopPropagation(); // Prevent navigation to group
-
-    try {
-      await GroupChatService.removeGroupMember(groupId, user._id);
-
-      // Remove group from list or refresh to update
-      fetchGroups();
-    } catch (error) {
-      console.error("Error leaving group:", error);
-    }
   };
 
   const handleCancel = () => {

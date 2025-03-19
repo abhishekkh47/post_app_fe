@@ -12,6 +12,7 @@ const useGroupProfile = ({ groupId }: GroupProfileProps) => {
   const [groupProfile, setGroupProfile] = useState<Group | null>(null);
   const [isPublicProfile, setIsPublicProfile] = useState(false);
   const [isFollowing, setIsFollowing] = useState(false);
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
   const [openDeleteChatDialog, setOpenDeleteChatDialog] =
     useState<boolean>(false);
   const [openLeaveGroupDialog, setOpenLeaveGroupDialog] =
@@ -19,8 +20,8 @@ const useGroupProfile = ({ groupId }: GroupProfileProps) => {
   const { user, updateUser } = useAuth();
   const navigate = useNavigate();
 
-  // get user profile
-  const fetchProfile = async () => {
+  // get group details
+  const fetchGroupDetails = async () => {
     try {
       let data = null;
       if (groupId) {
@@ -34,7 +35,7 @@ const useGroupProfile = ({ groupId }: GroupProfileProps) => {
     }
   };
   useEffect(() => {
-    fetchProfile();
+    fetchGroupDetails();
   }, [groupId, setIsPublicProfile]);
 
   // follow and unfollow a user
@@ -46,7 +47,7 @@ const useGroupProfile = ({ groupId }: GroupProfileProps) => {
           followeeId: groupId,
         });
 
-      fetchProfile();
+      fetchGroupDetails();
       updateUser();
       setIsFollowing(!isFollowing);
     } catch (err) {
@@ -71,13 +72,23 @@ const useGroupProfile = ({ groupId }: GroupProfileProps) => {
     setOpenLeaveGroupDialog(!openLeaveGroupDialog);
   };
 
+  // non-funcitonal
   const deleteChat = (groupId: string) => {
     navigate(`/group/${groupId}`);
   };
 
   const addMemberToGroupChat = async (groupId: string, userId: string[]) => {
     await GroupChatService.addGroupMembers(groupId, userId);
+    await fetchGroupDetails();
+    toggleAddUserModal(false);
   };
+
+  const removeMemberFromGroup = async (groupId: string, userId: string) => {
+    await GroupChatService.removeGroupMember(groupId, userId);
+    await fetchGroupDetails();
+  };
+
+  const toggleAddUserModal = (status: boolean) => setIsAddUserModalOpen(status);
 
   return {
     user,
@@ -86,6 +97,7 @@ const useGroupProfile = ({ groupId }: GroupProfileProps) => {
     isFollowing,
     openDeleteChatDialog,
     openLeaveGroupDialog,
+    isAddUserModalOpen,
     setIsPublicProfile,
     setIsFollowing,
     handleFollow,
@@ -95,6 +107,8 @@ const useGroupProfile = ({ groupId }: GroupProfileProps) => {
     updateOpenLeaveGroupDialog,
     deleteChat,
     addMemberToGroupChat,
+    removeMemberFromGroup,
+    toggleAddUserModal,
   };
 };
 
