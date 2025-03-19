@@ -90,9 +90,6 @@ const GroupUserList: React.FC<GroupProfileProps> = ({
                   </div>
                 </div>
               </div>
-              {/* <button className="ml-auto">
-                <EllipsisVerticalIcon className="size-5" />
-              </button> */}
               <Menu as="div" className="relative ml-3">
                 <div>
                   <MenuButton className="relative flex focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
@@ -110,9 +107,17 @@ const GroupUserList: React.FC<GroupProfileProps> = ({
                       onClick={() =>
                         removeMemberFromGroup(groupProfile._id, member._id)
                       }
-                      className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+                      className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden hover:cursor-pointer"
                     >
                       Remove from group
+                    </a>
+                  </MenuItem>
+                  <MenuItem>
+                    <a
+                      onClick={() => {}}
+                      className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden hover:cursor-pointer"
+                    >
+                      Message
                     </a>
                   </MenuItem>
                 </MenuItems>

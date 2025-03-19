@@ -19,6 +19,7 @@ const GroupDetails: React.FC = () => {
     addMemberToGroupChat,
     removeMemberFromGroup,
     toggleAddUserModal,
+    isGroupAdmin,
   } = useGroupProfile({ groupId });
 
   if (!groupId) {
@@ -28,7 +29,11 @@ const GroupDetails: React.FC = () => {
   return (
     <div className="flex flex-col max-w-2xl mx-auto py-8 px-4">
       <div>
-        <GroupProfile user={user} groupProfile={groupProfile} />
+        <GroupProfile
+          user={user}
+          groupProfile={groupProfile}
+          isGroupAdmin={isGroupAdmin}
+        />
       </div>
       <div className="mt-4">
         <GroupUserList

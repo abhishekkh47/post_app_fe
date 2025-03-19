@@ -15,10 +15,6 @@ const UserProfile: React.FC<UserProfileProps> = ({
   handleFollow,
   isFollowing,
 }) => {
-  // const { user, profile, handleFollow, isFollowing } = useUserProfile({
-  //   userId,
-  // });
-
   if (!profile) {
     return <div>Loading profile...</div>;
   }

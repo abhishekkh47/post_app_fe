@@ -90,6 +90,12 @@ const useGroupProfile = ({ groupId }: GroupProfileProps) => {
 
   const toggleAddUserModal = (status: boolean) => setIsAddUserModalOpen(status);
 
+  const isGroupAdmin = (group: Group) => {
+    return group.members.some(
+      (member) => member.userId === user?._id && member.role === "admin"
+    );
+  };
+
   return {
     user,
     groupProfile,
@@ -109,6 +115,7 @@ const useGroupProfile = ({ groupId }: GroupProfileProps) => {
     addMemberToGroupChat,
     removeMemberFromGroup,
     toggleAddUserModal,
+    isGroupAdmin,
   };
 };
 
