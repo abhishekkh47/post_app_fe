@@ -141,5 +141,23 @@ class GroupChatService {
       throw new Error((error as Error).message);
     }
   }
+
+  async updateUserRole(groupId: string, userId: string, role: string) {
+    try {
+      const response = await PUT_SERVICE(
+        GROUP_CHAT.UPDATE_USER_ROLE.replace(
+          PATH_SLUGS.GROUP_ID,
+          groupId
+        ).replace(PATH_SLUGS.USERID, userId),
+        JSON.stringify({ role })
+      );
+      if (!response.ok) {
+        throw new Error("An error occurred");
+      }
+      return (await response.json())?.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
 }
 export default new GroupChatService();

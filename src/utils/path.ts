@@ -63,4 +63,5 @@ export const GROUP_CHAT = {
   REMOVE_GROUP_MEMBER: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}/members/${PATH_SLUGS.USERID}`,
   GET_GROUP_MESSAGE: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}/messages`,
   GET_GROUP_DETAILS: `${API_URL}/group/v1/get-details/${PATH_SLUGS.GROUP_ID}`,
+  UPDATE_USER_ROLE: `${API_URL}/group/v1/update-user-role/${PATH_SLUGS.GROUP_ID}/${PATH_SLUGS.USERID}`,
 };

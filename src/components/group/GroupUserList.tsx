@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Group, User } from "../../types";
 import AddGroupMembersModal from "./AddGroupMembersModal";
-import { FollowService } from "../../services";
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { NotAdmin } from "../dialog";
+import { useGroupUserList } from "../../hooks";
 
 interface GroupProfileProps {
   user: User | null;
@@ -13,6 +14,8 @@ interface GroupProfileProps {
   addMemberToGroupChat: (groupId: string, userId: string[]) => void;
   removeMemberFromGroup: (groupId: string, userId: string) => void;
   toggleAddUserModal: (status: boolean) => void;
+  isGroupAdmin: (group: Group, userId?: string) => boolean;
+  updateUserRole: (groupId: string, userId: string, role: string) => void;
 }
 
 const GroupUserList: React.FC<GroupProfileProps> = ({
@@ -23,25 +26,24 @@ const GroupUserList: React.FC<GroupProfileProps> = ({
   addMemberToGroupChat,
   removeMemberFromGroup,
   toggleAddUserModal,
+  isGroupAdmin,
+  updateUserRole,
 }) => {
   if (!user) return;
 
-  const [friends, setFriends] = useState<User[]>([]);
-
-  useEffect(() => {
-    fetchFriends();
-  }, []);
-
-  const fetchFriends = async () => {
-    try {
-      if (user) {
-        const myFriends = await FollowService.getFriends();
-        setFriends(myFriends.friends || []);
-      }
-    } catch (error) {
-      console.error((error as Error).message);
-    }
-  };
+  const {
+    friends,
+    openNotAdminDialog,
+    updateOpenNotAdminDialog,
+    handleRemoveMember,
+    handleUpdateUserRole,
+  } = useGroupUserList({
+    user,
+    groupProfile,
+    removeMemberFromGroup,
+    isGroupAdmin,
+    updateUserRole,
+  });
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
@@ -90,41 +92,59 @@ const GroupUserList: React.FC<GroupProfileProps> = ({
                   </div>
                 </div>
               </div>
-              <Menu as="div" className="relative ml-3">
-                <div>
-                  <MenuButton className="relative flex focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
-                    <span className="absolute -inset-1.5" />
-                    <span className="sr-only">Open user menu</span>
-                    <EllipsisVerticalIcon className="size-5" />
-                  </MenuButton>
-                </div>
-                <MenuItems
-                  transition
-                  className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
-                >
-                  <MenuItem>
-                    <a
-                      onClick={() =>
-                        removeMemberFromGroup(groupProfile._id, member._id)
-                      }
-                      className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden hover:cursor-pointer"
-                    >
-                      Remove from group
-                    </a>
-                  </MenuItem>
-                  <MenuItem>
-                    <a
-                      onClick={() => {}}
-                      className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden hover:cursor-pointer"
-                    >
-                      Message
-                    </a>
-                  </MenuItem>
-                </MenuItems>
-              </Menu>
+              {member._id !== user._id && (
+                <Menu as="div" className="relative ml-3">
+                  <div>
+                    <MenuButton className="relative flex focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
+                      <span className="absolute -inset-1.5" />
+                      <span className="sr-only">Open user menu</span>
+                      <EllipsisVerticalIcon className="size-5" />
+                    </MenuButton>
+                  </div>
+                  <MenuItems
+                    transition
+                    className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+                  >
+                    <MenuItem>
+                      <a
+                        onClick={() => handleRemoveMember(member._id)}
+                        className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden hover:cursor-pointer"
+                      >
+                        Remove from group
+                      </a>
+                    </MenuItem>
+                    <MenuItem>
+                      <a
+                        onClick={() => {
+                          handleUpdateUserRole(member._id);
+                        }}
+                        className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden hover:cursor-pointer"
+                      >
+                        {!isGroupAdmin(groupProfile, member._id)
+                          ? `Create group admin`
+                          : `Remove group admin`}
+                      </a>
+                    </MenuItem>
+                    <MenuItem>
+                      <a
+                        onClick={() => {}}
+                        className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden hover:cursor-pointer"
+                      >
+                        Message
+                      </a>
+                    </MenuItem>
+                  </MenuItems>
+                </Menu>
+              )}
             </div>
           );
         })}
+      {openNotAdminDialog && (
+        <NotAdmin
+          open={openNotAdminDialog}
+          handleOpen={updateOpenNotAdminDialog}
+        />
+      )}
     </div>
   );
 };

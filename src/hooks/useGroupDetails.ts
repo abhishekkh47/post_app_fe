@@ -90,15 +90,27 @@ const useGroupDetails = ({ groupId }: GroupDetailsProps) => {
 
   const toggleAddUserModal = (status: boolean) => setIsAddUserModalOpen(status);
 
-  const isGroupAdmin = (group: Group) => {
+  const isGroupAdmin = (group: Group, userId: string = "") => {
+    if (!userId) {
+      userId = user?._id || "";
+    }
     return group.members.some(
-      (member) => member.userId === user?._id && member.role === "admin"
+      (member) => member.userId === userId && member.role === "admin"
     );
   };
 
   const updateGroupDetails = async (groupId: string, data: GroupDetails) => {
     const { name, description = "" } = data;
     await GroupChatService.updateGroup(groupId, name, description);
+    await fetchGroupDetails();
+  };
+
+  const updateUserRole = async (
+    groupId: string,
+    userId: string,
+    role: string
+  ) => {
+    await GroupChatService.updateUserRole(groupId, userId, role);
     await fetchGroupDetails();
   };
 
@@ -123,6 +135,7 @@ const useGroupDetails = ({ groupId }: GroupDetailsProps) => {
     toggleAddUserModal,
     isGroupAdmin,
     updateGroupDetails,
+    updateUserRole,
   };
 };
 

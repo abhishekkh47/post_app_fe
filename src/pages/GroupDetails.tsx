@@ -21,6 +21,7 @@ const GroupDetails: React.FC = () => {
     toggleAddUserModal,
     isGroupAdmin,
     updateGroupDetails,
+    updateUserRole,
   } = useGroupDetails({ groupId });
 
   if (!groupId) {
@@ -45,6 +46,8 @@ const GroupDetails: React.FC = () => {
           removeMemberFromGroup={removeMemberFromGroup}
           isAddUserModalOpen={isAddUserModalOpen}
           toggleAddUserModal={toggleAddUserModal}
+          isGroupAdmin={isGroupAdmin}
+          updateUserRole={updateUserRole}
         />
       </div>
       <div className="mt-4">
