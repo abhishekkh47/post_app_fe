@@ -1,18 +1,24 @@
 import { useEffect, useRef, useState } from "react";
-import { Message, User } from "../types";
+import { Group, Message, User } from "../types";
 import { useSocket } from "../context/SocketContext";
 import { useNavigate } from "react-router-dom";
-import { WS_EVENTS } from "../utils";
+import { CHAT_TYPE, WS_EVENTS } from "../utils";
 
 interface UseChatProps {
   selectedUser: User | null;
+  selectedGroup: Group | null;
   messages: Message[];
   updateMessages: (newMessage: Message) => void;
-  onSendMessage: (content: string, attachments?: string[]) => void;
+  onSendMessage: (
+    content: string,
+    attachments?: string[],
+    type?: string
+  ) => void;
 }
 
 const useChatPopup = ({
   selectedUser,
+  selectedGroup,
   messages,
   updateMessages,
   onSendMessage,
@@ -21,13 +27,15 @@ const useChatPopup = ({
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { socket } = useSocket();
+  const { socket, notifyTyping, notifyGroupTyping } = useSocket();
   const navigate = useNavigate();
 
   const {
     CHAT: {
       LISTENER: { NEW_MESSAGE, USER_TYPING },
-      EMITTER: { TYPING },
+    },
+    GROUP: {
+      LISTENER: { GROUP_NEW_MESSAGE, GROUP_USER_TYPING },
     },
   } = WS_EVENTS;
 
@@ -40,12 +48,19 @@ const useChatPopup = ({
         }
       });
 
+      socket.on(GROUP_NEW_MESSAGE, (newMessage: Message) => {
+        if (selectedGroup && newMessage.senderId._id === selectedGroup._id) {
+          updateMessages(newMessage);
+        }
+      });
+
       // Cleanup when the component unmounts or the socket changes
       return () => {
         socket.off(NEW_MESSAGE);
+        socket.off(GROUP_NEW_MESSAGE);
       };
     }
-  }, [selectedUser, socket]);
+  }, [selectedUser, selectedGroup, socket]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -63,33 +78,53 @@ const useChatPopup = ({
         }
       });
 
+      socket.on(GROUP_USER_TYPING, (data: { groupId: string }) => {
+        if (selectedGroup?._id == data.groupId) {
+          updateTypingStatus(true);
+
+          setTimeout(() => {
+            updateTypingStatus(false);
+          }, 1500);
+        }
+      });
+
       // Cleanup when the component unmounts or the socket changes
       return () => {
         socket.off(USER_TYPING);
+        socket.off(GROUP_USER_TYPING);
       };
     }
-  }, [selectedUser, socket]);
+  }, [selectedUser, selectedGroup, socket]);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = (e: React.FormEvent) => {
+  const handleSend = (
+    e: React.FormEvent,
+    type: string = CHAT_TYPE.INDIVIDUAL
+  ) => {
     e.preventDefault();
     if (newMessage.trim()) {
-      onSendMessage(newMessage);
+      onSendMessage(newMessage, [], type);
       setNewMessage("");
     }
   };
 
   const handleTyping = () => {
     if (selectedUser && socket && newMessage.length) {
-      socket.emit(TYPING, { receiverId: selectedUser._id });
+      notifyTyping(selectedUser._id);
+    }
+    if (selectedGroup && socket && newMessage.length) {
+      notifyGroupTyping(selectedGroup._id);
     }
   };
 
   const onProfileClick = () => {
     navigate(`/profile/${selectedUser?._id}`);
+  };
+  const onGroupClick = () => {
+    navigate(`/group/${selectedGroup?._id}`);
   };
 
   const toggleMinimize = () => {
@@ -109,11 +144,12 @@ const useChatPopup = ({
     updateNewMessage,
     isMinimized,
     toggleMinimize,
-    onSendMessage: handleSend,
+    handleSend,
     handleTyping,
     onProfileClick,
     messagesEndRef,
     isTyping,
+    onGroupClick,
   };
 };
 

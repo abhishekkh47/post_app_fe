@@ -19,3 +19,38 @@ export interface Conversation {
   };
   unreadCount?: number;
 }
+
+export interface Group {
+  _id: string;
+  name: string;
+  description: string;
+  createdBy: string;
+  profile_pic: string;
+  members: [
+    {
+      userId: string;
+      role: string;
+      _id: string;
+      email: string;
+      firstName: string;
+      lastName: string;
+      profile_pic: string;
+    }
+  ];
+}
+
+export interface GroupMessage {
+  _id: string;
+  senderId: Partial<User>;
+  groupId: {
+    name: string;
+    _id: string;
+  };
+  content: string;
+  readBy: {
+    readAt: string;
+    userId: string;
+  };
+  attachments?: string[];
+  createdAt: string;
+}

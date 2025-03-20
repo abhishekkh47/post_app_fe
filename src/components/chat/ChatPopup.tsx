@@ -1,16 +1,22 @@
 import React from "react";
-import { User, Message } from "../../types";
+import { User, Message, Group } from "../../types";
 import { Send, Image, Minimize2, X } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { MessageBubble } from ".";
 import { useChatPopup } from "../../hooks";
+import { CHAT_TYPE } from "../../utils";
 
 interface ChatWindowProps {
   selectedUser: User | null;
   messages: Message[];
   updateMessages: (messages: Message) => void;
-  onSendMessage: (content: string, attachments?: string[]) => void;
+  onSendMessage: (
+    content: string,
+    attachments?: string[],
+    type?: string
+  ) => void;
   onClose: () => void;
+  selectedGroup: Group | null;
   className?: string;
 }
 
@@ -20,6 +26,7 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
   updateMessages,
   onSendMessage,
   onClose,
+  selectedGroup,
 }) => {
   const { user } = useAuth();
 
@@ -28,19 +35,21 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
     updateNewMessage,
     isMinimized,
     toggleMinimize,
-    onSendMessage: handleSend,
+    handleSend,
     handleTyping,
     onProfileClick,
     messagesEndRef,
     isTyping,
+    onGroupClick,
   } = useChatPopup({
     selectedUser,
+    selectedGroup,
     messages,
     updateMessages,
     onSendMessage,
   });
 
-  if (!selectedUser) {
+  if (!selectedUser && !selectedGroup) {
     return;
   }
 
@@ -55,9 +64,9 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
         <div className="p-3 border-b border-gray-200 flex items-center justify-between bg-white rounded-t-lg">
           <div
             className="flex items-center space-x-2 cursor-pointer"
-            onClick={onProfileClick}
+            onClick={selectedUser ? onProfileClick : onGroupClick}
           >
-            {selectedUser.profile_pic ? (
+            {selectedUser?.profile_pic ? (
               <img
                 src={selectedUser.profile_pic}
                 alt={selectedUser.firstName[0]}
@@ -66,11 +75,14 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
             ) : (
               // <div className="w-8 h-8 rounded-full bg-gray-200" />
               <div className="size-8 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
-                {selectedUser?.firstName[0]?.toUpperCase()}
+                {selectedUser?.firstName[0]?.toUpperCase() ||
+                  selectedGroup?.name[0]?.toUpperCase()}
               </div>
             )}
             <span className="font-medium text-sm">
-              {selectedUser.firstName} {selectedUser.lastName}
+              {selectedUser
+                ? `${selectedUser?.firstName} ${selectedUser?.lastName}`
+                : `${selectedGroup?.name}`}
             </span>
           </div>
           <div className="flex items-center space-x-2">
@@ -97,16 +109,13 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
                 <div
                   key={index}
                   className={`flex ${
-                    message.senderId._id === selectedUser._id
+                    // message.senderId._id === selectedUser?._id ||
+                    message.senderId._id !== user?._id
                       ? "justify-start"
                       : "justify-end"
                   }`}
                 >
-                  <MessageBubble
-                    message={message}
-                    selectedUser={selectedUser}
-                    user={user}
-                  />
+                  <MessageBubble message={message} user={user} />
                 </div>
               ))}
               <div ref={messagesEndRef} />
@@ -122,7 +131,12 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
 
             {/* Input */}
             <form
-              onSubmit={handleSend}
+              onSubmit={(e) =>
+                handleSend(
+                  e,
+                  selectedGroup ? CHAT_TYPE.GROUP : CHAT_TYPE.INDIVIDUAL
+                )
+              }
               className="p-3 border-t border-gray-200"
             >
               <div className="flex items-center space-x-2">

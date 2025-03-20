@@ -1,15 +1,49 @@
 // Frontend SocketProvider.tsx
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { io, Socket } from "socket.io-client";
+import { WS_EVENTS } from "../utils";
 
+const { CHAT, GROUP } = WS_EVENTS;
 interface SocketContextType {
   socket: Socket | null;
   isConnected: boolean;
+  // private chat methods
+  sendPrivateMessage: (
+    receiverId: string,
+    content: string,
+    attachments: string[]
+  ) => void;
+  notifyTyping: (receiverId: string) => void;
+  markAsRead: (senderId: string) => void;
+  // group chat methods
+  joinGroup: (groupId: string) => void;
+  leaveGroup: (groupId: string) => void;
+  sendGroupMessage: (
+    groupId: string,
+    content: string,
+    attachments?: string[]
+  ) => void;
+  notifyGroupTyping: (groupId: string) => void;
+  markGroupMessageAsRead: (groupId: string, messageId: string) => void;
 }
 
 const SocketContext = createContext<SocketContextType>({
   socket: null,
   isConnected: false,
+  sendPrivateMessage: () => {},
+  notifyTyping: () => {},
+  markAsRead: () => {},
+  joinGroup: () => {},
+  leaveGroup: () => {},
+  sendGroupMessage: () => {},
+  notifyGroupTyping: () => {},
+  markGroupMessageAsRead: () => {},
 });
 
 export const useSocket = () => useContext(SocketContext);
@@ -20,6 +54,82 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false); // Initialize as false
   const [error, setError] = useState<string | null>(null);
+
+  const sendPrivateMessage = useCallback(
+    (receiverId: string, content: string, attachments: string[] = []) => {
+      if (socket && isConnected) {
+        socket.emit(CHAT.EMITTER.PRIVATE_MSG, {
+          receiverId,
+          content,
+          attachments,
+        });
+      }
+    },
+    [socket, isConnected]
+  );
+
+  const notifyTyping = useCallback(
+    (receiverId: string) => {
+      if (socket && isConnected) {
+        socket.emit(CHAT.LISTENER.TYPING, { receiverId });
+      }
+    },
+    [socket, isConnected]
+  );
+  const markAsRead = useCallback(
+    (senderId: string) => {
+      if (socket && isConnected) {
+        socket.emit(WS_EVENTS.CHAT.LISTENER.MARK_READ, {
+          receiverId: senderId,
+        });
+      }
+    },
+    [socket, isConnected]
+  );
+  const joinGroup = useCallback(
+    (groupId: string) => {
+      if (socket && isConnected) {
+        socket.emit(WS_EVENTS.GROUP.EMITTER.JOIN_GROUP, { groupId });
+      }
+    },
+    [socket, isConnected]
+  );
+  const leaveGroup = useCallback(
+    (groupId: string) => {
+      if (socket && isConnected) {
+        socket.emit(WS_EVENTS.GROUP.EMITTER.LEAVE_GROUP, { groupId });
+      }
+    },
+    [socket, isConnected]
+  );
+  const sendGroupMessage = useCallback(
+    (groupId: string, content: string, attachments: string[] = []) => {
+      if (socket && isConnected) {
+        socket.emit(GROUP.EMITTER.GROUP_MSG, {
+          groupId,
+          content,
+          attachments,
+        });
+      }
+    },
+    [socket, isConnected]
+  );
+  const notifyGroupTyping = useCallback(
+    (groupId: string) => {
+      if (socket && isConnected) {
+        socket.emit(GROUP.EMITTER.GROUP_TYPING, { groupId });
+      }
+    },
+    [socket, isConnected]
+  );
+  const markGroupMessageAsRead = useCallback(
+    (groupId: string, messageId: string) => {
+      if (socket && isConnected) {
+        socket.emit(GROUP.EMITTER.GROUP_MARK_READ, { groupId, messageId });
+      }
+    },
+    [socket, isConnected]
+  );
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -79,7 +189,20 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   }, []);
 
   return (
-    <SocketContext.Provider value={{ socket, isConnected }}>
+    <SocketContext.Provider
+      value={{
+        socket,
+        isConnected,
+        sendPrivateMessage,
+        notifyTyping,
+        markAsRead,
+        joinGroup,
+        leaveGroup,
+        sendGroupMessage,
+        notifyGroupTyping,
+        markGroupMessageAsRead,
+      }}
+    >
       {children}
       {error && (
         <div

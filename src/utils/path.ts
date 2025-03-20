@@ -7,6 +7,7 @@ export const PATH_SLUGS = {
   COMMENTID: "#commentId",
   SEARCH: "#search",
   NOTIFICATION_ID: "#notificationId",
+  GROUP_ID: "#groupId",
 };
 
 export const AUTH = {
@@ -18,6 +19,7 @@ export const AUTH = {
 export const CHAT = {
   GET_CONVERSATION: `${API_URL}/chat/v1/conversations`,
   GET_MESSAGE: `${API_URL}/chat/v1/messages/${PATH_SLUGS.USERID}`,
+  CREATE_GROUP: `${API_URL}/chat/v1/create-chat-group`,
 };
 export const COMMENT = {
   CREATE_COMMENT: `${API_URL}/comment/v1/create-comment`,
@@ -29,6 +31,7 @@ export const FOLLOW = {
   UNFOLLOW: `${API_URL}/follow/v1/unfollow-user`,
   FOLLOWERS: `${API_URL}/follow/v1/followers/${PATH_SLUGS.USERID}`,
   FOLLOWING: `${API_URL}/follow/v1/following/${PATH_SLUGS.USERID}`,
+  FRIENDS: `${API_URL}/follow/v1/my-friends`,
 };
 export const POSTS = {
   GET_FEED: `${API_URL}/post/v1/get-feed`,
@@ -49,4 +52,16 @@ export const USER = {
 export const NOTIFICATION = {
   GET_NOTIFICATIONS: `${API_URL}/notification/v1/get-notifications`,
   READ_NOTIFICATION: `${API_URL}/notification/v1/read-notification`,
+};
+export const GROUP_CHAT = {
+  GET_GROUPS: `${API_URL}/group/v1/`,
+  CREATE_GROUP: `${API_URL}/group/v1/create-group`,
+  DELETE_GROUP: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}`,
+  GET_GROUP_BY_ID: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}`,
+  UPDATE_GROUP: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}`,
+  ADD_GROUP_MEMBERS: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}/members`,
+  REMOVE_GROUP_MEMBER: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}/members/${PATH_SLUGS.USERID}`,
+  GET_GROUP_MESSAGE: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}/messages`,
+  GET_GROUP_DETAILS: `${API_URL}/group/v1/get-details/${PATH_SLUGS.GROUP_ID}`,
+  UPDATE_USER_ROLE: `${API_URL}/group/v1/update-user-role/${PATH_SLUGS.GROUP_ID}/${PATH_SLUGS.USERID}`,
 };

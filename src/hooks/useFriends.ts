@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { useSocket } from "../context/SocketContext";
 import { useAuth } from "../context/AuthContext";
 import { ChatService, FollowService } from "../services";
+import { WS_EVENTS } from "../utils";
+import useChat from "./useChat";
 
 const useFriends = () => {
   const [activeTab, setActiveTab] = useState<"followers" | "following">(
@@ -16,6 +18,20 @@ const useFriends = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { socket } = useSocket();
+  const {
+    // selectedUser,
+    selectedGroup,
+    // handleCloseChat,
+    // updateSelectedUser,
+    // updateMessages,
+  } = useChat();
+
+  const {
+    CHAT: {
+      LISTENER: { MESSAGE_MARKED_READ },
+      EMITTER: { PRIVATE_MSG, MARK_READ },
+    },
+  } = WS_EVENTS;
 
   // Fetch data based on selected tab
   useEffect(() => {
@@ -26,12 +42,12 @@ const useFriends = () => {
     if (!socket) return;
     socket.connect();
 
-    socket.on("message_marked_read", () => {
+    socket.on(MESSAGE_MARKED_READ, () => {
       updateMessagesReadStatus();
     });
 
     return () => {
-      socket.off("message_marked_read");
+      socket.off(MESSAGE_MARKED_READ);
     };
   }, [socket, messages]);
 
@@ -77,7 +93,7 @@ const useFriends = () => {
 
       // Mark messages as read
       if (socket) {
-        socket.emit("mark_read", {
+        socket.emit(MARK_READ, {
           receiverId: friend._id,
         });
       }
@@ -103,7 +119,7 @@ const useFriends = () => {
     // Update the messages state immediately with the new message
     setMessages((prevMessages) => [...prevMessages, newMessage]);
 
-    socket.emit("private_message", {
+    socket.emit(PRIVATE_MSG, {
       receiverId: selectedUser._id,
       content,
       attachments,
@@ -131,6 +147,7 @@ const useFriends = () => {
     selectedUser,
     messages,
     activeTab,
+    selectedGroup,
     updateActiveTab,
     updateMessages,
     handleFriendClick,
