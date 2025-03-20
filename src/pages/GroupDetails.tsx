@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router-dom";
 import { GroupFooter, GroupProfile, GroupUserList } from "../components/group";
-import { useGroupProfile } from "../hooks";
+import { useGroupDetails } from "../hooks";
 
 const GroupDetails: React.FC = () => {
   const { groupId } = useParams<{ groupId: string }>();
@@ -20,7 +20,8 @@ const GroupDetails: React.FC = () => {
     removeMemberFromGroup,
     toggleAddUserModal,
     isGroupAdmin,
-  } = useGroupProfile({ groupId });
+    updateGroupDetails,
+  } = useGroupDetails({ groupId });
 
   if (!groupId) {
     return <div>User Not Found ...</div>; // Handle the case when user is undefined
@@ -30,9 +31,9 @@ const GroupDetails: React.FC = () => {
     <div className="flex flex-col max-w-2xl mx-auto py-8 px-4">
       <div>
         <GroupProfile
-          user={user}
           groupProfile={groupProfile}
           isGroupAdmin={isGroupAdmin}
+          updateGroupDetails={updateGroupDetails}
         />
       </div>
       <div className="mt-4">
@@ -48,7 +49,6 @@ const GroupDetails: React.FC = () => {
       </div>
       <div className="mt-4">
         <GroupFooter
-          user={user}
           groupProfile={groupProfile}
           onLeaveGroup={onLeaveGroup}
           openDeleteChatDialog={openDeleteChatDialog}

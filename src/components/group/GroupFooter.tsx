@@ -1,10 +1,9 @@
 import React from "react";
-import { Group, User } from "../../types";
+import { Group } from "../../types";
 import { ChatAction } from "../dialog";
 import { CHAT_GROUP_DIALOG } from "../../utils";
 
 interface GroupFooterProps {
-  user: User | null;
   groupProfile: Group | null;
   openDeleteChatDialog: boolean;
   openLeaveGroupDialog: boolean;
@@ -15,7 +14,6 @@ interface GroupFooterProps {
 }
 
 const GroupFooter: React.FC<GroupFooterProps> = ({
-  user,
   groupProfile,
   openDeleteChatDialog,
   openLeaveGroupDialog,

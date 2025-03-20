@@ -1,35 +1,39 @@
-import React, { useState } from "react";
-import { Group, User } from "../../types";
+import React from "react";
+import { Group, GroupDetails } from "../../types";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { NotAdmin } from "../dialog";
+import { NotAdmin, EditGroupDetails } from "../dialog";
+import { useGroupProfile } from "../../hooks";
 
 interface GroupProfileProps {
-  user: User | null;
   groupProfile: Group | null;
   isGroupAdmin: (group: Group) => boolean;
+  updateGroupDetails: (groupId: string, data: GroupDetails) => void;
 }
 
 const GroupProfile: React.FC<GroupProfileProps> = ({
-  user,
   groupProfile,
   isGroupAdmin,
+  updateGroupDetails,
 }) => {
   if (!groupProfile) {
     return <div>Loading profile...</div>;
   }
 
-  const [openDialog, setOpenDialog] = useState<boolean>(false);
-
-  const updateOpenDialog = () => {
-    setOpenDialog(!openDialog);
-  };
-
-  const handleEditClick = () => {
-    if (!isGroupAdmin(groupProfile)) {
-      updateOpenDialog();
-    }
-  };
+  const {
+    groupData,
+    openNotAdminDialog,
+    openUpdateGroupDialog,
+    handleEditClick,
+    updateGroupDetailsHandler,
+    handleChange,
+    updateOpenNotAdminDialog,
+    updateOpenUpdateGroupDialog,
+  } = useGroupProfile({
+    groupProfile,
+    isGroupAdmin,
+    updateGroupDetails,
+  });
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
@@ -57,8 +61,20 @@ const GroupProfile: React.FC<GroupProfileProps> = ({
           </MenuItem>
         </MenuItems>
       </Menu>
-      {openDialog && (
-        <NotAdmin open={openDialog} handleOpen={updateOpenDialog} />
+      {openNotAdminDialog && (
+        <NotAdmin
+          open={openNotAdminDialog}
+          handleOpen={updateOpenNotAdminDialog}
+        />
+      )}
+      {openUpdateGroupDialog && (
+        <EditGroupDetails
+          open={openUpdateGroupDialog}
+          handleOpen={updateOpenUpdateGroupDialog}
+          handler={updateGroupDetailsHandler}
+          formData={groupData}
+          handleChange={handleChange}
+        />
       )}
       <div className="justify-items-center">
         {groupProfile?.profile_pic ? (
