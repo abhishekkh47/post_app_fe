@@ -102,7 +102,12 @@ const GroupProfile: React.FC<GroupProfileProps> = ({
           >
             <MenuItem
               as="button"
-              onClick={() => window.open(groupProfile?.profile_pic, "_blank")}
+              onClick={() =>
+                window.open(
+                  `${config.API_URL}/uploads/${groupData.profile_pic}`,
+                  "_blank"
+                )
+              }
               className="block w-full px-4 py-2 text-left text-sm text-gray-700 data-focus:bg-gray-100"
             >
               View Image
