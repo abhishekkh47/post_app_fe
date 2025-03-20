@@ -5,6 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import { MessageBubble } from ".";
 import { useChatPopup } from "../../hooks";
 import { CHAT_TYPE } from "../../utils";
+import config from "../../config";
 
 interface ChatWindowProps {
   selectedUser: User | null;
@@ -66,17 +67,27 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
             className="flex items-center space-x-2 cursor-pointer"
             onClick={selectedUser ? onProfileClick : onGroupClick}
           >
-            {selectedUser?.profile_pic ? (
+            {selectedUser ? (
+              selectedUser?.profile_pic ? (
+                <img
+                  src={selectedUser.profile_pic}
+                  alt={selectedUser.firstName[0]}
+                  className="w-8 h-8 rounded-full object-cover"
+                />
+              ) : (
+                <div className="size-8 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
+                  {selectedUser?.firstName[0]?.toUpperCase()}
+                </div>
+              )
+            ) : selectedGroup?.profile_pic ? (
               <img
-                src={selectedUser.profile_pic}
-                alt={selectedUser.firstName[0]}
+                src={`${config.API_URL}/uploads/${selectedGroup.profile_pic}`}
+                alt={selectedGroup.name[0]}
                 className="w-8 h-8 rounded-full object-cover"
               />
             ) : (
-              // <div className="w-8 h-8 rounded-full bg-gray-200" />
               <div className="size-8 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
-                {selectedUser?.firstName[0]?.toUpperCase() ||
-                  selectedGroup?.name[0]?.toUpperCase()}
+                {selectedGroup?.name[0]?.toUpperCase()}
               </div>
             )}
             <span className="font-medium text-sm">

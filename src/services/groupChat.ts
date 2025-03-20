@@ -159,5 +159,22 @@ class GroupChatService {
       throw new Error((error as Error).message);
     }
   }
+
+  async updateGroupProfilePicture(groupId: string, file: File) {
+    try {
+      const formData = new FormData();
+      formData.append("groupProfilePicture", file);
+      const response = await PUT_SERVICE(
+        GROUP_CHAT.UPDATE_PROFILE_PICTURE.replace(PATH_SLUGS.GROUP_ID, groupId),
+        formData
+      );
+      if (!response.ok) {
+        throw new Error("An error occurred");
+      }
+      return (await response.json())?.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
 }
 export default new GroupChatService();

@@ -5,6 +5,7 @@ import { LucideUsers2 } from "lucide-react";
 import CreateChatGroup from "./CreateChatGroup";
 // import { GroupManagement } from ".";
 import { FollowService } from "../../services";
+import config from "../../config";
 
 interface ChatListProps {
   user: User;
@@ -145,9 +146,9 @@ const ChatList: React.FC<ChatListProps> = ({
             }
           >
             <div className="flex items-center space-x-3">
-              {conversation?.userDetails?.profile_pic ? (
+              {conversation?.profile_pic ? (
                 <img
-                  src={conversation?.userDetails?.profile_pic}
+                  src={`${config.API_URL}/uploads/${conversation?.profile_pic}`}
                   alt={`${conversation.name[0]}`}
                   className="w-12 h-12 rounded-full object-cover"
                 />

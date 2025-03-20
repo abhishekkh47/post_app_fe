@@ -42,13 +42,18 @@ export const DELETE_SERVICE = async (path: string) => {
   });
 };
 
-export const PUT_SERVICE = async (path: string, body: string) => {
+export const PUT_SERVICE = async (
+  path: string,
+  body: FormData | object | string
+) => {
+  const isFormData = body instanceof FormData;
+  const headers: HeadersInit = {
+    Authorization: AuthService.getToken(),
+    ...(isFormData ? {} : { "Content-Type": "application/json" }), // Don't set Content-Type for FormData
+  };
   return await fetch(path, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: AuthService.getToken(),
-    },
-    body,
+    headers,
+    body: isFormData ? body : JSON.stringify(body),
   });
 };
