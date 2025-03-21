@@ -14,13 +14,15 @@ export const SIGNUP_LOGIN_SERVICE = async (
   });
 };
 
-export const POST_SERVICE = async (path: string, body: string) => {
+export const POST_SERVICE = async (path: string, body: FormData | string) => {
+  const isFormData = body instanceof FormData;
+  const headers: HeadersInit = {
+    Authorization: AuthService.getToken(),
+    ...(isFormData ? {} : { "Content-Type": "application/json" }), // Don't set Content-Type for FormData
+  };
   return await fetch(path, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: AuthService.getToken(),
-    },
+    headers,
     body,
   });
 };

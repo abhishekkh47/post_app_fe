@@ -8,6 +8,7 @@ export const PATH_SLUGS = {
   SEARCH: "#search",
   NOTIFICATION_ID: "#notificationId",
   GROUP_ID: "#groupId",
+  CHAT_ID: "#chatId",
 };
 
 export const AUTH = {
@@ -66,4 +67,7 @@ export const GROUP_CHAT = {
   GET_GROUP_DETAILS: `${API_URL}/group/v1/get-details/${PATH_SLUGS.GROUP_ID}`,
   UPDATE_USER_ROLE: `${API_URL}/group/v1/update-user-role/${PATH_SLUGS.GROUP_ID}/${PATH_SLUGS.USERID}`,
   UPDATE_PROFILE_PICTURE: `${API_URL}/group/v1//update-profile-picture/${PATH_SLUGS.GROUP_ID}`,
+};
+export const CHAT_MEDIA = {
+  UPLOAD_FILE: `${API_URL}/common/v1/upload-chat-multimedia/${PATH_SLUGS.CHAT_ID}`,
 };
