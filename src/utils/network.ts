@@ -42,10 +42,7 @@ export const DELETE_SERVICE = async (path: string) => {
   });
 };
 
-export const PUT_SERVICE = async (
-  path: string,
-  body: FormData | object | string
-) => {
+export const PUT_SERVICE = async (path: string, body: FormData | string) => {
   const isFormData = body instanceof FormData;
   const headers: HeadersInit = {
     Authorization: AuthService.getToken(),
@@ -54,6 +51,6 @@ export const PUT_SERVICE = async (
   return await fetch(path, {
     method: "PUT",
     headers,
-    body: isFormData ? body : JSON.stringify(body),
+    body,
   });
 };

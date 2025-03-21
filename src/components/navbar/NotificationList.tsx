@@ -2,6 +2,7 @@ import React from "react";
 import { INotification } from "../../types";
 import { NOTIFICATION_TAB } from "../../utils";
 import { useNotificationList } from "../../hooks";
+import config from "../../config";
 
 interface INotificationList {
   notifications: INotification[];
@@ -58,7 +59,7 @@ const NotificationList: React.FC<INotificationList> = ({ notifications }) => {
                 <div>
                   {sender?.profile_pic ? (
                     <img
-                      src={sender?.profile_pic}
+                      src={`${config.API_URL}/uploads/${sender?.profile_pic}`}
                       alt={sender?.firstName[0]}
                       className="w-9 h-9 min-w-9 rounded-full object-cover"
                     />
