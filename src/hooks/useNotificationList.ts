@@ -5,7 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { INotification } from "../types";
 import { NotificationService } from "../services";
 
-const useNotificationList = () => {
+interface INotificationList {
+  markNotificationAsRead: (notificationId: string) => void;
+}
+
+const useNotificationList = ({ markNotificationAsRead }: INotificationList) => {
   const { toggleNotificationList } = useNavBar();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string>(NOTIFICATION_TAB.ALL);
@@ -19,6 +23,7 @@ const useNotificationList = () => {
     navigate(`/profile/${notification?.senderId?._id}`);
     toggleNotificationList(); // Close dropdown after navigation
     if (!notification.isRead) {
+      markNotificationAsRead(notification._id);
       await readNotification(notification._id);
     }
   };

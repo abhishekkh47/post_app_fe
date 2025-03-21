@@ -6,11 +6,15 @@ import config from "../../config";
 
 interface INotificationList {
   notifications: INotification[];
+  markNotificationAsRead: (notificationId: string) => void;
 }
 
-const NotificationList: React.FC<INotificationList> = ({ notifications }) => {
+const NotificationList: React.FC<INotificationList> = ({
+  notifications,
+  markNotificationAsRead,
+}) => {
   const { activeTab, updateActiveTab, handleNotificationClick } =
-    useNotificationList();
+    useNotificationList({ markNotificationAsRead });
 
   return (
     <ul className="absolute mt-4 mr-50 bg-white rounded-md z-50 w-64">

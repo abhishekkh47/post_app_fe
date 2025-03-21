@@ -28,10 +28,27 @@ const useNotification = () => {
     getNotifications();
   }, []);
 
+  const markNotificationAsRead = async (notificationId: string) => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.map((notification) => {
+        if (notification._id === notificationId) {
+          return { ...notification, isRead: true };
+        }
+        return notification;
+      })
+    );
+    setUnreadNotificationCount(
+      Number(unreadNotificationCount) > 0
+        ? Number(unreadNotificationCount) - 1
+        : 0
+    );
+  };
+
   return {
     notifications,
     unreadNotificationCount,
     getNotifications,
+    markNotificationAsRead,
   };
 };
 

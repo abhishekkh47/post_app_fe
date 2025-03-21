@@ -6,7 +6,8 @@ import { useClickOutside, useNavBar, useNotification } from "../../hooks";
 const Notification: React.FC = () => {
   const { notificationRef, openNotification, toggleNotificationList } =
     useNavBar();
-  const { notifications, unreadNotificationCount } = useNotification();
+  const { notifications, unreadNotificationCount, markNotificationAsRead } =
+    useNotification();
 
   useClickOutside(notificationRef, openNotification, () => {
     toggleNotificationList(); // Explicitly close the dropdown
@@ -37,7 +38,10 @@ const Notification: React.FC = () => {
         <BellIcon aria-hidden="true" className="size-8" />
         {openNotification && (
           <div className="absolute right-10 top-10">
-            <NotificationList notifications={notifications} />
+            <NotificationList
+              notifications={notifications}
+              markNotificationAsRead={markNotificationAsRead}
+            />
           </div>
         )}
       </button>
