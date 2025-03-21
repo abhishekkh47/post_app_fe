@@ -7,17 +7,20 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
+import { CONFIRM_DELETE, DELETE_DIALOG } from "../../utils";
 
 interface IDeleteAccount {
   open: boolean;
   handleOpen: () => void;
-  deleteAccount: () => void;
+  deleteHandler: () => void;
+  type?: string;
 }
 
 const DeleteAccount: React.FC<IDeleteAccount> = ({
   open,
   handleOpen,
-  deleteAccount,
+  deleteHandler,
+  type = CONFIRM_DELETE.ACCOUNT,
 }) => {
   return (
     <Dialog open={open} onClose={handleOpen} className="relative z-10">
@@ -45,13 +48,13 @@ const DeleteAccount: React.FC<IDeleteAccount> = ({
                     as="h3"
                     className="text-base font-semibold text-gray-900"
                   >
-                    Delete account
+                    {type == CONFIRM_DELETE.POST ? `Delete` : `Delete account`}
                   </DialogTitle>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">
-                      Are you sure you want to delete your account? All of your
-                      data will be permanently removed. This action cannot be
-                      undone.
+                      {type == CONFIRM_DELETE.POST
+                        ? DELETE_DIALOG.POST
+                        : DELETE_DIALOG.ACCOUNT}
                     </p>
                   </div>
                 </div>
@@ -60,7 +63,7 @@ const DeleteAccount: React.FC<IDeleteAccount> = ({
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
               <button
                 type="button"
-                onClick={() => deleteAccount()}
+                onClick={() => deleteHandler()}
                 className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-red-500 sm:ml-3 sm:w-auto"
               >
                 Delete

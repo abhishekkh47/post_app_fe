@@ -55,7 +55,7 @@ const Settings: React.FC = () => {
         <DeleteAccount
           open={openDeleteDialog}
           handleOpen={updateOpenDeleteDialog}
-          deleteAccount={handleDelete}
+          deleteHandler={handleDelete}
         />
       )}
     </div>

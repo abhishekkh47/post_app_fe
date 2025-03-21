@@ -50,3 +50,9 @@ export const CHAT_GROUP_DIALOG = {
   LEAVE_GROUP_DESC: `When you leave, you will no longer be able to see the chat history. You won't be able to send or receive messanes unless someone add you back to the group. No one will be notified that you left the group.`,
 };
 export const GROUP_CHAT_USER_ROLE = { MEMBER: "member", ADMIN: "admin" };
+
+export const CONFIRM_DELETE = { ACCOUNT: "account", POST: "post" };
+export const DELETE_DIALOG = {
+  ACCOUNT: `Are you sure you want to delete your account? All of your data will be permanently removed. This action cannot be undone.`,
+  POST: `Are you sure you want to delete this post?`,
+};

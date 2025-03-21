@@ -13,6 +13,7 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [updatedContent, setUpdatedContent] = useState(post.post);
   const [ifUpdated, setIfUpdated] = useState(false);
+  const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [comments, setComments] = useState<{
     commentList: Comment[];
     count: number;
@@ -91,12 +92,17 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
     }
   };
 
+  const updateConfirmationModal = () => {
+    setOpenConfirmationModal(!openConfirmationModal);
+  };
+
   return {
     showComments,
     isEditing,
     comments,
     updatedContent,
     reaction,
+    openConfirmationModal,
     getComments,
     handleCommentClick,
     handleDelete,
@@ -105,6 +111,7 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
     getPostsIfUpdated,
     updateIsEditing,
     updateReaction,
+    updateConfirmationModal,
   };
 };
 

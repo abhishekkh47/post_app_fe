@@ -12,6 +12,8 @@ import { CommentList, CreateComment } from "../comment";
 import { usePostCard } from "../../hooks";
 import { useAuth } from "../../context/AuthContext";
 import config from "../../config";
+import { DeleteAccount } from "../dialog";
+import { CONFIRM_DELETE } from "../../utils";
 
 interface PostCardProps {
   post: Post;
@@ -31,6 +33,7 @@ const PostCard: React.FC<PostCardProps> = ({
     comments,
     updatedContent,
     reaction,
+    openConfirmationModal,
     getComments,
     handleCommentClick,
     handleDelete,
@@ -38,6 +41,7 @@ const PostCard: React.FC<PostCardProps> = ({
     getPostsIfUpdated,
     updateIsEditing,
     updateReaction,
+    updateConfirmationModal,
   } = usePostCard({ post, fetchPosts });
 
   return (
@@ -97,7 +101,10 @@ const PostCard: React.FC<PostCardProps> = ({
                   >
                     <PencilIcon className="relative h-5 w-5" />
                   </button>
-                  <button onClick={handleDelete} className="hover:text-red-500">
+                  <button
+                    onClick={updateConfirmationModal}
+                    className="hover:text-red-500"
+                  >
                     <Trash2 className="h-5 w-5" />
                   </button>
                 </div>
@@ -152,6 +159,14 @@ const PostCard: React.FC<PostCardProps> = ({
             onCommentDelete={getComments}
           />
         </div>
+      )}
+      {openConfirmationModal && (
+        <DeleteAccount
+          open={openConfirmationModal}
+          handleOpen={updateConfirmationModal}
+          deleteHandler={handleDelete}
+          type={CONFIRM_DELETE.POST}
+        />
       )}
     </div>
   );
