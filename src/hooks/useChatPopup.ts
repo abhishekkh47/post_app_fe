@@ -168,6 +168,14 @@ const useChatPopup = ({
     fileInputRef.current?.click(); // Open the file input dialog
   };
 
+  const discardSelectedImage = () => {
+    setImagePreview(null);
+    setSelectedImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   return {
     newMessage,
     updateNewMessage,
@@ -183,6 +191,7 @@ const useChatPopup = ({
     imagePreview,
     handleFileChange,
     handleUploadClick,
+    discardSelectedImage,
   };
 };
 
