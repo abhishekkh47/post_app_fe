@@ -2,6 +2,7 @@ import React from "react";
 import { ChatPopup } from "../chat";
 import { MessageSquare } from "lucide-react";
 import { useFriends } from "../../hooks";
+import config from "../../config";
 
 const Friends: React.FC = () => {
   const {
@@ -62,7 +63,7 @@ const Friends: React.FC = () => {
               >
                 {friend?.profile_pic ? (
                   <img
-                    src={friend?.profile_pic}
+                    src={`${config.API_URL}/uploads/${friend?.profile_pic}`}
                     alt={friend?.firstName[0]}
                     className="w-12 h-12 rounded-full object-cover"
                   />
