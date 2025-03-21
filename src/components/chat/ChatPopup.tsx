@@ -42,6 +42,11 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
     messagesEndRef,
     isTyping,
     onGroupClick,
+    fileInputRef,
+    handleFileChange,
+    handleUploadClick,
+    imagePreview,
+    discardSelectedImage,
   } = useChatPopup({
     selectedUser,
     selectedGroup,
@@ -154,9 +159,37 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
                 <button
                   type="button"
                   className="p-1.5 text-gray-500 hover:text-gray-700 transition-colors"
+                  onClick={handleUploadClick}
                 >
                   <Image className="w-5 h-5" />
+                  {/* Hidden file input */}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    ref={fileInputRef}
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
                 </button>
+
+                {/* Image Preview */}
+                {imagePreview && (
+                  <div className="relative">
+                    <img
+                      src={imagePreview}
+                      alt="Preview"
+                      className="w-12 h-12 object-cover rounded-md mr-2"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => discardSelectedImage()}
+                      className="absolute top-0 right-0 bg-gray-700 text-white p-1 rounded-full"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+
                 <input
                   type="text"
                   value={newMessage}

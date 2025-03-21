@@ -3,6 +3,7 @@ import { Group, Message, User } from "../types";
 import { useSocket } from "../context/SocketContext";
 import { useNavigate } from "react-router-dom";
 import { CHAT_TYPE, WS_EVENTS } from "../utils";
+import { CommonService } from "../services";
 
 interface UseChatProps {
   selectedUser: User | null;
@@ -27,8 +28,12 @@ const useChatPopup = ({
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const { socket, notifyTyping, notifyGroupTyping } = useSocket();
   const navigate = useNavigate();
+  const chatId = selectedUser ? selectedUser._id : selectedGroup?._id;
 
   const {
     CHAT: {
@@ -100,14 +105,24 @@ const useChatPopup = ({
     scrollToBottom();
   }, [messages]);
 
-  const handleSend = (
+  const handleSend = async (
     e: React.FormEvent,
     type: string = CHAT_TYPE.INDIVIDUAL
   ) => {
     e.preventDefault();
+    let attachmentNames: string[] = [];
+    if (selectedImage) {
+      const response = await CommonService.uploadFiles(
+        chatId as string,
+        selectedImage
+      );
+      attachmentNames.push(response.filename);
+    }
     if (newMessage.trim()) {
-      onSendMessage(newMessage, [], type);
+      onSendMessage(newMessage, attachmentNames, type);
       setNewMessage("");
+      setSelectedImage(null);
+      setImagePreview(null);
     }
   };
 
@@ -139,6 +154,28 @@ const useChatPopup = ({
     setIsTyping(status);
   };
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e?.target?.files?.[0];
+    if (file) {
+      // setIsFileUpdated(true);
+      setSelectedImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
+
+  // Trigger file input when the "Upload Image" button is clicked
+  const handleUploadClick = () => {
+    fileInputRef.current?.click(); // Open the file input dialog
+  };
+
+  const discardSelectedImage = () => {
+    setImagePreview(null);
+    setSelectedImage(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   return {
     newMessage,
     updateNewMessage,
@@ -150,6 +187,11 @@ const useChatPopup = ({
     messagesEndRef,
     isTyping,
     onGroupClick,
+    fileInputRef,
+    imagePreview,
+    handleFileChange,
+    handleUploadClick,
+    discardSelectedImage,
   };
 };
 
