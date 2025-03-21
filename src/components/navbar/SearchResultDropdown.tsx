@@ -1,6 +1,7 @@
 import React from "react";
 import { User } from "../../types";
 import { useSearchResultDropdown } from "../../hooks";
+import config from "../../config";
 
 interface SearchResultDropdownProps {
   users: User[];
@@ -27,7 +28,7 @@ const SearchResultDropdown: React.FC<SearchResultDropdownProps> = ({
         >
           {user?.profile_pic ? (
             <img
-              src={user.profile_pic}
+              src={`${config.API_URL}/uploads/${user.profile_pic}`}
               alt={user.firstName}
               className="w-8 h-8 rounded-full object-cover"
             />

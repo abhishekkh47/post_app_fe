@@ -1,16 +1,21 @@
 import React from "react";
 import { UserProfile, ProfileFeed } from "../components/profile";
 import { useParams } from "react-router-dom";
-import { useUserProfile } from "../hooks";
+import { useProfile } from "../hooks";
 
 const Profile: React.FC = () => {
   const { userId } = useParams<{ userId: string }>();
-  // const { user } = useAuth();
-  const { isFollowing, isPublicProfile, user, profile, handleFollow } =
-    useUserProfile({ userId });
+  const {
+    isFollowing,
+    isPublicProfile,
+    user,
+    profile,
+    handleFollow,
+    updateUser,
+  } = useProfile({ userId });
 
   if (!userId) {
-    return <div>User Not Found ...</div>; // Handle the case when user is undefined
+    return <div>User Not Found ...</div>;
   }
 
   return (
@@ -21,6 +26,7 @@ const Profile: React.FC = () => {
         profile={profile}
         isFollowing={isFollowing}
         handleFollow={handleFollow}
+        updateUser={updateUser}
       />
       {(user?._id === userId || isPublicProfile || isFollowing) && (
         <div className="py-8">

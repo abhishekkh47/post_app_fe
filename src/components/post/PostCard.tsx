@@ -11,6 +11,7 @@ import {
 import { CommentList, CreateComment } from "../comment";
 import { usePostCard } from "../../hooks";
 import { useAuth } from "../../context/AuthContext";
+import config from "../../config";
 
 interface PostCardProps {
   post: Post;
@@ -45,7 +46,11 @@ const PostCard: React.FC<PostCardProps> = ({
         <div className="flex items-center space-x-2">
           {post?.userId?.profile_pic ? (
             <img
-              src={post?.userId?.profile_pic}
+              src={`${config.API_URL}/uploads/${
+                user?._id === post?.userId?._id
+                  ? user.profile_pic
+                  : post?.userId?.profile_pic
+              }`}
               alt={`${post?.userId?.firstName} ${post?.userId?.lastName}`}
               className="w-10 h-10 rounded-full object-cover"
             />

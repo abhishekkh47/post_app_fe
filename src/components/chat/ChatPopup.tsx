@@ -70,7 +70,7 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
             {selectedUser ? (
               selectedUser?.profile_pic ? (
                 <img
-                  src={selectedUser.profile_pic}
+                  src={`${config.API_URL}/uploads/${selectedUser.profile_pic}`}
                   alt={selectedUser.firstName[0]}
                   className="w-8 h-8 rounded-full object-cover"
                 />

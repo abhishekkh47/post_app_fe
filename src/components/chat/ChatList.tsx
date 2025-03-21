@@ -102,7 +102,7 @@ const ChatList: React.FC<ChatListProps> = ({
             <div className="flex items-center space-x-3">
               {conversation.userDetails.profile_pic ? (
                 <img
-                  src={conversation.userDetails.profile_pic}
+                  src={`${config.API_URL}/uploads/${conversation.userDetails.profile_pic}`}
                   alt={`${conversation.userDetails.firstName} ${conversation.userDetails.lastName}`}
                   className="w-12 h-12 rounded-full object-cover"
                 />

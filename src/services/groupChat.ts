@@ -163,7 +163,7 @@ class GroupChatService {
   async updateGroupProfilePicture(groupId: string, file: File) {
     try {
       const formData = new FormData();
-      formData.append("groupProfilePicture", file);
+      formData.append("profilePicture", file);
       const response = await PUT_SERVICE(
         GROUP_CHAT.UPDATE_PROFILE_PICTURE.replace(PATH_SLUGS.GROUP_ID, groupId),
         formData

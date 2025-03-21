@@ -13,6 +13,7 @@ import logo from "../../image.png";
 import { Loader2 } from "lucide-react";
 import { SearchBar, Notification } from "./";
 import { useNavBar } from "../../hooks";
+import config from "../../config";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -89,7 +90,7 @@ const NavBar: React.FC = () => {
                   {user?.profile_pic ? (
                     <img
                       alt={user?.firstName[0]}
-                      src={user?.profile_pic}
+                      src={`${config.API_URL}/uploads/${user?.profile_pic}`}
                       className="size-8 rounded-full object-cover"
                     />
                   ) : (

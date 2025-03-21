@@ -73,5 +73,19 @@ class UserService {
       throw new Error((error as Error).message);
     }
   }
+
+  async updateProfilePicture(file: File) {
+    try {
+      const formData = new FormData();
+      formData.append("profilePicture", file);
+      const response = await PUT_SERVICE(USER.UPDATE_PROFILE_PICTURE, formData);
+      if (!response.ok) {
+        throw new Error("Cannot complete action at the moment");
+      }
+      return (await response.json())?.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
 }
 export default new UserService();

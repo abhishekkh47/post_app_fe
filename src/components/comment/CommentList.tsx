@@ -3,6 +3,7 @@ import { Comment } from "../../types";
 import { useAuth } from "../../context/AuthContext";
 import { Trash2 } from "lucide-react";
 import { useCommentList } from "../../hooks";
+import config from "../../config";
 
 interface CommentListProps {
   comments: Comment[];
@@ -22,7 +23,7 @@ const CommentList: React.FC<CommentListProps> = ({
         <div key={comment?._id} className="flex items-start space-x-3">
           {comment?.userId?.profile_pic ? (
             <img
-              src={comment?.userId?.profile_pic}
+              src={`${config.API_URL}/uploads/${comment?.userId?.profile_pic}`}
               alt={`${comment?.userId?.firstName} ${comment?.userId?.lastName}`}
               className="h-8 w-8 rounded-full object-cover"
             />

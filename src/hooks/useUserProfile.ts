@@ -1,61 +1,75 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import { User } from "../types";
-import { useAuth } from "../context/AuthContext";
-import { FollowService, UserService } from "../services";
+import { UserService } from "../services";
 
 interface UserProfileProps {
-  userId: string | undefined;
+  profile: User;
+  updateUser: () => void;
 }
 
-const useUserProfile = ({ userId }: UserProfileProps) => {
-  const [profile, setProfile] = useState<User | null>(null);
-  const [isPublicProfile, setIsPublicProfile] = useState(false);
-  const [isFollowing, setIsFollowing] = useState(false);
-  const { user, updateUser } = useAuth();
+const useUserProfile = ({ profile, updateUser }: UserProfileProps) => {
+  const [image, setImage] = useState<string | null>(
+    profile.profile_pic || null
+  );
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(
+    profile.profile_pic || null
+  );
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const [isFileUpdated, setIsFileUpdated] = useState<boolean>(false);
 
-  // get user profile
-  const fetchProfile = async () => {
-    try {
-      let data = null;
-      if (userId) {
-        data = await UserService.fetchUserProfile(userId);
-      }
-      setProfile(data?.userDetails);
-      setIsFollowing(data?.isFollowing);
-      setIsPublicProfile(data?.userDetails?.isPrivate === false);
-    } catch (err) {
-      console.error("Failed to fetch profile:", err);
+  const handleImageClick = () => {
+    if (image) {
+      setIsModalOpen(true);
     }
   };
-  useEffect(() => {
-    fetchProfile();
-  }, [userId, setIsPublicProfile]);
 
-  // follow and unfollow a user
-  const handleFollow = async () => {
-    try {
-      if (user?._id && userId)
-        await FollowService.followOrUnfollowUser(isFollowing, {
-          followerId: user?._id,
-          followeeId: userId,
-        });
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e?.target?.files?.[0];
+    if (file) {
+      setIsFileUpdated(true);
+      setSelectedImage(file);
+      setImagePreview(URL.createObjectURL(file));
+    }
+  };
 
-      fetchProfile();
+  // Trigger file input when the "Upload Image" button is clicked
+  const handleUploadClick = () => {
+    fileInputRef.current?.click(); // Open the file input dialog
+  };
+
+  const handleSaveClick = async () => {
+    if (imagePreview) {
+      setIsFileUpdated(true);
+      setImage(imagePreview);
+      await UserService.updateProfilePicture(selectedImage as File);
       updateUser();
-      setIsFollowing(!isFollowing);
-    } catch (err) {
-      console.error("Failed to follow/unfollow:", err);
+    }
+    setIsModalOpen(false);
+  };
+
+  const updateSetModalOpen = (status: boolean) => {
+    setIsModalOpen(status);
+    setSelectedImage(null);
+    setImagePreview(profile.profile_pic || null);
+    if (!status) {
+      setIsFileUpdated(false);
     }
   };
 
   return {
-    user,
-    profile,
-    isPublicProfile,
-    isFollowing,
-    setIsPublicProfile,
-    setIsFollowing,
-    handleFollow,
+    image,
+    selectedImage,
+    imagePreview,
+    isModalOpen,
+    fileInputRef,
+    isFileUpdated,
+    handleImageClick,
+    handleFileChange,
+    handleUploadClick,
+    handleSaveClick,
+    updateSetModalOpen,
   };
 };
 
