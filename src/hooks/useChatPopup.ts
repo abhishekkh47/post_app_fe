@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { Group, Message, User, ImagePreviewData } from "../types";
+import { Group, Message, User, ImagePreviewData, fileMetadata } from "../types";
 import { useSocket } from "../context/SocketContext";
 import { useNavigate } from "react-router-dom";
-import { CHAT_TYPE, WS_EVENTS, fileToBase64 } from "../utils";
+import { CHAT_TYPE, WS_EVENTS, fileToBase64, base64ToFile } from "../utils";
 import { CommonService } from "../services";
 
 interface UseChatProps {
@@ -170,14 +170,23 @@ const useChatPopup = ({
     if (files && files.length > 0) {
       const newSelectedImages: File[] = [];
       const newImagePreviews: string[] = [];
+      const fileMetadata: fileMetadata[] = [];
 
-      // Convert all files to base64
+      // Convert all files to base64 and store metadata
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         try {
           const base64String = await fileToBase64(file);
           newSelectedImages.push(file);
           newImagePreviews.push(base64String);
+
+          // Store file metadata for later reconstruction
+          fileMetadata.push({
+            name: file.name,
+            type: file.type,
+            size: file.size,
+            lastModified: file.lastModified,
+          });
         } catch (error) {
           console.error("Error converting file to base64:", error);
         }
@@ -193,14 +202,25 @@ const useChatPopup = ({
         ...newImagePreviews,
       ]);
 
-      // Store base64 strings in localStorage
+      // Store both base64 strings and file metadata in localStorage
       const currentPreviews = [...imagePreview, ...newImagePreviews];
+      const currentMetadata = [
+        ...selectedImage.map((file) => ({
+          name: file.name,
+          type: file.type,
+          size: file.size,
+          lastModified: file.lastModified,
+        })),
+        ...fileMetadata,
+      ];
+
       localStorage.setItem(
         `imagePreviews_${selectedUser?._id || selectedGroup?._id}`,
         JSON.stringify({
           id: selectedUser?._id || selectedGroup?._id,
           imagePreviews: currentPreviews,
-          isBase64: true, // Flag indicating these are base64 strings
+          fileMetadata: currentMetadata,
+          isBase64: true,
         })
       );
     }
@@ -220,20 +240,40 @@ const useChatPopup = ({
     setSelectedImage((prevFiles) => prevFiles.filter((_, i) => i !== index));
 
     // Update localStorage after removing an image
-    const updatedPreviews = imagePreview.filter((_, i) => i !== index);
-    if (updatedPreviews.length > 0) {
-      localStorage.setItem(
-        `imagePreviews_${selectedUser?._id || selectedGroup?._id}`,
-        JSON.stringify({
-          id: selectedUser?._id || selectedGroup?._id,
-          imagePreviews: updatedPreviews,
-          isBase64: true,
-        })
-      );
-    } else {
-      // Remove from localStorage if no images left
-      localStorage.removeItem(
+    try {
+      const storedData = localStorage.getItem(
         `imagePreviews_${selectedUser?._id || selectedGroup?._id}`
+      );
+
+      if (storedData) {
+        const data: ImagePreviewData = JSON.parse(storedData);
+
+        // Remove the image and its metadata at the specified index
+        const updatedPreviews = data.imagePreviews.filter(
+          (_, i) => i !== index
+        );
+        const updatedMetadata = data.fileMetadata.filter((_, i) => i !== index);
+
+        if (updatedPreviews.length > 0) {
+          localStorage.setItem(
+            `imagePreviews_${selectedUser?._id || selectedGroup?._id}`,
+            JSON.stringify({
+              ...data,
+              imagePreviews: updatedPreviews,
+              fileMetadata: updatedMetadata,
+            })
+          );
+        } else {
+          // Remove from localStorage if no images left
+          localStorage.removeItem(
+            `imagePreviews_${selectedUser?._id || selectedGroup?._id}`
+          );
+        }
+      }
+    } catch (error) {
+      console.error(
+        "Error updating localStorage after discarding image:",
+        error
       );
     }
 
@@ -247,34 +287,62 @@ const useChatPopup = ({
       const storedData = localStorage.getItem(
         `imagePreviews_${selectedUser?._id || selectedGroup?._id}`
       );
-
       if (!storedData) {
         setImagePreview([]);
+        setSelectedImage([]);
         return;
       }
 
-      const localImagePreviews: ImagePreviewData = JSON.parse(storedData);
-
+      const localImageData: ImagePreviewData = JSON.parse(storedData);
       if (
-        localImagePreviews &&
-        localImagePreviews.id === (selectedUser?._id || selectedGroup?._id)
+        localImageData &&
+        localImageData.id === (selectedUser?._id || selectedGroup?._id)
       ) {
         // Check if the stored previews are base64 strings
-        if (localImagePreviews.isBase64) {
-          setImagePreview(localImagePreviews.imagePreviews);
+        if (localImageData.isBase64) {
+          setImagePreview(localImageData.imagePreviews);
+
+          // Regenerate File objects from base64 strings
+          if (
+            localImageData.fileMetadata &&
+            localImageData.fileMetadata.length ===
+              localImageData.imagePreviews.length
+          ) {
+            try {
+              const regeneratedFiles = localImageData.imagePreviews.map(
+                (base64String, index) => {
+                  const metadata = localImageData.fileMetadata[index];
+                  return base64ToFile(base64String, metadata);
+                }
+              );
+
+              setSelectedImage(regeneratedFiles);
+            } catch (error) {
+              console.error("Error recreating files from base64:", error);
+              setSelectedImage([]);
+            }
+          } else {
+            console.warn(
+              "Metadata and preview counts don't match, can't regenerate files"
+            );
+            setSelectedImage([]);
+          }
         } else {
           // Handle old format (URL.createObjectURL) by clearing it
           setImagePreview([]);
+          setSelectedImage([]);
           localStorage.removeItem(
             `imagePreviews_${selectedUser?._id || selectedGroup?._id}`
           );
         }
       } else {
         setImagePreview([]);
+        setSelectedImage([]);
       }
     } catch (error) {
       console.error("Error parsing image previews from localStorage:", error);
       setImagePreview([]);
+      setSelectedImage([]);
     }
   };
 
@@ -285,6 +353,7 @@ const useChatPopup = ({
   const onCloseChatPopup = () => {
     onClose();
     setImagePreview([]);
+    setSelectedImage([]);
   };
 
   return {
