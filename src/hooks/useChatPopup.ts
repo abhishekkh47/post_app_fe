@@ -173,6 +173,9 @@ const useChatPopup = ({
         ...newImagePreviews,
       ]);
     }
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   // Trigger file input when the "Upload Image" button is clicked
@@ -180,9 +183,11 @@ const useChatPopup = ({
     fileInputRef.current?.click(); // Open the file input dialog
   };
 
-  const discardSelectedImage = () => {
-    setImagePreview([]);
-    setSelectedImage([]);
+  const discardSelectedImage = (index: number) => {
+    // setImagePreview([]);
+    // setSelectedImage([]);
+    setImagePreview((prevImages) => prevImages.filter((_, i) => i !== index));
+    setSelectedImage((prevFiles) => prevFiles.filter((_, i) => i !== index));
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
