@@ -118,6 +118,10 @@ const useChatPopup = ({
       );
       attachmentNames = response.filename;
     }
+    if (attachmentNames.length > 10) {
+      alert("You can only send 10 images at a time");
+      return false;
+    }
     if (newMessage.trim() || attachmentNames.length) {
       onSendMessage(newMessage, attachmentNames, type);
       setNewMessage("");
