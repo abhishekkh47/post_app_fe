@@ -157,23 +157,28 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
             >
               {/* Image Preview */}
               {imagePreview.length ? (
-                <div className="flex flex-row pb-2">
-                  {imagePreview.map((image, index) => (
-                    <div key={index} className="relative">
-                      <img
-                        src={image}
-                        alt="Preview"
-                        className="w-12 h-12 object-cover rounded-md mr-2"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => discardSelectedImage(index)}
-                        className="absolute top-0 right-0 bg-gray-700 text-white p-1 rounded-full"
+                <div className="relative w-full max-w-full overflow-x-auto">
+                  <div className="flex flex-row space-x-2 pb-2">
+                    {imagePreview.map((image, index) => (
+                      <div
+                        key={index}
+                        className="relative w-12 h-12 flex-shrink-0 cursor-pointer"
                       >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  ))}
+                        <img
+                          src={image}
+                          alt="Preview"
+                          className="w-full h-full object-cover rounded-md"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => discardSelectedImage(index)}
+                          className="absolute top-0 right-0 bg-gray-700 text-white p-1 rounded-full"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               ) : null}
               <div className="flex items-center space-x-2">
