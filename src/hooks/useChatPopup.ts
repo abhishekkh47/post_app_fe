@@ -29,8 +29,8 @@ const useChatPopup = ({
   const [isTyping, setIsTyping] = useState<boolean>(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string[]>([]);
+  const [selectedImage, setSelectedImage] = useState<File[]>([]);
   const { socket, notifyTyping, notifyGroupTyping } = useSocket();
   const navigate = useNavigate();
   const chatId = selectedUser ? selectedUser._id : selectedGroup?._id;
@@ -116,13 +116,13 @@ const useChatPopup = ({
         chatId as string,
         selectedImage
       );
-      attachmentNames.push(response.filename);
+      attachmentNames = response.filename;
     }
-    if (newMessage.trim()) {
+    if (newMessage.trim() || attachmentNames.length) {
       onSendMessage(newMessage, attachmentNames, type);
       setNewMessage("");
-      setSelectedImage(null);
-      setImagePreview(null);
+      setSelectedImage([]);
+      setImagePreview([]);
     }
   };
 
@@ -155,11 +155,23 @@ const useChatPopup = ({
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e?.target?.files?.[0];
-    if (file) {
-      // setIsFileUpdated(true);
-      setSelectedImage(file);
-      setImagePreview(URL.createObjectURL(file));
+    const files = e?.target?.files;
+    if (files) {
+      const newSelectedImages: File[] = [];
+      const newImagePreviews: string[] = [];
+      for (let file of files) {
+        // setIsFileUpdated(true);
+        newSelectedImages.push(file);
+        newImagePreviews.push(URL.createObjectURL(file));
+      }
+      setSelectedImage((prevSelectedImages) => [
+        ...prevSelectedImages,
+        ...newSelectedImages,
+      ]);
+      setImagePreview((prevImagePreviews) => [
+        ...prevImagePreviews,
+        ...newImagePreviews,
+      ]);
     }
   };
 
@@ -169,8 +181,8 @@ const useChatPopup = ({
   };
 
   const discardSelectedImage = () => {
-    setImagePreview(null);
-    setSelectedImage(null);
+    setImagePreview([]);
+    setSelectedImage([]);
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
