@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { Group, Message, User } from "../types";
+import { Group, Message, User, ImagePreviewData } from "../types";
 import { useSocket } from "../context/SocketContext";
 import { useNavigate } from "react-router-dom";
-import { CHAT_TYPE, WS_EVENTS } from "../utils";
+import { CHAT_TYPE, WS_EVENTS, fileToBase64 } from "../utils";
 import { CommonService } from "../services";
 
 interface UseChatProps {
@@ -15,6 +15,7 @@ interface UseChatProps {
     attachments?: string[],
     type?: string
   ) => void;
+  onClose: () => void;
 }
 
 const useChatPopup = ({
@@ -23,6 +24,7 @@ const useChatPopup = ({
   messages,
   updateMessages,
   onSendMessage,
+  onClose,
 }: UseChatProps) => {
   const [newMessage, setNewMessage] = useState<string>("");
   const [isMinimized, setIsMinimized] = useState<boolean>(false);
@@ -111,7 +113,7 @@ const useChatPopup = ({
   ) => {
     e.preventDefault();
     let attachmentNames: string[] = [];
-    if (selectedImage) {
+    if (selectedImage.length > 0) {
       const response = await CommonService.uploadFiles(
         chatId as string,
         selectedImage
@@ -127,6 +129,11 @@ const useChatPopup = ({
       setNewMessage("");
       setSelectedImage([]);
       setImagePreview([]);
+
+      // Clear localStorage when sending the message
+      localStorage.removeItem(
+        `imagePreviews_${selectedUser?._id || selectedGroup?._id}`
+      );
     }
   };
 
@@ -158,25 +165,46 @@ const useChatPopup = ({
     setIsTyping(status);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e?.target?.files;
-    if (files) {
+    if (files && files.length > 0) {
       const newSelectedImages: File[] = [];
       const newImagePreviews: string[] = [];
-      for (let file of files) {
-        // setIsFileUpdated(true);
-        newSelectedImages.push(file);
-        newImagePreviews.push(URL.createObjectURL(file));
+
+      // Convert all files to base64
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        try {
+          const base64String = await fileToBase64(file);
+          newSelectedImages.push(file);
+          newImagePreviews.push(base64String);
+        } catch (error) {
+          console.error("Error converting file to base64:", error);
+        }
       }
+
       setSelectedImage((prevSelectedImages) => [
         ...prevSelectedImages,
         ...newSelectedImages,
       ]);
+
       setImagePreview((prevImagePreviews) => [
         ...prevImagePreviews,
         ...newImagePreviews,
       ]);
+
+      // Store base64 strings in localStorage
+      const currentPreviews = [...imagePreview, ...newImagePreviews];
+      localStorage.setItem(
+        `imagePreviews_${selectedUser?._id || selectedGroup?._id}`,
+        JSON.stringify({
+          id: selectedUser?._id || selectedGroup?._id,
+          imagePreviews: currentPreviews,
+          isBase64: true, // Flag indicating these are base64 strings
+        })
+      );
     }
+
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
@@ -188,13 +216,75 @@ const useChatPopup = ({
   };
 
   const discardSelectedImage = (index: number) => {
-    // setImagePreview([]);
-    // setSelectedImage([]);
     setImagePreview((prevImages) => prevImages.filter((_, i) => i !== index));
     setSelectedImage((prevFiles) => prevFiles.filter((_, i) => i !== index));
+
+    // Update localStorage after removing an image
+    const updatedPreviews = imagePreview.filter((_, i) => i !== index);
+    if (updatedPreviews.length > 0) {
+      localStorage.setItem(
+        `imagePreviews_${selectedUser?._id || selectedGroup?._id}`,
+        JSON.stringify({
+          id: selectedUser?._id || selectedGroup?._id,
+          imagePreviews: updatedPreviews,
+          isBase64: true,
+        })
+      );
+    } else {
+      // Remove from localStorage if no images left
+      localStorage.removeItem(
+        `imagePreviews_${selectedUser?._id || selectedGroup?._id}`
+      );
+    }
+
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
+  };
+
+  const getLocalImagePreviews = () => {
+    try {
+      const storedData = localStorage.getItem(
+        `imagePreviews_${selectedUser?._id || selectedGroup?._id}`
+      );
+
+      if (!storedData) {
+        setImagePreview([]);
+        return;
+      }
+
+      const localImagePreviews: ImagePreviewData = JSON.parse(storedData);
+
+      if (
+        localImagePreviews &&
+        localImagePreviews.id === (selectedUser?._id || selectedGroup?._id)
+      ) {
+        // Check if the stored previews are base64 strings
+        if (localImagePreviews.isBase64) {
+          setImagePreview(localImagePreviews.imagePreviews);
+        } else {
+          // Handle old format (URL.createObjectURL) by clearing it
+          setImagePreview([]);
+          localStorage.removeItem(
+            `imagePreviews_${selectedUser?._id || selectedGroup?._id}`
+          );
+        }
+      } else {
+        setImagePreview([]);
+      }
+    } catch (error) {
+      console.error("Error parsing image previews from localStorage:", error);
+      setImagePreview([]);
+    }
+  };
+
+  useEffect(() => {
+    getLocalImagePreviews();
+  }, [selectedUser, selectedGroup]);
+
+  const onCloseChatPopup = () => {
+    onClose();
+    setImagePreview([]);
   };
 
   return {
@@ -213,6 +303,7 @@ const useChatPopup = ({
     handleFileChange,
     handleUploadClick,
     discardSelectedImage,
+    onCloseChatPopup,
   };
 };
 

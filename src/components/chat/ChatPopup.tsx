@@ -47,12 +47,14 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
     handleUploadClick,
     imagePreview,
     discardSelectedImage,
+    onCloseChatPopup,
   } = useChatPopup({
     selectedUser,
     selectedGroup,
     messages,
     updateMessages,
     onSendMessage,
+    onClose,
   });
 
   if (!selectedUser && !selectedGroup) {
@@ -109,7 +111,7 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
               <Minimize2 className="w-4 h-4 text-gray-500" />
             </button>
             <button
-              onClick={onClose}
+              onClick={onCloseChatPopup}
               className="p-1 hover:bg-gray-100 rounded-full"
             >
               <X className="w-4 h-4 text-gray-500" />
