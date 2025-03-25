@@ -56,7 +56,7 @@ const PostCard: React.FC<PostCardProps> = ({
     if (quill && post.post) {
       quill.root.innerHTML = post.post;
       quill.on("text-change", () => {
-        checkUpdatedPost(quillRef.current.firstChild.innerHTML);
+        checkUpdatedPost(quillRef?.current?.firstChild?.innerHTML);
       });
     }
   }, [quill, post.post]);
@@ -138,7 +138,7 @@ const PostCard: React.FC<PostCardProps> = ({
 
       {/* open text box to edit the content */}
       {isEditing ? (
-        <div ref={quillRef} className="w-full h-60" />
+        <div ref={quillRef} className="w-full h-36" />
       ) : (
         <div
           className="text-gray-800 mb-4"

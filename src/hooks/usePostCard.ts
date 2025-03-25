@@ -80,6 +80,8 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
 
   const updateIsEditing = (bool: boolean) => {
     setIsEditing(bool);
+    const elements = document.getElementsByClassName("ql-toolbar");
+    Array.from(elements).forEach((el) => el.remove());
   };
 
   const updateReaction = async (postId: string, currentStatus: boolean) => {
