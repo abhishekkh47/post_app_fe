@@ -1,5 +1,5 @@
 import React from "react";
-import { CreatePost, PostList } from "./";
+import { CreatePostV2, PostList } from "./";
 import { usePostFeed } from "../../hooks";
 
 const PostFeed: React.FC = () => {
@@ -7,7 +7,8 @@ const PostFeed: React.FC = () => {
 
   return (
     <div>
-      <CreatePost fetchPosts={fetchPosts} />
+      {/* <CreatePost fetchPosts={fetchPosts} /> */}
+      <CreatePostV2 fetchPosts={fetchPosts} />
       {loading ? (
         <div className="text-center py-4">Loading posts...</div>
       ) : error ? (
