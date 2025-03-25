@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Post } from "../../types";
 import {
   MessageCircle,
@@ -14,6 +14,9 @@ import { useAuth } from "../../context/AuthContext";
 import config from "../../config";
 import { DeleteAccount } from "../dialog";
 import { CONFIRM_DELETE } from "../../utils";
+import DOMPurify from "dompurify";
+import { useQuill } from "react-quilljs";
+import "quill/dist/quill.snow.css";
 
 interface PostCardProps {
   post: Post;
@@ -31,7 +34,6 @@ const PostCard: React.FC<PostCardProps> = ({
     showComments,
     isEditing,
     comments,
-    updatedContent,
     reaction,
     openConfirmationModal,
     getComments,
@@ -43,6 +45,26 @@ const PostCard: React.FC<PostCardProps> = ({
     updateReaction,
     updateConfirmationModal,
   } = usePostCard({ post, fetchPosts });
+
+  const sanitizedContent = DOMPurify.sanitize(post.post);
+
+  const { quill, quillRef } = useQuill({
+    placeholder: "Edit your post...",
+  });
+
+  useEffect(() => {
+    if (quill && post.post) {
+      quill.root.innerHTML = post.post;
+      quill.on("text-change", () => {
+        checkUpdatedPost(quillRef?.current?.firstChild?.innerHTML);
+      });
+    }
+  }, [quill, post.post]);
+
+  const handleSaveEdit = () => {
+    updateIsEditing(false);
+    getPostsIfUpdated();
+  };
 
   return (
     <div className="bg-white rounded-lg shadow-md p-4">
@@ -80,7 +102,7 @@ const PostCard: React.FC<PostCardProps> = ({
             {user?._id === post?.userId?._id && isEditing ? (
               <div className="flex space-x-2">
                 <button
-                  onClick={getPostsIfUpdated}
+                  onClick={handleSaveEdit}
                   className="hover:text-green-500"
                 >
                   <Check className="relative h-5 w-5" />
@@ -116,13 +138,12 @@ const PostCard: React.FC<PostCardProps> = ({
 
       {/* open text box to edit the content */}
       {isEditing ? (
-        <textarea
-          className="w-full p-2 border rounded-md"
-          value={updatedContent}
-          onChange={(e) => checkUpdatedPost(e.target.value)}
-        />
+        <div ref={quillRef} className="w-full h-36" />
       ) : (
-        <p className="text-gray-800 mb-4">{post.post}</p>
+        <div
+          className="text-gray-800 mb-4"
+          dangerouslySetInnerHTML={{ __html: sanitizedContent }} // Render HTML content
+        />
       )}
 
       {/* Like and comment icons */}
