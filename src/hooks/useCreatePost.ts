@@ -13,15 +13,18 @@ const useCreatePost = ({ fetchPosts }: CreatePostProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await PostService.createPost(content);
-      updateUser();
+    if (content) {
+      try {
+        console.log("content  >>", content, "<<");
+        await PostService.createPost(content);
+        updateUser();
 
-      setContent("");
-      setError("");
-      fetchPosts();
-    } catch (err) {
-      setError("Failed to create post. Please try again.");
+        setContent("");
+        setError("");
+        fetchPosts();
+      } catch (err) {
+        setError("Failed to create post. Please try again.");
+      }
     }
   };
 
