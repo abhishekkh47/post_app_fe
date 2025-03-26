@@ -47,6 +47,7 @@ const MessageBubble: React.FC<MessageProps> = ({ message, user }) => {
           key={i}
           src={`${config.API_URL}/uploads/${attachment}`}
           alt="attachment"
+          loading="lazy"
           className="mt-2 rounded-lg max-w-full"
         />
       ))}

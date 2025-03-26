@@ -81,6 +81,7 @@ const GroupUserList: React.FC<GroupProfileProps> = ({
                     <img
                       src={`${config.API_URL}/uploads/${member.profile_pic}`}
                       alt={member.firstName}
+                      loading="lazy"
                       className="h-12 w-12 rounded-full object-cover"
                     />
                   ) : (

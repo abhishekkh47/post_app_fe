@@ -104,6 +104,7 @@ const ChatList: React.FC<ChatListProps> = ({
                 <img
                   src={`${config.API_URL}/uploads/${conversation.userDetails.profile_pic}`}
                   alt={`${conversation.userDetails.firstName} ${conversation.userDetails.lastName}`}
+                  loading="lazy"
                   className="w-12 h-12 rounded-full object-cover"
                 />
               ) : (
@@ -150,6 +151,7 @@ const ChatList: React.FC<ChatListProps> = ({
                 <img
                   src={`${config.API_URL}/uploads/${conversation?.profile_pic}`}
                   alt={`${conversation.name[0]}`}
+                  loading="lazy"
                   className="w-12 h-12 rounded-full object-cover"
                 />
               ) : (

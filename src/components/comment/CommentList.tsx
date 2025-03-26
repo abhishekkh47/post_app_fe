@@ -25,6 +25,7 @@ const CommentList: React.FC<CommentListProps> = ({
             <img
               src={`${config.API_URL}/uploads/${comment?.userId?.profile_pic}`}
               alt={`${comment?.userId?.firstName} ${comment?.userId?.lastName}`}
+              loading="lazy"
               className="h-8 w-8 rounded-full object-cover"
             />
           ) : (

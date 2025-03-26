@@ -93,6 +93,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               <img
                 src={selectedUser.profile_pic}
                 alt={`${selectedUser.firstName} ${selectedUser.lastName}`}
+                loading="lazy"
                 className="w-10 h-10 rounded-full object-cover"
               />
             ) : (
@@ -129,6 +130,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
                     key={i}
                     src={attachment}
                     alt="attachment"
+                    loading="lazy"
                     className="mt-2 rounded-lg max-w-full"
                   />
                 ))}

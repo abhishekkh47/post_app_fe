@@ -30,6 +30,7 @@ const SearchResultDropdown: React.FC<SearchResultDropdownProps> = ({
             <img
               src={`${config.API_URL}/uploads/${user.profile_pic}`}
               alt={user.firstName}
+              loading="lazy"
               className="w-8 h-8 rounded-full object-cover"
             />
           ) : (

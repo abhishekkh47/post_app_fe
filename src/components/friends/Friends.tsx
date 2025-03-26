@@ -65,6 +65,7 @@ const Friends: React.FC = () => {
                   <img
                     src={`${config.API_URL}/uploads/${friend?.profile_pic}`}
                     alt={friend?.firstName[0]}
+                    loading="lazy"
                     className="w-12 h-12 rounded-full object-cover"
                   />
                 ) : (

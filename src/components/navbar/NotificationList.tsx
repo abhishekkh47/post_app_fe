@@ -65,6 +65,7 @@ const NotificationList: React.FC<INotificationList> = ({
                     <img
                       src={`${config.API_URL}/uploads/${sender?.profile_pic}`}
                       alt={sender?.firstName[0]}
+                      loading="lazy"
                       className="w-9 h-9 min-w-9 rounded-full object-cover"
                     />
                   ) : (

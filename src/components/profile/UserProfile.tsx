@@ -48,6 +48,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
                   : user?.profile_pic
               }`}
               alt={`${profile.firstName} ${profile.lastName}`}
+              loading="lazy"
               className="h-20 w-20 rounded-full object-cover"
             />
           ) : (
@@ -75,6 +76,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
                     : `${config.API_URL}/uploads/${imagePreview}`
                 }
                 alt="Preview"
+                loading="lazy"
                 className="w-96 h-96 object-cover rounded-lg"
               />
 

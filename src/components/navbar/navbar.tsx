@@ -50,7 +50,12 @@ const NavBar: React.FC = () => {
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
-              <img alt="Postal" src={logo} className="h-8 w-auto" />
+              <img
+                alt="Postal"
+                src={logo}
+                loading="lazy"
+                className="h-8 w-auto"
+              />
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
@@ -91,6 +96,7 @@ const NavBar: React.FC = () => {
                     <img
                       alt={user?.firstName[0]}
                       src={`${config.API_URL}/uploads/${user?.profile_pic}`}
+                      loading="lazy"
                       className="size-8 rounded-full object-cover"
                     />
                   ) : (

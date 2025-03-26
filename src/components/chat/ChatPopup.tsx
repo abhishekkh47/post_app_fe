@@ -79,6 +79,7 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
                 <img
                   src={`${config.API_URL}/uploads/${selectedUser.profile_pic}`}
                   alt={selectedUser.firstName[0]}
+                  loading="lazy"
                   className="w-8 h-8 rounded-full object-cover"
                 />
               ) : (
@@ -90,6 +91,7 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
               <img
                 src={`${config.API_URL}/uploads/${selectedGroup.profile_pic}`}
                 alt={selectedGroup.name[0]}
+                loading="lazy"
                 className="w-8 h-8 rounded-full object-cover"
               />
             ) : (
@@ -169,6 +171,7 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
                         <img
                           src={image}
                           alt="Preview"
+                          loading="lazy"
                           className="w-full h-full object-cover rounded-md"
                         />
                         <button
