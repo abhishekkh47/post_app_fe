@@ -15,6 +15,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { GroupDetails } from "../../types";
 import config from "../../config";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface IGroupInviteLink {
   groupData: GroupDetails;
@@ -31,6 +33,12 @@ const GroupInviteLink: React.FC<IGroupInviteLink> = ({
   inviteToken,
   handleResetLink,
 }) => {
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(
+      `http://localhost:5173/group/members/join/${inviteToken}`
+    );
+    toast("Link Copied");
+  };
   return (
     <Dialog open={open} onClose={handleCancel} className="relative z-10">
       <DialogBackdrop
@@ -97,11 +105,7 @@ const GroupInviteLink: React.FC<IGroupInviteLink> = ({
                 <ul className="mt-2">
                   <div
                     className="flex p-2 space-x-6 ml-1 hover:bg-slate-100 hover:cursor-pointer"
-                    onClick={() => {
-                      navigator.clipboard.writeText(
-                        `http://localhost:5173/group/members/join/${inviteToken}`
-                      );
-                    }}
+                    onClick={handleCopyLink}
                   >
                     <DocumentDuplicateIcon className="size-5 mt-[2px]" />
                     <li>Copy link</li>
@@ -138,6 +142,7 @@ const GroupInviteLink: React.FC<IGroupInviteLink> = ({
             </div>
           </DialogPanel>
         </div>
+        <ToastContainer />
       </div>
     </Dialog>
   );
