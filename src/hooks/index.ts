@@ -25,3 +25,4 @@ export { default as useGroupDetails } from "./useGroupDetails";
 export { default as useGroupProfile } from "./useGroupProfile";
 export { default as useGroupUserList } from "./useGroupUserList";
 export { default as useUserProfile } from "./useUserProfile";
+export { default as useHome } from "./useHome";

@@ -6,30 +6,40 @@ interface GroupProfileProps {
   groupProfile: Group;
   isGroupAdmin: (group: Group) => boolean;
   updateGroupDetails: (groupId: string, data: GroupDetails) => void;
+  fetchGroupDetails: (groupId: string) => void;
 }
 
 const useGroupProfile = ({
   groupProfile,
   isGroupAdmin,
   updateGroupDetails,
+  fetchGroupDetails,
 }: GroupProfileProps) => {
   const [openNotAdminDialog, setOpenNotAdminDialog] = useState<boolean>(false);
   const [openUpdateGroupDialog, setOpenUpdateGroupDialog] =
     useState<boolean>(false);
-  const [groupData, setGroupData] = useState({
+  const [groupData, setGroupData] = useState<GroupDetails>({
+    _id: groupProfile?._id || "",
     name: groupProfile.name,
     description: groupProfile.description,
     profile_pic: groupProfile.profile_pic,
   });
+  const [openGroupInviteOptions, setOpenGroupInviteOption] =
+    useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   const updateOpenNotAdminDialog = () => {
     setOpenNotAdminDialog(!openNotAdminDialog);
   };
 
+  const updateOpenGroupInviteOptions = () => {
+    setOpenGroupInviteOption(!openGroupInviteOptions);
+  };
+
   const updateOpenUpdateGroupDialog = () => {
     setOpenUpdateGroupDialog(!openUpdateGroupDialog);
     setGroupData({
+      _id: groupProfile?._id || "",
       name: groupProfile.name,
       description: groupProfile.description,
       profile_pic: groupProfile.profile_pic,
@@ -45,7 +55,7 @@ const useGroupProfile = ({
   };
 
   const updateGroupDetailsHandler = (name: string, description: string) => {
-    updateGroupDetails(groupProfile._id, { name, description });
+    updateGroupDetails(groupProfile._id, { _id: "", name, description });
     updateOpenUpdateGroupDialog();
   };
 
@@ -80,11 +90,17 @@ const useGroupProfile = ({
     }
   };
 
+  const handleResetLink = async (groupId: string) => {
+    await GroupChatService.resetGroupInviteLink(groupId);
+    fetchGroupDetails(groupId);
+  };
+
   return {
     groupData,
     openNotAdminDialog,
     openUpdateGroupDialog,
     fileInputRef,
+    openGroupInviteOptions,
     handleEditClick,
     updateGroupDetailsHandler,
     handleChange,
@@ -92,6 +108,8 @@ const useGroupProfile = ({
     updateOpenUpdateGroupDialog,
     handleUploadClick,
     handleFileChange,
+    updateOpenGroupInviteOptions,
+    handleResetLink,
   };
 };
 

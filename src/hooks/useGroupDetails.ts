@@ -136,6 +136,7 @@ const useGroupDetails = ({ groupId }: GroupDetailsProps) => {
     isGroupAdmin,
     updateGroupDetails,
     updateUserRole,
+    fetchGroupDetails,
   };
 };
 

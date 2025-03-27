@@ -37,6 +37,7 @@ export interface Group {
       profile_pic: string;
     }
   ];
+  inviteToken?: string;
 }
 
 export interface GroupMessage {

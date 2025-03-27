@@ -1,6 +1,8 @@
 export interface GroupDetails {
+  _id: string;
   name: string;
   description: string;
+  profile_pic?: string;
 }
 
 export interface ImagePreviewData {

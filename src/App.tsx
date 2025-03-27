@@ -4,8 +4,9 @@ import { LoginForm, SignupForm, ProtectedRoute } from "./components/auth";
 import { useAuth } from "./context/AuthContext";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AuthenticatedLayout } from "./components/layout/";
-import { Profile, Home, Settings, GroupDetails } from "./pages";
+import { Profile, Home, Settings, GroupDetails, JoinGroup } from "./pages";
 import { Friends } from "./components/friends";
+import { JoinGroupProvider } from "./context/JoinGroupContext";
 
 const AppContent = () => {
   const { isAuthenticated } = useAuth();
@@ -28,7 +29,9 @@ const AppContent = () => {
           <ProtectedRoute>
             <SocketProvider>
               <AuthenticatedLayout>
-                <Home />
+                <JoinGroupProvider>
+                  <Home />
+                </JoinGroupProvider>
               </AuthenticatedLayout>
             </SocketProvider>
           </ProtectedRoute>
@@ -75,6 +78,20 @@ const AppContent = () => {
             <SocketProvider>
               <AuthenticatedLayout>
                 <GroupDetails />
+              </AuthenticatedLayout>
+            </SocketProvider>
+          </ProtectedRoute>
+        }
+      ></Route>
+      <Route
+        path="/group/members/join/:inviteToken"
+        element={
+          <ProtectedRoute>
+            <SocketProvider>
+              <AuthenticatedLayout>
+                <JoinGroupProvider>
+                  <JoinGroup />
+                </JoinGroupProvider>
               </AuthenticatedLayout>
             </SocketProvider>
           </ProtectedRoute>
