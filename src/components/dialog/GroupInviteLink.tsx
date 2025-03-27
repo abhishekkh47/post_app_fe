@@ -6,6 +6,7 @@ import {
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
+import { useState } from "react";
 import {
   ExclamationTriangleIcon,
   DocumentDuplicateIcon,
@@ -17,6 +18,7 @@ import { GroupDetails } from "../../types";
 import config from "../../config";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import QRCode from "react-qr-code";
 
 interface IGroupInviteLink {
   groupData: GroupDetails;
@@ -33,12 +35,18 @@ const GroupInviteLink: React.FC<IGroupInviteLink> = ({
   inviteToken,
   handleResetLink,
 }) => {
+  const [showQrCode, setShowQrCode] = useState<boolean>(false);
+
+  const inviteLink = `http://localhost:5173/group/members/join/${inviteToken}`;
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(
-      `http://localhost:5173/group/members/join/${inviteToken}`
-    );
+    navigator.clipboard.writeText(inviteLink);
     toast("Link Copied");
   };
+
+  const handleShowQRCode = () => {
+    setShowQrCode(!showQrCode);
+  };
+
   return (
     <Dialog open={open} onClose={handleCancel} className="relative z-10">
       <DialogBackdrop
@@ -94,9 +102,7 @@ const GroupInviteLink: React.FC<IGroupInviteLink> = ({
                   <div className="flex flex-col ml-2">
                     <div className="text-sm">{groupData.name}</div>
                     <div className="text-xs text-balance text-green-600">
-                      {inviteToken
-                        ? `http://localhost:5173/group/members/join/${inviteToken}`
-                        : ""}
+                      {inviteToken ? inviteLink : ""}
                     </div>
                   </div>
                 </div>
@@ -114,7 +120,10 @@ const GroupInviteLink: React.FC<IGroupInviteLink> = ({
                     <ShareIcon className="size-5 mt-[2px]" />
                     <li>Share link</li>
                   </div>
-                  <div className="flex p-2 space-x-6 ml-1 hover:bg-slate-100 hover:cursor-pointer">
+                  <div
+                    className="flex p-2 space-x-6 ml-1 hover:bg-slate-100 hover:cursor-pointer"
+                    onClick={handleShowQRCode}
+                  >
                     <QrCodeIcon className="size-5 mt-[2px]" />
                     <li>QR code</li>
                   </div>
@@ -128,6 +137,27 @@ const GroupInviteLink: React.FC<IGroupInviteLink> = ({
                     <li>Reset link</li>
                   </div>
                 </ul>
+                {showQrCode && ( // Conditionally render QR code
+                  <div
+                    style={{
+                      height: "auto",
+                      margin: "0 auto",
+                      maxWidth: 64,
+                      width: "100%",
+                    }}
+                  >
+                    <QRCode
+                      value={inviteLink}
+                      size={256}
+                      style={{
+                        height: "auto",
+                        maxWidth: "100%",
+                        width: "100%",
+                      }}
+                      viewBox={`0 0 256 256`}
+                    />
+                  </div>
+                )}
               </div>
             </div>
             <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
