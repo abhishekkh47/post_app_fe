@@ -5,6 +5,7 @@ import {
   POST_SERVICE,
   PUT_SERVICE,
   DELETE_SERVICE,
+  PATCH_SERVICE,
 } from "../utils";
 
 class GroupChatService {
@@ -86,7 +87,7 @@ class GroupChatService {
     try {
       const response = await POST_SERVICE(
         GROUP_CHAT.ADD_GROUP_MEMBERS.replace(PATH_SLUGS.GROUP_ID, groupId),
-        JSON.stringify({ members: members[0] })
+        JSON.stringify({ members })
       );
       if (!response.ok) {
         throw new Error("Failed to load chat");
@@ -167,6 +168,54 @@ class GroupChatService {
       const response = await PUT_SERVICE(
         GROUP_CHAT.UPDATE_PROFILE_PICTURE.replace(PATH_SLUGS.GROUP_ID, groupId),
         formData
+      );
+      if (!response.ok) {
+        throw new Error("An error occurred");
+      }
+      return (await response.json())?.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async joinGroupUsingInviteLink(inviteLink: string) {
+    try {
+      const response = await GET_SERVICE(
+        GROUP_CHAT.JOIN_GROUP_USING_INVITE_LINK.replace(
+          PATH_SLUGS.INVITE_TOKEN,
+          inviteLink
+        )
+      );
+      if (!response.ok) {
+        throw new Error("An error occurred");
+      }
+      return (await response.json())?.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async getGroupDetailsUsingInviteLink(inviteLink: string) {
+    try {
+      const response = await GET_SERVICE(
+        GROUP_CHAT.GET_GROUP_DETAILS_USING_INVITE_LINK.replace(
+          PATH_SLUGS.INVITE_TOKEN,
+          inviteLink
+        )
+      );
+      if (!response.ok) {
+        throw new Error("An error occurred");
+      }
+      return (await response.json())?.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async resetGroupInviteLink(groupId: string) {
+    try {
+      const response = await PATCH_SERVICE(
+        GROUP_CHAT.RESET_GROUP_INVITE_LINK.replace(PATH_SLUGS.GROUP_ID, groupId)
       );
       if (!response.ok) {
         throw new Error("An error occurred");

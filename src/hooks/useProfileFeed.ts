@@ -10,6 +10,7 @@ const useProfileFeed = ({ userId }: ProfileFeedProps) => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [editingActive, setEditingActive] = useState<string | null>(null);
 
   const fetchPosts = async () => {
     try {
@@ -26,7 +27,18 @@ const useProfileFeed = ({ userId }: ProfileFeedProps) => {
     fetchPosts();
   }, []);
 
-  return { posts, loading, error, fetchPosts };
+  const updateEditingActive = (postId: string | null) => {
+    setEditingActive(postId);
+  };
+
+  return {
+    posts,
+    loading,
+    error,
+    editingActive,
+    fetchPosts,
+    updateEditingActive,
+  };
 };
 
 export default useProfileFeed;

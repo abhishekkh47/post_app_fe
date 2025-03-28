@@ -7,7 +7,14 @@ interface ProfileFeedProps {
 }
 
 const ProfileFeed: React.FC<ProfileFeedProps> = ({ userId }) => {
-  const { posts, loading, error, fetchPosts } = useProfileFeed({ userId });
+  const {
+    posts,
+    loading,
+    error,
+    editingActive,
+    updateEditingActive,
+    fetchPosts,
+  } = useProfileFeed({ userId });
 
   return (
     <div>
@@ -16,7 +23,12 @@ const ProfileFeed: React.FC<ProfileFeedProps> = ({ userId }) => {
       ) : error ? (
         <div className="text-red-500 text-center py-4">{error}</div>
       ) : (
-        <PostList posts={posts} fetchPosts={fetchPosts} />
+        <PostList
+          posts={posts}
+          fetchPosts={fetchPosts}
+          editingActive={editingActive}
+          updateEditingActive={updateEditingActive}
+        />
       )}
     </div>
   );

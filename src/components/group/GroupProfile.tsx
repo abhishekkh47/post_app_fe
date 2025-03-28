@@ -2,7 +2,7 @@ import React from "react";
 import { Group, GroupDetails } from "../../types";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
-import { NotAdmin, EditGroupDetails } from "../dialog";
+import { NotAdmin, EditGroupDetails, GroupInviteLink } from "../dialog";
 import { useGroupProfile } from "../../hooks";
 import config from "../../config";
 
@@ -10,12 +10,14 @@ interface GroupProfileProps {
   groupProfile: Group | null;
   isGroupAdmin: (group: Group) => boolean;
   updateGroupDetails: (groupId: string, data: GroupDetails) => void;
+  fetchGroupDetails: () => void;
 }
 
 const GroupProfile: React.FC<GroupProfileProps> = ({
   groupProfile,
   isGroupAdmin,
   updateGroupDetails,
+  fetchGroupDetails,
 }) => {
   if (!groupProfile) {
     return <div>Loading profile...</div>;
@@ -26,6 +28,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({
     openNotAdminDialog,
     openUpdateGroupDialog,
     fileInputRef,
+    openGroupInviteOptions,
     handleEditClick,
     updateGroupDetailsHandler,
     handleChange,
@@ -33,10 +36,13 @@ const GroupProfile: React.FC<GroupProfileProps> = ({
     updateOpenUpdateGroupDialog,
     handleUploadClick,
     handleFileChange,
+    updateOpenGroupInviteOptions,
+    handleResetLink,
   } = useGroupProfile({
     groupProfile,
     isGroupAdmin,
     updateGroupDetails,
+    fetchGroupDetails,
   });
 
   return (
@@ -51,7 +57,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({
         </div>
         <MenuItems
           transition
-          className="absolute right-0 z-10 mt-2 w-28 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+          className="absolute right-0 z-10 mt-2 w-30 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
         >
           <MenuItem>
             <a
@@ -60,7 +66,17 @@ const GroupProfile: React.FC<GroupProfileProps> = ({
               }}
               className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden hover:cursor-pointer"
             >
-              Edit
+              Edit details
+            </a>
+          </MenuItem>
+          <MenuItem>
+            <a
+              onClick={() => {
+                updateOpenGroupInviteOptions();
+              }}
+              className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden hover:cursor-pointer"
+            >
+              Invite via link
             </a>
           </MenuItem>
         </MenuItems>
@@ -137,6 +153,15 @@ const GroupProfile: React.FC<GroupProfileProps> = ({
           <p className="text-gray-600 mt-1">{groupProfile.description}</p>
         )}
       </div>
+      {openGroupInviteOptions && (
+        <GroupInviteLink
+          groupData={groupData}
+          open={openGroupInviteOptions}
+          handleCancel={updateOpenGroupInviteOptions}
+          inviteToken={groupProfile?.inviteToken}
+          handleResetLink={handleResetLink}
+        />
+      )}
     </div>
   );
 };

@@ -22,12 +22,16 @@ interface PostCardProps {
   post: Post;
   fetchPosts: () => void;
   fromHomePage: boolean;
+  editingActive: string | null;
+  updateEditingActive?: (postId: string | null) => void;
 }
 
 const PostCard: React.FC<PostCardProps> = ({
   post,
   fetchPosts,
   fromHomePage,
+  editingActive,
+  updateEditingActive,
 }) => {
   const { user } = useAuth();
   const {
@@ -44,7 +48,7 @@ const PostCard: React.FC<PostCardProps> = ({
     updateIsEditing,
     updateReaction,
     updateConfirmationModal,
-  } = usePostCard({ post, fetchPosts });
+  } = usePostCard({ post, fetchPosts, updateEditingActive });
 
   const sanitizedContent = DOMPurify.sanitize(post.post);
 
@@ -100,7 +104,9 @@ const PostCard: React.FC<PostCardProps> = ({
         {/* Only show edit and delete icons if user is in profile section */}
         {!fromHomePage && (
           <div className="flex space-x-2">
-            {user?._id === post?.userId?._id && isEditing ? (
+            {user?._id === post?.userId?._id &&
+            editingActive == post._id &&
+            isEditing ? (
               <div className="flex space-x-2">
                 <button
                   onClick={handleSaveEdit}
@@ -115,11 +121,11 @@ const PostCard: React.FC<PostCardProps> = ({
                   <X className="relative h-5 w-5" />
                 </button>
               </div>
-            ) : (
+            ) : !editingActive ? (
               user?._id === post?.userId?._id && (
                 <div className="flex space-x-2">
                   <button
-                    onClick={() => updateIsEditing(true)}
+                    onClick={() => updateIsEditing(true, post._id)}
                     className="hover:text-green-500"
                   >
                     <PencilIcon className="relative h-5 w-5" />
@@ -132,6 +138,8 @@ const PostCard: React.FC<PostCardProps> = ({
                   </button>
                 </div>
               )
+            ) : (
+              ""
             )}
           </div>
         )}

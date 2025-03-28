@@ -22,6 +22,7 @@ const GroupDetails: React.FC = () => {
     isGroupAdmin,
     updateGroupDetails,
     updateUserRole,
+    fetchGroupDetails,
   } = useGroupDetails({ groupId });
 
   if (!groupId) {
@@ -35,6 +36,7 @@ const GroupDetails: React.FC = () => {
           groupProfile={groupProfile}
           isGroupAdmin={isGroupAdmin}
           updateGroupDetails={updateGroupDetails}
+          fetchGroupDetails={fetchGroupDetails}
         />
       </div>
       <div className="mt-4">

@@ -56,3 +56,12 @@ export const PUT_SERVICE = async (path: string, body: FormData | string) => {
     body,
   });
 };
+
+export const PATCH_SERVICE = async (path: string) => {
+  return await fetch(path, {
+    method: "PATCH",
+    headers: {
+      Authorization: AuthService.getToken(),
+    },
+  });
+};

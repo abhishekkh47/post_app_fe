@@ -4,7 +4,7 @@ import { PostService } from "../services";
 
 const usePostFeed = () => {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState("");
 
   const fetchPosts = async () => {

@@ -9,6 +9,7 @@ export const PATH_SLUGS = {
   NOTIFICATION_ID: "#notificationId",
   GROUP_ID: "#groupId",
   CHAT_ID: "#chatId",
+  INVITE_TOKEN: "#inviteToken",
 };
 
 export const AUTH = {
@@ -66,7 +67,10 @@ export const GROUP_CHAT = {
   GET_GROUP_MESSAGE: `${API_URL}/group/v1/${PATH_SLUGS.GROUP_ID}/messages`,
   GET_GROUP_DETAILS: `${API_URL}/group/v1/get-details/${PATH_SLUGS.GROUP_ID}`,
   UPDATE_USER_ROLE: `${API_URL}/group/v1/update-user-role/${PATH_SLUGS.GROUP_ID}/${PATH_SLUGS.USERID}`,
-  UPDATE_PROFILE_PICTURE: `${API_URL}/group/v1//update-profile-picture/${PATH_SLUGS.GROUP_ID}`,
+  UPDATE_PROFILE_PICTURE: `${API_URL}/group/v1/update-profile-picture/${PATH_SLUGS.GROUP_ID}`,
+  JOIN_GROUP_USING_INVITE_LINK: `${API_URL}/group/v1/members/join/${PATH_SLUGS.INVITE_TOKEN}`,
+  GET_GROUP_DETAILS_USING_INVITE_LINK: `${API_URL}/group/v1/get-invite-link-details/${PATH_SLUGS.INVITE_TOKEN}`,
+  RESET_GROUP_INVITE_LINK: `${API_URL}/group/v1/reset-invite-link/${PATH_SLUGS.GROUP_ID}`,
 };
 export const CHAT_MEDIA = {
   UPLOAD_FILE: `${API_URL}/common/v1/upload-chat-multimedia/${PATH_SLUGS.CHAT_ID}`,
