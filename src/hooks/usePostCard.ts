@@ -6,9 +6,14 @@ import { useAuth } from "../context/AuthContext";
 interface PostCardProps {
   post: Post;
   fetchPosts: () => void;
+  updateEditingActive?: (postId: string | null) => void;
 }
 
-const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
+const usePostCard = ({
+  post,
+  fetchPosts,
+  updateEditingActive,
+}: PostCardProps) => {
   const [showComments, setShowComments] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [updatedContent, setUpdatedContent] = useState(post.post);
@@ -78,8 +83,9 @@ const usePostCard = ({ post, fetchPosts }: PostCardProps) => {
     setIsEditing(false);
   };
 
-  const updateIsEditing = (bool: boolean) => {
+  const updateIsEditing = (bool: boolean, postId: string | null = null) => {
     setIsEditing(bool);
+    updateEditingActive ? updateEditingActive(postId) : {};
     const elements = document.getElementsByClassName("ql-toolbar");
     Array.from(elements).forEach((el) => el.remove());
   };
