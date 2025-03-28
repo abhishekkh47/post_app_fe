@@ -5,7 +5,7 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { NotAdmin } from "../dialog";
 import { useGroupUserList } from "../../hooks";
-import config from "../../config";
+import { ProfilePicture } from "../profile";
 
 interface GroupProfileProps {
   user: User | null;
@@ -77,18 +77,12 @@ const GroupUserList: React.FC<GroupProfileProps> = ({
                   className="flex flex-row items-center space-x-4 hover:cursor-pointer"
                   onClick={() => onProfileClick(member._id)}
                 >
-                  {member?.profile_pic ? (
-                    <img
-                      src={`${config.API_URL}/uploads/${member.profile_pic}`}
-                      alt={member.firstName}
-                      loading="lazy"
-                      className="h-12 w-12 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="h-12 w-12 rounded-full bg-blue-300 flex items-center justify-center text-[30px] border border-black">
-                      {member?.firstName[0]?.toUpperCase()}
-                    </div>
-                  )}
+                  <ProfilePicture
+                    profile_pic={member?.profile_pic}
+                    firstName={member?.firstName || ""}
+                    size={12}
+                    text={`[30px]`}
+                  />
                   <div>
                     {member.firstName} {member.lastName}
                   </div>

@@ -2,7 +2,7 @@ import React from "react";
 import { ChatPopup } from "../chat";
 import { MessageSquare } from "lucide-react";
 import { useFriends } from "../../hooks";
-import config from "../../config";
+import { ProfilePicture } from "../profile";
 
 const Friends: React.FC = () => {
   const {
@@ -61,18 +61,12 @@ const Friends: React.FC = () => {
                 key={friend._id}
                 className="flex items-center space-x-4 p-3 bg-white rounded-lg shadow cursor-pointer"
               >
-                {friend?.profile_pic ? (
-                  <img
-                    src={`${config.API_URL}/uploads/${friend?.profile_pic}`}
-                    alt={friend?.firstName[0]}
-                    loading="lazy"
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                ) : (
-                  <div className="size-12 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
-                    {friend?.firstName[0]?.toUpperCase()}
-                  </div>
-                )}
+                <ProfilePicture
+                  profile_pic={friend?.profile_pic}
+                  firstName={friend?.firstName || ""}
+                  size={12}
+                  text={`lg`}
+                />
                 <div className="flex-1">
                   <span
                     className="font-medium text-gray-800"

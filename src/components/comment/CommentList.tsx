@@ -3,7 +3,7 @@ import { Comment } from "../../types";
 import { useAuth } from "../../context/AuthContext";
 import { Trash2 } from "lucide-react";
 import { useCommentList } from "../../hooks";
-import config from "../../config";
+import { ProfilePicture } from "../profile";
 
 interface CommentListProps {
   comments: Comment[];
@@ -21,18 +21,13 @@ const CommentList: React.FC<CommentListProps> = ({
     <div className="space-y-4 mt-4">
       {comments?.map((comment) => (
         <div key={comment?._id} className="flex items-start space-x-3">
-          {comment?.userId?.profile_pic ? (
-            <img
-              src={`${config.API_URL}/uploads/${comment?.userId?.profile_pic}`}
-              alt={`${comment?.userId?.firstName} ${comment?.userId?.lastName}`}
-              loading="lazy"
-              className="h-8 w-8 rounded-full object-cover"
-            />
-          ) : (
-            <div className="h-8 w-8 rounded-full bg-blue-200">
-              {comment?.userId?.firstName[0]?.toUpperCase()}
-            </div>
-          )}
+          <ProfilePicture
+            profile_pic={comment?.userId?.profile_pic}
+            firstName={comment?.userId?.firstName || ""}
+            size={8}
+            text={`lg`}
+            className="cursor-pointer"
+          />
           <div className="flex-1 bg-gray-50 rounded-lg p-3">
             <div className="flex items-center justify-between">
               <p className="font-medium">

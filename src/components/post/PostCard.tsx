@@ -11,12 +11,12 @@ import {
 import { CommentList, CreateComment } from "../comment";
 import { usePostCard } from "../../hooks";
 import { useAuth } from "../../context/AuthContext";
-import config from "../../config";
 import { DeleteAccount } from "../dialog";
 import { CONFIRM_DELETE } from "../../utils";
 import DOMPurify from "dompurify";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
+import { ProfilePicture } from "../profile";
 
 interface PostCardProps {
   post: Post;
@@ -74,23 +74,16 @@ const PostCard: React.FC<PostCardProps> = ({
     <div className="bg-white rounded-lg shadow-md p-4">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
-          {post?.userId?.profile_pic ? (
-            <img
-              src={`${config.API_URL}/uploads/${
-                user?._id === post?.userId?._id
-                  ? user.profile_pic
-                  : post?.userId?.profile_pic
-              }`}
-              alt={`${post?.userId?.firstName} ${post?.userId?.lastName}`}
-              loading="lazy"
-              className="w-10 h-10 rounded-full object-cover"
-            />
-          ) : (
-            // <div className="h-10 w-10 rounded-full bg-gray-200" />
-            <div className="h-10 w-10 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
-              {post?.userId?.firstName[0]?.toUpperCase()}
-            </div>
-          )}
+          <ProfilePicture
+            profile_pic={
+              user?._id === post?.userId?._id
+                ? user.profile_pic
+                : post?.userId?.profile_pic
+            }
+            firstName={post?.userId?.firstName || ""}
+            size={10}
+            text={`lg`}
+          />
           <div>
             <p className="font-medium">
               {post?.userId?.firstName} {post?.userId?.lastName}

@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import { GroupDetails } from "../../types";
-import config from "../../config";
+import { ProfilePicture } from "../profile";
 
 interface IJoinGroup {
   open: boolean;
@@ -39,18 +39,13 @@ const JoinGroup: React.FC<IJoinGroup> = ({
           >
             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="sm:flex sm:items-start">
-                {joinGroupData?.profile_pic ? (
-                  <img
-                    src={`${config.API_URL}/uploads/${joinGroupData.profile_pic}`}
-                    alt={joinGroupData.name}
-                    loading="lazy"
-                    className="h-14 w-14 rounded-full object-cover cursor-pointer"
-                  />
-                ) : (
-                  <div className="h-14 w-14 rounded-full bg-blue-300 flex items-center justify-center text-3xl border border-black cursor-pointer">
-                    {joinGroupData?.name[0]?.toUpperCase()}
-                  </div>
-                )}
+                <ProfilePicture
+                  profile_pic={joinGroupData?.profile_pic}
+                  firstName={joinGroupData?.name || ""}
+                  size={14}
+                  text={`3xl`}
+                  className="cursor-pointer"
+                />
                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
                   <DialogTitle
                     as="h3"

@@ -13,7 +13,7 @@ import logo from "../../image.png";
 import { Loader2 } from "lucide-react";
 import { SearchBar, Notification } from "./";
 import { useNavBar } from "../../hooks";
-import config from "../../config";
+import { ProfilePicture } from "../profile";
 
 function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
@@ -92,18 +92,12 @@ const NavBar: React.FC = () => {
                 <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden  hover:text-white">
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Open user menu</span>
-                  {user?.profile_pic ? (
-                    <img
-                      alt={user?.firstName[0]}
-                      src={`${config.API_URL}/uploads/${user?.profile_pic}`}
-                      loading="lazy"
-                      className="size-8 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="size-8 rounded-full bg-pink-400 flex items-center justify-center text-lg border border-white">
-                      {user?.firstName[0]?.toUpperCase()}
-                    </div>
-                  )}
+                  <ProfilePicture
+                    profile_pic={user?.profile_pic}
+                    firstName={user?.firstName || ""}
+                    size={8}
+                    text={`lg`}
+                  />
                 </MenuButton>
               </div>
               <MenuItems

@@ -1,5 +1,5 @@
 import React from "react";
-import { UserStats, FollowButton } from "./";
+import { UserStats, FollowButton, ProfilePicture } from "./";
 import { User } from "../../types";
 import { useUserProfile } from "../../hooks";
 import config from "../../config";
@@ -40,23 +40,12 @@ const UserProfile: React.FC<UserProfileProps> = ({
     <div className="bg-white rounded-lg shadow-md p-6">
       <div className="flex items-center space-x-4">
         <div className="relative inline-block" onClick={handleImageClick}>
-          {image ? (
-            <img
-              src={`${config.API_URL}/uploads/${
-                user?._id !== profile._id
-                  ? profile.profile_pic
-                  : user?.profile_pic
-              }`}
-              alt={`${profile.firstName} ${profile.lastName}`}
-              loading="lazy"
-              className="h-20 w-20 rounded-full object-cover"
-            />
-          ) : (
-            // <div className="h-20 w-20 rounded-full bg-gray-200" />
-            <div className="h-20 w-20 rounded-full bg-blue-300 flex items-center justify-center text-[50px] border border-black">
-              {profile?.firstName[0]?.toUpperCase()}
-            </div>
-          )}
+          <ProfilePicture
+            profile_pic={image}
+            firstName={profile.firstName}
+            size={20}
+            text={`[50px]`}
+          />
         </div>
 
         {/* Image Preview Modal */}
@@ -81,12 +70,14 @@ const UserProfile: React.FC<UserProfileProps> = ({
               />
 
               {/* Button to trigger file input */}
-              <button
-                onClick={isFileUpdated ? handleSaveClick : handleUploadClick}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
-              >
-                {isFileUpdated ? `Save` : `Upload Image`}
-              </button>
+              {user?._id == profile._id && (
+                <button
+                  onClick={isFileUpdated ? handleSaveClick : handleUploadClick}
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                >
+                  {isFileUpdated ? `Save` : `Upload Image`}
+                </button>
+              )}
 
               {/* Hidden file input */}
               <input

@@ -15,10 +15,10 @@ import {
   MinusCircleIcon,
 } from "@heroicons/react/24/outline";
 import { GroupDetails } from "../../types";
-import config from "../../config";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import QRCode from "react-qr-code";
+import { ProfilePicture } from "../profile";
 
 interface IGroupInviteLink {
   groupData: GroupDetails;
@@ -85,20 +85,12 @@ const GroupInviteLink: React.FC<IGroupInviteLink> = ({
               </div>
               <div className="mt-3">
                 <div className="flex flex-row p3">
-                  <div>
-                    {groupData?.profile_pic ? (
-                      <img
-                        src={`${config.API_URL}/uploads/${groupData.profile_pic}`}
-                        alt={groupData.name}
-                        loading="lazy"
-                        className="h-12 w-12 rounded-full object-cover cursor-default"
-                      />
-                    ) : (
-                      <div className="h-12 w-12 rounded-full bg-blue-300 flex items-center justify-center text-2xl border border-black cursor-default">
-                        {groupData?.name[0]?.toUpperCase()}
-                      </div>
-                    )}
-                  </div>
+                  <ProfilePicture
+                    profile_pic={groupData?.profile_pic}
+                    firstName={groupData?.name || ""}
+                    size={12}
+                    text={`2xl`}
+                  />
                   <div className="flex flex-col ml-2">
                     <div className="text-sm">{groupData.name}</div>
                     <div className="text-xs text-balance text-green-600">

@@ -2,7 +2,7 @@ import React from "react";
 import { INotification } from "../../types";
 import { NOTIFICATION_TAB } from "../../utils";
 import { useNotificationList } from "../../hooks";
-import config from "../../config";
+import { ProfilePicture } from "../profile";
 
 interface INotificationList {
   notifications: INotification[];
@@ -60,20 +60,13 @@ const NotificationList: React.FC<INotificationList> = ({
                 className="flex flex-row space-x-2 items-center text-black p-2 cursor-pointer hover:bg-gray-100"
                 onClick={() => handleNotificationClick(notification)}
               >
-                <div>
-                  {sender?.profile_pic ? (
-                    <img
-                      src={`${config.API_URL}/uploads/${sender?.profile_pic}`}
-                      alt={sender?.firstName[0]}
-                      loading="lazy"
-                      className="w-9 h-9 min-w-9 rounded-full object-cover"
-                    />
-                  ) : (
-                    <div className="size-9 rounded-full bg-blue-300 flex items-center justify-center text-sm border border-black">
-                      {sender?.firstName[0]?.toUpperCase()}
-                    </div>
-                  )}
-                </div>
+                <ProfilePicture
+                  profile_pic={sender?.profile_pic}
+                  firstName={sender.firstName}
+                  size={9}
+                  text={`sm`}
+                  className={`min-w-9`}
+                />
                 <span className="text-left flex-1">
                   <p className="font-semibold">{`${sender.firstName} ${sender.lastName}`}</p>
                   <p>{`${notification.message}`}</p>

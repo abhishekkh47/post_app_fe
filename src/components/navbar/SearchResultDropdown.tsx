@@ -1,7 +1,7 @@
 import React from "react";
 import { User } from "../../types";
 import { useSearchResultDropdown } from "../../hooks";
-import config from "../../config";
+import { ProfilePicture } from "../profile";
 
 interface SearchResultDropdownProps {
   users: User[];
@@ -26,18 +26,12 @@ const SearchResultDropdown: React.FC<SearchResultDropdownProps> = ({
           className="flex items-center space-x-4 p-2 hover:bg-gray-100 cursor-pointer"
           onClick={() => onSearchSelection(user._id)}
         >
-          {user?.profile_pic ? (
-            <img
-              src={`${config.API_URL}/uploads/${user.profile_pic}`}
-              alt={user.firstName}
-              loading="lazy"
-              className="w-8 h-8 rounded-full object-cover"
-            />
-          ) : (
-            <div className="w-8 h-8 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
-              {user?.firstName[0]?.toUpperCase()}
-            </div>
-          )}
+          <ProfilePicture
+            profile_pic={user?.profile_pic}
+            firstName={user.firstName}
+            size={8}
+            text={`lg`}
+          />
           <div className="flex-1">
             <span className="font-medium text-gray-800">
               {user.firstName} {user.lastName}

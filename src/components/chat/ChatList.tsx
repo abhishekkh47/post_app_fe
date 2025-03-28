@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { User, Conversation, Group } from "../../types";
 import { LucideUsers2 } from "lucide-react";
-// import { useChatList } from "../../hooks";
 import CreateChatGroup from "./CreateChatGroup";
-// import { GroupManagement } from ".";
 import { FollowService } from "../../services";
-import config from "../../config";
+import { ProfilePicture } from "../profile";
 
 interface ChatListProps {
   user: User;
@@ -100,19 +98,12 @@ const ChatList: React.FC<ChatListProps> = ({
             }
           >
             <div className="flex items-center space-x-3">
-              {conversation.userDetails.profile_pic ? (
-                <img
-                  src={`${config.API_URL}/uploads/${conversation.userDetails.profile_pic}`}
-                  alt={`${conversation.userDetails.firstName} ${conversation.userDetails.lastName}`}
-                  loading="lazy"
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-              ) : (
-                <div className="w-12 h-12 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
-                  {/* <MessageCircle className="w-6 h-6 text-gray-400" /> */}
-                  {conversation.userDetails?.firstName[0]?.toUpperCase()}
-                </div>
-              )}
+              <ProfilePicture
+                profile_pic={conversation?.userDetails?.profile_pic}
+                firstName={conversation?.userDetails?.firstName || ""}
+                size={12}
+                text={`lg`}
+              />
               <div className="flex-1 min-w-0">
                 <p className="font-medium truncate">
                   {conversation.userDetails.firstName}{" "}
@@ -147,19 +138,12 @@ const ChatList: React.FC<ChatListProps> = ({
             }
           >
             <div className="flex items-center space-x-3">
-              {conversation?.profile_pic ? (
-                <img
-                  src={`${config.API_URL}/uploads/${conversation?.profile_pic}`}
-                  alt={`${conversation.name[0]}`}
-                  loading="lazy"
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-              ) : (
-                <div className="w-12 h-12 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
-                  {/* <MessageCircle className="w-6 h-6 text-gray-400" /> */}
-                  {conversation.name[0]?.toUpperCase()}
-                </div>
-              )}
+              <ProfilePicture
+                profile_pic={conversation?.profile_pic}
+                firstName={conversation?.name || ""}
+                size={12}
+                text={`lg`}
+              />
               <div className="flex-1 min-w-0">
                 <p className="font-medium truncate">{conversation.name}</p>
                 <p className="text-sm text-gray-500 truncate">

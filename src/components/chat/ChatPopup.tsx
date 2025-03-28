@@ -5,7 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import { MessageBubble } from ".";
 import { useChatPopup } from "../../hooks";
 import { CHAT_TYPE } from "../../utils";
-import config from "../../config";
+import { ProfilePicture } from "../profile";
 
 interface ChatWindowProps {
   selectedUser: User | null;
@@ -75,29 +75,21 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
             onClick={selectedUser ? onProfileClick : onGroupClick}
           >
             {selectedUser ? (
-              selectedUser?.profile_pic ? (
-                <img
-                  src={`${config.API_URL}/uploads/${selectedUser.profile_pic}`}
-                  alt={selectedUser.firstName[0]}
-                  loading="lazy"
-                  className="w-8 h-8 rounded-full object-cover"
-                />
-              ) : (
-                <div className="size-8 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
-                  {selectedUser?.firstName[0]?.toUpperCase()}
-                </div>
-              )
+              <ProfilePicture
+                profile_pic={selectedUser?.profile_pic}
+                firstName={selectedUser.firstName || ""}
+                size={8}
+                text={`lg`}
+              />
             ) : selectedGroup?.profile_pic ? (
-              <img
-                src={`${config.API_URL}/uploads/${selectedGroup.profile_pic}`}
-                alt={selectedGroup.name[0]}
-                loading="lazy"
-                className="w-8 h-8 rounded-full object-cover"
+              <ProfilePicture
+                profile_pic={selectedGroup.profile_pic}
+                firstName={selectedGroup.name || ""}
+                size={8}
+                text={`lg`}
               />
             ) : (
-              <div className="size-8 rounded-full bg-blue-300 flex items-center justify-center text-lg border border-black">
-                {selectedGroup?.name[0]?.toUpperCase()}
-              </div>
+              ""
             )}
             <span className="font-medium text-sm">
               {selectedUser

@@ -5,6 +5,7 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { NotAdmin, EditGroupDetails, GroupInviteLink } from "../dialog";
 import { useGroupProfile } from "../../hooks";
 import config from "../../config";
+import { ProfilePicture } from "../profile";
 
 interface GroupProfileProps {
   groupProfile: Group | null;
@@ -99,18 +100,12 @@ const GroupProfile: React.FC<GroupProfileProps> = ({
       <div className="justify-items-center">
         <Menu as="div" className="relative inline-block">
           <MenuButton className="focus:outline-none">
-            {groupData?.profile_pic ? (
-              <img
-                src={`${config.API_URL}/uploads/${groupData.profile_pic}`}
-                alt={groupData.name}
-                loading="lazy"
-                className="h-20 w-20 rounded-full object-cover cursor-pointer"
-              />
-            ) : (
-              <div className="h-20 w-20 rounded-full bg-blue-300 flex items-center justify-center text-[50px] border border-black cursor-pointer">
-                {groupData?.name[0]?.toUpperCase()}
-              </div>
-            )}
+            <ProfilePicture
+              profile_pic={groupData?.profile_pic}
+              firstName={groupData?.name || ""}
+              size={20}
+              text={`[50px]`}
+            />
           </MenuButton>
 
           <MenuItems
@@ -125,6 +120,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({
                   "_blank"
                 )
               }
+              disabled={groupData.profile_pic ? false : true}
               className="block w-full px-4 py-2 text-left text-sm text-gray-700 data-focus:bg-gray-100"
             >
               View Image
