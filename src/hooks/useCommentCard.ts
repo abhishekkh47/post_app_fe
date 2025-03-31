@@ -59,7 +59,7 @@ const useCommentCard = ({
       setNestedComments({
         commentList: data?.comments?.childComments,
         count:
-          added && nestedComments.count > 0
+          added && nestedComments.count >= 0
             ? (nestedComments.count += 1)
             : nestedComments.count,
       });

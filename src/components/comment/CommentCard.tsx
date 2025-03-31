@@ -11,12 +11,14 @@ interface CommentCardProps {
   postId: string;
   comment: Comment;
   onCommentDelete: () => void;
+  isNested?: boolean;
 }
 
 const CommentCard: React.FC<CommentCardProps> = ({
   postId,
   comment,
   onCommentDelete,
+  isNested = false,
 }) => {
   const { user } = useAuth();
   const {
@@ -27,6 +29,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
     likeOrDislikeComment,
     handleCommentReplyClick,
     getNestedComments,
+    deletedNestedComment,
   } = useCommentCard({
     onCommentDelete,
     comment,
@@ -83,7 +86,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
               className="flex items-center space-x-1 hover:text-blue-500"
             >
               <MessageCircle className="size-4" />
-              <span>{comment?.replies || nestedComments.count}</span>
+              <span>{!isNested ? comment?.replies : nestedComments.count}</span>
             </button>
           )}
         </div>
@@ -100,7 +103,8 @@ const CommentCard: React.FC<CommentCardProps> = ({
               postId={postId}
               //   comments={comments.commentList}
               comments={nestedComments.commentList}
-              onCommentDelete={getNestedComments}
+              onCommentDelete={deletedNestedComment}
+              isNested={true}
             />
           </div>
         )}

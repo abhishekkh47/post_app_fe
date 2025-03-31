@@ -6,12 +6,14 @@ interface CommentListProps {
   postId: string;
   comments: Comment[];
   onCommentDelete: () => void;
+  isNested?: boolean;
 }
 
 const CommentList: React.FC<CommentListProps> = ({
   postId,
   comments,
   onCommentDelete,
+  isNested = false,
 }) => {
   return (
     <div className="space-y-4 mt-4">
@@ -21,6 +23,7 @@ const CommentList: React.FC<CommentListProps> = ({
             postId={postId}
             comment={comment}
             onCommentDelete={onCommentDelete}
+            isNested={isNested || false}
           />
         </div>
       ))}
