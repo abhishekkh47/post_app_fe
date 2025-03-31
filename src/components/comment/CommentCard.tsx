@@ -83,7 +83,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
               className="flex items-center space-x-1 hover:text-blue-500"
             >
               <MessageCircle className="size-4" />
-              <span>{comment?.replies}</span>
+              <span>{comment?.replies || nestedComments.count}</span>
             </button>
           )}
         </div>

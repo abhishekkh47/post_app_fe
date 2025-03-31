@@ -53,22 +53,11 @@ const useCommentCard = ({
     }
   };
 
-  const getNestedComments = async () => {
+  const getNestedComments = async (added: boolean = false) => {
     try {
       const data = await CommentService.getNestedComments(comment._id);
       setNestedComments({
         commentList: data?.comments?.childComments,
-        count: data?.comments?.childComments?.length || 0,
-      });
-    } catch (err) {
-      console.error("Failed to get comments:", err);
-    }
-  };
-  const getComments = async (added: boolean = false) => {
-    try {
-      const data = await CommentService.getPostComments(postId);
-      setNestedComments({
-        commentList: data.comments,
         count:
           added && nestedComments.count > 0
             ? (nestedComments.count += 1)
@@ -86,11 +75,11 @@ const useCommentCard = ({
     }
   };
 
-  const deletedComment = async () => {
+  const deletedNestedComment = async () => {
     try {
-      const data = await CommentService.getPostComments(postId);
+      const data = await CommentService.getNestedComments(comment._id);
       setNestedComments({
-        commentList: data.comments,
+        commentList: data?.comments?.childComments,
         count: nestedComments.count > 0 ? (nestedComments.count -= 1) : 0,
       });
     } catch (err) {
@@ -106,7 +95,7 @@ const useCommentCard = ({
     likeOrDislikeComment,
     handleCommentReplyClick,
     getNestedComments,
-    deletedComment,
+    deletedNestedComment,
   };
 };
 
