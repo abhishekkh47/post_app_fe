@@ -4,6 +4,8 @@ import { useAuth } from "../../context/AuthContext";
 import { Trash2, MessageCircle, Heart } from "lucide-react";
 import { useCommentCard } from "../../hooks";
 import { ProfilePicture } from "../profile";
+import CreateComment from "./CreateComment";
+import CommentList from "./CommentList";
 
 interface CommentCardProps {
   postId: string;
@@ -17,13 +19,20 @@ const CommentCard: React.FC<CommentCardProps> = ({
   onCommentDelete,
 }) => {
   const { user } = useAuth();
-  const { reaction, handleDeleteComment, likeOrDislikeComment } =
-    useCommentCard({
-      onCommentDelete,
-      comment,
-      postId,
-      userId: user?._id,
-    });
+  const {
+    reaction,
+    nestedComments,
+    showNestedComments,
+    handleDeleteComment,
+    likeOrDislikeComment,
+    handleCommentReplyClick,
+    getNestedComments,
+  } = useCommentCard({
+    onCommentDelete,
+    comment,
+    postId,
+    userId: user?._id,
+  });
 
   return (
     <div key={comment?._id} className="flex items-start space-x-3">
@@ -56,30 +65,45 @@ const CommentCard: React.FC<CommentCardProps> = ({
         <p className="text-gray-800">{comment?.content}</p>
         {/* <p className="text-xs text-gray-500 mt-1">likes</p> */}
         <div className="flex items-center space-x-2 text-gray-500 text-xs mt-1">
-          {user && (
+          {
             <button
               className="flex items-center space-x-1 hover:text-blue-500"
               onClick={() => likeOrDislikeComment(comment._id)}
             >
               <Heart
-                className={`size-4 ${
-                  user && reaction.status ? "fill-red-500" : ""
-                }`}
+                className={`size-4 ${reaction.status ? "fill-red-500" : ""}`}
               />
               <span>{reaction.count}</span>
             </button>
-          )}
+          }
           {true && (
             <button
               // onClick={() => setShowComments(!showComments)}
-              // onClick={handleCommentClick}
+              onClick={handleCommentReplyClick}
               className="flex items-center space-x-1 hover:text-blue-500"
             >
               <MessageCircle className="size-4" />
-              <span>{10 /*comments.count*/}</span>
+              <span>{comment?.replies}</span>
             </button>
           )}
         </div>
+        {/* Show post comments */}
+        {showNestedComments && (
+          <div className="mt-4">
+            <CreateComment
+              postId={postId}
+              // onCommentAdded={handleCommentAdded}
+              onCommentAdded={getNestedComments}
+              commentId={comment._id}
+            />
+            <CommentList
+              postId={postId}
+              //   comments={comments.commentList}
+              comments={nestedComments.commentList}
+              onCommentDelete={getNestedComments}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

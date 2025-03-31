@@ -1,20 +1,22 @@
 import React from "react";
 import { Send } from "lucide-react";
-import { Comment } from "../../types";
 import { useCreateComment } from "../../hooks";
 
 interface CreateCommentProps {
   postId: string;
-  onCommentAdded: (comment: Comment) => void;
+  onCommentAdded: (added: boolean) => void;
+  commentId?: string;
 }
 
 const CreateComment: React.FC<CreateCommentProps> = ({
   postId,
   onCommentAdded,
+  commentId,
 }) => {
   const { content, handleSubmit, updateNewComment } = useCreateComment({
     postId,
     onCommentAdded,
+    commentId,
   });
 
   return (

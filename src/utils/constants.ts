@@ -56,3 +56,8 @@ export const DELETE_DIALOG = {
   ACCOUNT: `Are you sure you want to delete your account? All of your data will be permanently removed. This action cannot be undone.`,
   POST: `Are you sure you want to delete this post?`,
 };
+
+export const COMMENT_TYPE = {
+  COMMENT: "comment",
+  REPLY: "reply",
+};

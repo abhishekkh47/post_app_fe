@@ -23,4 +23,6 @@ export interface Comment {
   parentId: string;
   likes: number;
   likedBy: string[];
+  replies: number;
+  childComments: Comment[];
 }

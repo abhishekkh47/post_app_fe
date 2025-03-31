@@ -4,16 +4,23 @@ import {
   DELETE_SERVICE,
   COMMENT,
   PATH_SLUGS,
+  COMMENT_TYPE,
 } from "../utils";
 
 class CommentService {
-  async createComment(postId: string, content: string) {
+  async createComment(
+    postId: string,
+    content: string,
+    parentId: string | null | undefined = undefined
+  ) {
     try {
       const response = await POST_SERVICE(
         COMMENT.CREATE_COMMENT,
         JSON.stringify({
           postId,
           content,
+          parentId,
+          type: parentId ? COMMENT_TYPE.REPLY : COMMENT_TYPE.COMMENT,
         })
       );
       if (!response.ok) {
@@ -69,6 +76,19 @@ class CommentService {
 
       if (!response.ok) {
         throw new Error("An error occurred");
+      }
+      return (await response.json())?.data;
+    } catch (error) {}
+  }
+
+  async getNestedComments(commentId: string) {
+    try {
+      const response = await GET_SERVICE(
+        COMMENT.GET_NESTED_COMMENT.replace(PATH_SLUGS.COMMENTID, commentId)
+      );
+
+      if (!response.ok) {
+        throw new Error("No comments found");
       }
       return (await response.json())?.data;
     } catch (error) {}

@@ -29,12 +29,13 @@ const usePostCard = ({
   });
   const { updateUser } = useAuth();
 
-  const getComments = async () => {
+  const getComments = async (added: boolean = false) => {
     try {
       const data = await CommentService.getPostComments(post._id);
       setComments({
         commentList: data.comments,
-        count: data?.comments?.length || 0,
+        count:
+          added && comments.count > 0 ? (comments.count += 1) : comments.count,
       });
     } catch (err) {
       console.error("Failed to get comments:", err);
@@ -104,6 +105,18 @@ const usePostCard = ({
     setOpenConfirmationModal(!openConfirmationModal);
   };
 
+  const deletedComment = async () => {
+    try {
+      const data = await CommentService.getPostComments(post._id);
+      setComments({
+        commentList: data.comments,
+        count: comments.count > 0 ? (comments.count -= 1) : 0,
+      });
+    } catch (err) {
+      console.error("Failed to delete comment:", err);
+    }
+  };
+
   return {
     showComments,
     isEditing,
@@ -120,6 +133,7 @@ const usePostCard = ({
     updateIsEditing,
     updateReaction,
     updateConfirmationModal,
+    deletedComment,
   };
 };
 

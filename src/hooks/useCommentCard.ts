@@ -15,9 +15,17 @@ const useCommentCard = ({
   postId,
   userId,
 }: CommentCardProps) => {
+  const [showNestedComments, setShowNestedComments] = useState<boolean>(false);
   const [reaction, setReaction] = useState<{ status: boolean; count: number }>({
     status: comment?.likedBy?.includes(userId || "") || false,
     count: comment?.likedBy?.length || 0,
+  });
+  const [nestedComments, setNestedComments] = useState<{
+    commentList: Comment[];
+    count: number;
+  }>({
+    commentList: comment?.childComments || [],
+    count: comment?.childComments?.length || 0,
   });
 
   const handleDeleteComment = async (commentId: string) => {
@@ -45,7 +53,61 @@ const useCommentCard = ({
     }
   };
 
-  return { reaction, handleDeleteComment, likeOrDislikeComment };
+  const getNestedComments = async () => {
+    try {
+      const data = await CommentService.getNestedComments(comment._id);
+      setNestedComments({
+        commentList: data?.comments?.childComments,
+        count: data?.comments?.childComments?.length || 0,
+      });
+    } catch (err) {
+      console.error("Failed to get comments:", err);
+    }
+  };
+  const getComments = async (added: boolean = false) => {
+    try {
+      const data = await CommentService.getPostComments(postId);
+      setNestedComments({
+        commentList: data.comments,
+        count:
+          added && nestedComments.count > 0
+            ? (nestedComments.count += 1)
+            : nestedComments.count,
+      });
+    } catch (err) {
+      console.error("Failed to get comments:", err);
+    }
+  };
+
+  const handleCommentReplyClick = async () => {
+    setShowNestedComments(!showNestedComments);
+    if (!showNestedComments) {
+      getNestedComments();
+    }
+  };
+
+  const deletedComment = async () => {
+    try {
+      const data = await CommentService.getPostComments(postId);
+      setNestedComments({
+        commentList: data.comments,
+        count: nestedComments.count > 0 ? (nestedComments.count -= 1) : 0,
+      });
+    } catch (err) {
+      console.error("Failed to delete comment:", err);
+    }
+  };
+
+  return {
+    nestedComments,
+    reaction,
+    showNestedComments,
+    handleDeleteComment,
+    likeOrDislikeComment,
+    handleCommentReplyClick,
+    getNestedComments,
+    deletedComment,
+  };
 };
 
 export default useCommentCard;

@@ -48,6 +48,7 @@ const PostCard: React.FC<PostCardProps> = ({
     updateIsEditing,
     updateReaction,
     updateConfirmationModal,
+    deletedComment,
   } = usePostCard({ post, fetchPosts, updateEditingActive });
 
   const sanitizedContent = DOMPurify.sanitize(post.post);
@@ -180,7 +181,7 @@ const PostCard: React.FC<PostCardProps> = ({
           <CommentList
             postId={post._id}
             comments={comments.commentList}
-            onCommentDelete={getComments}
+            onCommentDelete={deletedComment}
           />
         </div>
       )}
