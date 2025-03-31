@@ -19,4 +19,8 @@ export interface Comment {
   postId: string;
   content: string;
   createdAt: string;
+  type: string;
+  parentId: string;
+  likes: number;
+  likedBy: string[];
 }

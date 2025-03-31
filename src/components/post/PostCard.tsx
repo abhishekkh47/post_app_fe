@@ -178,11 +178,13 @@ const PostCard: React.FC<PostCardProps> = ({
             onCommentAdded={getComments}
           />
           <CommentList
+            postId={post._id}
             comments={comments.commentList}
             onCommentDelete={getComments}
           />
         </div>
       )}
+      {/* confirmation modal to delete comment */}
       {openConfirmationModal && (
         <DeleteAccount
           open={openConfirmationModal}

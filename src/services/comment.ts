@@ -51,6 +51,28 @@ class CommentService {
       return (await response.json())?.data;
     } catch (error) {}
   }
+
+  async likeOrDislikeComment(
+    commentId: string,
+    postId: string,
+    like: boolean = true
+  ) {
+    try {
+      const response = await POST_SERVICE(
+        COMMENT.LIKE_COMMENT,
+        JSON.stringify({
+          commentId,
+          postId,
+          like,
+        })
+      );
+
+      if (!response.ok) {
+        throw new Error("An error occurred");
+      }
+      return (await response.json())?.data;
+    } catch (error) {}
+  }
 }
 
 export default new CommentService();

@@ -1,10 +1,8 @@
 import React from "react";
-// import { User } from "../../types";
 import config from "../../config";
 
 interface ProfilePictureProps {
   profile_pic?: string | null;
-  //   user: User | null;
   firstName: string;
   size?: number;
   text?: string;
@@ -13,7 +11,6 @@ interface ProfilePictureProps {
 
 const ProfilePicture: React.FC<ProfilePictureProps> = ({
   profile_pic,
-  //   user,
   firstName,
   size = 10,
   text = "lg",
@@ -26,9 +23,7 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
           src={`${config.API_URL}/uploads/${profile_pic}`}
           alt={`${firstName}`}
           loading="lazy"
-          className={`h-${size} w-${size} rounded-full object-cover ${
-            className ? className : ""
-          }`}
+          className={`h-${size} w-${size} rounded-full object-cover`}
         />
       ) : (
         // <div className="h-10 w-10 rounded-full bg-gray-200" />

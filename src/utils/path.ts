@@ -27,6 +27,7 @@ export const COMMENT = {
   CREATE_COMMENT: `${API_URL}/comment/v1/create-comment`,
   GET_POST_COMMENTS: `${API_URL}/comment/v1/get-post-comments/${PATH_SLUGS.POSTID}`,
   DELETE_COMMENT: `${API_URL}/comment/v1/delete-comment/${PATH_SLUGS.COMMENTID}`,
+  LIKE_COMMENT: `${API_URL}/comment/v1/like-or-dislike-comment`,
 };
 export const FOLLOW = {
   FOLLOW: `${API_URL}/follow/v1/follow-user`,
