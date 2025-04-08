@@ -174,12 +174,12 @@ const PostCard: React.FC<PostCardProps> = ({
       {showComments && (
         <div className="mt-4">
           <CreateComment
-            postId={post._id}
+            post={post}
             // onCommentAdded={handleCommentAdded}
             onCommentAdded={getComments}
           />
           <CommentList
-            postId={post._id}
+            post={post}
             comments={comments.commentList}
             onCommentDelete={deletedComment}
           />

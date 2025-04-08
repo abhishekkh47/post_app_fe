@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { CommentService } from "../services";
-import { Comment } from "../types";
+import { Comment, Post } from "../types";
 
 interface CommentCardProps {
   comment: Comment;
   onCommentDelete: () => void;
-  postId: string;
+  post: Post;
   userId?: string;
 }
 
 const useCommentCard = ({
   onCommentDelete,
   comment,
-  postId,
+  post,
   userId,
 }: CommentCardProps) => {
   const [showNestedComments, setShowNestedComments] = useState<boolean>(false);
@@ -41,7 +41,7 @@ const useCommentCard = ({
     try {
       await CommentService.likeOrDislikeComment(
         commentId,
-        postId,
+        post._id,
         !reaction.status
       );
       setReaction({

@@ -1,5 +1,5 @@
 import React from "react";
-import { Comment } from "../../types";
+import { Comment, Post } from "../../types";
 import { useAuth } from "../../context/AuthContext";
 import { Trash2, MessageCircle, Heart } from "lucide-react";
 import { useCommentCard } from "../../hooks";
@@ -8,14 +8,14 @@ import CreateComment from "./CreateComment";
 import CommentList from "./CommentList";
 
 interface CommentCardProps {
-  postId: string;
+  post: Post;
   comment: Comment;
   onCommentDelete: () => void;
   isNested?: boolean;
 }
 
 const CommentCard: React.FC<CommentCardProps> = ({
-  postId,
+  post,
   comment,
   onCommentDelete,
   isNested = false,
@@ -33,7 +33,7 @@ const CommentCard: React.FC<CommentCardProps> = ({
   } = useCommentCard({
     onCommentDelete,
     comment,
-    postId,
+    post,
     userId: user?._id,
   });
 
@@ -94,13 +94,13 @@ const CommentCard: React.FC<CommentCardProps> = ({
         {showNestedComments && (
           <div className="mt-4">
             <CreateComment
-              postId={postId}
+              post={post}
               // onCommentAdded={handleCommentAdded}
               onCommentAdded={getNestedComments}
               commentId={comment._id}
             />
             <CommentList
-              postId={postId}
+              post={post}
               //   comments={comments.commentList}
               comments={nestedComments.commentList}
               onCommentDelete={deletedNestedComment}

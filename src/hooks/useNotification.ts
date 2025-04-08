@@ -8,7 +8,7 @@ const useNotification = () => {
   const { socket } = useSocket();
   const {
     NOTIFICATIONS: {
-      LISTENER: { POST_LIKED },
+      LISTENER: { POST_LIKED, COMMENT_REPLY, POST_COMMENT },
     },
   } = WS_EVENTS;
 
@@ -21,9 +21,13 @@ const useNotification = () => {
     socket.connect();
 
     socket.on(POST_LIKED, getNotifications);
+    socket.on(COMMENT_REPLY, getNotifications);
+    socket.on(POST_COMMENT, getNotifications);
 
     return () => {
       socket.off(POST_LIKED);
+      socket.off(COMMENT_REPLY);
+      socket.off(POST_COMMENT);
     };
   }, [socket]);
 

@@ -1,16 +1,16 @@
 import React from "react";
-import { Comment } from "../../types";
+import { Comment, Post } from "../../types";
 import CommentCard from "./CommentCard";
 
 interface CommentListProps {
-  postId: string;
+  post: Post;
   comments: Comment[];
   onCommentDelete: () => void;
   isNested?: boolean;
 }
 
 const CommentList: React.FC<CommentListProps> = ({
-  postId,
+  post,
   comments,
   onCommentDelete,
   isNested = false,
@@ -20,7 +20,7 @@ const CommentList: React.FC<CommentListProps> = ({
       {comments?.map((comment) => (
         <div key={comment?._id}>
           <CommentCard
-            postId={postId}
+            post={post}
             comment={comment}
             onCommentDelete={onCommentDelete}
             isNested={isNested || false}

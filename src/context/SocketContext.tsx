@@ -35,14 +35,14 @@ interface SocketContextType {
   commentOnPost: (
     receiverId: string,
     postId: string,
-    userId: string,
-    content: string
+    content: string,
+    commentId?: string
   ) => void;
-  likeAComment: (receiverId: string, commentId: string, userId: string) => void;
+  likeAComment: (receiverId: string, commentId: string) => void;
   replyOnComment: (
     receiverId: string,
+    postId: string,
     commentId: string,
-    userId: string,
     content: string
   ) => void;
 }
@@ -180,10 +180,16 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
     [socket, isConnected]
   );
   const replyOnComment = useCallback(
-    (receiverId: string, commentId: string, content: string) => {
+    (
+      receiverId: string,
+      postId: string,
+      commentId: string,
+      content: string
+    ) => {
       if (socket && isConnected) {
         socket.emit(NOTIFICATIONS.EMITTER.REPLY_COMMENT, {
           receiverId,
+          postId,
           commentId,
           content,
         });

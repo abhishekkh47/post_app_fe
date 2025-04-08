@@ -96,7 +96,6 @@ const usePostCard = ({
 
   const updateReaction = async (postId: string, currentStatus: boolean) => {
     if (!currentStatus) {
-      await PostService.likePost(postId);
       likeAPost(post.userId._id, postId);
       setReaction({ status: !reaction.status, count: reaction.count + 1 });
     } else {
