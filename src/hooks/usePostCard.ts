@@ -2,6 +2,7 @@ import { useState } from "react";
 import { CommentService, PostService } from "../services";
 import { Post, Comment } from "../types";
 import { useAuth } from "../context/AuthContext";
+import { useSocket } from "../context/SocketContext";
 
 interface PostCardProps {
   post: Post;
@@ -14,6 +15,8 @@ const usePostCard = ({
   fetchPosts,
   updateEditingActive,
 }: PostCardProps) => {
+  const { likeAPost } = useSocket();
+
   const [showComments, setShowComments] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [updatedContent, setUpdatedContent] = useState(post.post);
@@ -94,6 +97,7 @@ const usePostCard = ({
   const updateReaction = async (postId: string, currentStatus: boolean) => {
     if (!currentStatus) {
       await PostService.likePost(postId);
+      likeAPost(post.userId._id, postId);
       setReaction({ status: !reaction.status, count: reaction.count + 1 });
     } else {
       await PostService.dislikePost(postId);

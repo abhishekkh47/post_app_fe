@@ -38,6 +38,20 @@ export const WS_EVENTS = {
       GROUP_TYPING: "group_typing",
     },
   },
+  NOTIFICATIONS: {
+    LISTENER: {
+      POST_LIKED: "liked_post",
+      POST_COMMENT: "comment_on_post",
+      COMMENT_LIKED: "comment_liked",
+      COMMENT_REPLY: "replied_to_comment",
+    },
+    EMITTER: {
+      LIKE_A_POST: "liked_a_post",
+      COMMENT_ON_POST: "commented_on_post",
+      LIKE_A_COMMENT: "liked_a_comment",
+      REPLY_COMMENT: "replied_to_comment",
+    },
+  },
 };
 export const CHAT_TYPE = {
   INDIVIDUAL: "individual",

@@ -20,7 +20,6 @@ const useChat = () => {
   const {
     CHAT: {
       LISTENER: { MESSAGE_MARKED_READ, MESSAGE_SENT, NEW_MESSAGE },
-      // EMITTER: { PRIVATE_MSG, MARK_READ },
     },
     GROUP: {
       LISTENER: {
@@ -28,7 +27,6 @@ const useChat = () => {
         GROUP_NEW_MESSAGE,
         GROUP_MESSAGE_SENT,
       },
-      // EMITTER: { GROUP_MSG, GROUP_MARK_READ },
     },
   } = WS_EVENTS;
 

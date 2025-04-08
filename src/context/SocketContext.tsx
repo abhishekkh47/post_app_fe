@@ -9,7 +9,7 @@ import React, {
 import { io, Socket } from "socket.io-client";
 import { WS_EVENTS } from "../utils";
 
-const { CHAT, GROUP } = WS_EVENTS;
+const { CHAT, GROUP, NOTIFICATIONS } = WS_EVENTS;
 interface SocketContextType {
   socket: Socket | null;
   isConnected: boolean;
@@ -31,6 +31,20 @@ interface SocketContextType {
   ) => void;
   notifyGroupTyping: (groupId: string) => void;
   markGroupMessageAsRead: (groupId: string, messageId: string) => void;
+  likeAPost: (receiverId: string, postId: string) => void;
+  commentOnPost: (
+    receiverId: string,
+    postId: string,
+    userId: string,
+    content: string
+  ) => void;
+  likeAComment: (receiverId: string, commentId: string, userId: string) => void;
+  replyOnComment: (
+    receiverId: string,
+    commentId: string,
+    userId: string,
+    content: string
+  ) => void;
 }
 
 const SocketContext = createContext<SocketContextType>({
@@ -44,6 +58,10 @@ const SocketContext = createContext<SocketContextType>({
   sendGroupMessage: () => {},
   notifyGroupTyping: () => {},
   markGroupMessageAsRead: () => {},
+  likeAPost: () => {},
+  commentOnPost: () => {},
+  likeAComment: () => {},
+  replyOnComment: () => {},
 });
 
 export const useSocket = () => useContext(SocketContext);
@@ -71,7 +89,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const notifyTyping = useCallback(
     (receiverId: string) => {
       if (socket && isConnected) {
-        socket.emit(CHAT.LISTENER.TYPING, { receiverId });
+        socket.emit(CHAT.EMITTER.TYPING, { receiverId });
       }
     },
     [socket, isConnected]
@@ -79,7 +97,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const markAsRead = useCallback(
     (senderId: string) => {
       if (socket && isConnected) {
-        socket.emit(WS_EVENTS.CHAT.LISTENER.MARK_READ, {
+        socket.emit(CHAT.EMITTER.MARK_READ, {
           receiverId: senderId,
         });
       }
@@ -126,6 +144,49 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
     (groupId: string, messageId: string) => {
       if (socket && isConnected) {
         socket.emit(GROUP.EMITTER.GROUP_MARK_READ, { groupId, messageId });
+      }
+    },
+    [socket, isConnected]
+  );
+  const likeAPost = useCallback(
+    (receiverId: string, postId: string) => {
+      if (socket && isConnected) {
+        socket.emit(NOTIFICATIONS.EMITTER.LIKE_A_POST, { receiverId, postId });
+      }
+    },
+    [socket, isConnected]
+  );
+  const commentOnPost = useCallback(
+    (receiverId: string, postId: string, content: string) => {
+      if (socket && isConnected) {
+        socket.emit(NOTIFICATIONS.EMITTER.COMMENT_ON_POST, {
+          receiverId,
+          postId,
+          content,
+        });
+      }
+    },
+    [socket, isConnected]
+  );
+  const likeAComment = useCallback(
+    (receiverId: string, commentId: string) => {
+      if (socket && isConnected) {
+        socket.emit(NOTIFICATIONS.EMITTER.LIKE_A_COMMENT, {
+          receiverId,
+          commentId,
+        });
+      }
+    },
+    [socket, isConnected]
+  );
+  const replyOnComment = useCallback(
+    (receiverId: string, commentId: string, content: string) => {
+      if (socket && isConnected) {
+        socket.emit(NOTIFICATIONS.EMITTER.REPLY_COMMENT, {
+          receiverId,
+          commentId,
+          content,
+        });
       }
     },
     [socket, isConnected]
@@ -201,6 +262,10 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
         sendGroupMessage,
         notifyGroupTyping,
         markGroupMessageAsRead,
+        likeAPost,
+        commentOnPost,
+        likeAComment,
+        replyOnComment,
       }}
     >
       {children}

@@ -1,11 +1,31 @@
 import { useEffect, useState } from "react";
 import { NotificationService } from "../services";
 import { INotification } from "../types";
+import { useSocket } from "../context/SocketContext";
+import { WS_EVENTS } from "../utils";
 
 const useNotification = () => {
+  const { socket } = useSocket();
+  const {
+    NOTIFICATIONS: {
+      LISTENER: { POST_LIKED },
+    },
+  } = WS_EVENTS;
+
   const [notifications, setNotifications] = useState<INotification[]>([]);
   const [unreadNotificationCount, setUnreadNotificationCount] =
     useState<Number>(0);
+
+  useEffect(() => {
+    if (!socket) return;
+    socket.connect();
+
+    socket.on(POST_LIKED, getNotifications);
+
+    return () => {
+      socket.off(POST_LIKED);
+    };
+  }, [socket]);
 
   const updateNotifications = (notifications: INotification[]) => {
     setNotifications(notifications);
