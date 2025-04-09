@@ -10,6 +10,7 @@ export const PATH_SLUGS = {
   GROUP_ID: "#groupId",
   CHAT_ID: "#chatId",
   INVITE_TOKEN: "#inviteToken",
+  PAGE: "#page",
 };
 
 export const AUTH = {
@@ -38,7 +39,7 @@ export const FOLLOW = {
   FRIENDS: `${API_URL}/follow/v1/my-friends`,
 };
 export const POSTS = {
-  GET_FEED: `${API_URL}/post/v1/get-feed`,
+  GET_FEED: `${API_URL}/post/v1/get-feed?page=${PATH_SLUGS.PAGE}`,
   CREATE_POST: `${API_URL}/post/v1/create-post`,
   DELETE_POST: `${API_URL}/post/v1/delete-post/${PATH_SLUGS.POSTID}`,
   UPDATE_POST: `${API_URL}/post/v1/edit-or-update-post`,

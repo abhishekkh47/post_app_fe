@@ -26,9 +26,11 @@ class PostService {
     }
   }
 
-  async getFeed() {
+  async getFeed(page: number = 1) {
     try {
-      const response = await GET_SERVICE(POSTS.GET_FEED);
+      const response = await GET_SERVICE(
+        POSTS.GET_FEED.replace(PATH_SLUGS.PAGE, page.toString())
+      );
       if (!response.ok) {
         throw new Error("Failed to load feed");
       }
