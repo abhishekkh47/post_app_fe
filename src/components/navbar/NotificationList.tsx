@@ -21,7 +21,7 @@ const NotificationList: React.FC<INotificationList> = ({
       <div className="text-black text-lg font-bold justify-self-start mx-2 mt-1">
         Notifications
       </div>
-      <div className="flex space-x-2 mx-2">
+      <div className="flex space-x-2 mx-2 mb-2">
         <div
           className={`border text-gray-600 px-2 rounded-xl ${
             activeTab === NOTIFICATION_TAB.ALL ? "bg-indigo-500 text-white" : ""
@@ -63,9 +63,9 @@ const NotificationList: React.FC<INotificationList> = ({
                 <ProfilePicture
                   profile_pic={sender?.profile_pic}
                   firstName={sender.firstName}
-                  size={9}
+                  size={8}
                   text={`sm`}
-                  className={`min-w-9`}
+                  className={`w-8`}
                 />
                 <span className="text-left flex-1">
                   <p className="font-semibold">{`${sender.firstName} ${sender.lastName}`}</p>

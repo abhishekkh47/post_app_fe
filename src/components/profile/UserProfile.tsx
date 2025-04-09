@@ -45,6 +45,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
             firstName={profile.firstName}
             size={20}
             text={`[50px]`}
+            className={`w-20 h-20`}
           />
         </div>
 
