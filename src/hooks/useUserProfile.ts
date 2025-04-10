@@ -18,11 +18,16 @@ const useUserProfile = ({ profile, updateUser }: UserProfileProps) => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [isFileUpdated, setIsFileUpdated] = useState<boolean>(false);
+  const [openUpdateProfileDialog, setOpenUpdateProfileDialog] =
+    useState<boolean>(false);
+  const [userData, setUserData] = useState<any>({
+    firstName: profile.firstName,
+    lastName: profile?.lastName || "",
+    bio: profile?.bio || "",
+  });
 
   const handleImageClick = () => {
-    if (image) {
-      setIsModalOpen(true);
-    }
+    setIsModalOpen(true);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,6 +63,43 @@ const useUserProfile = ({ profile, updateUser }: UserProfileProps) => {
     }
   };
 
+  const updateProfileDetails = async (
+    firstName: string,
+    lastName: string = "",
+    bio: string = ""
+  ) => {
+    await UserService.updateProfileDetails(firstName, lastName, bio);
+    updateUser();
+  };
+  const updateOpenUpdateProfileDialog = () => {
+    setOpenUpdateProfileDialog(!openUpdateProfileDialog);
+    setUserData({
+      firstName: profile.firstName,
+      lastName: profile.lastName,
+      bio: profile.bio,
+    });
+  };
+  const handleEditClick = () => {
+    updateOpenUpdateProfileDialog();
+  };
+
+  const updateProfileDetailsHandler = (
+    firstName: string,
+    lastName: string = "",
+    bio: string = ""
+  ) => {
+    updateProfileDetails(firstName, lastName, bio);
+    updateOpenUpdateProfileDialog();
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setUserData((prev: any) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   return {
     image,
     selectedImage,
@@ -65,11 +107,17 @@ const useUserProfile = ({ profile, updateUser }: UserProfileProps) => {
     isModalOpen,
     fileInputRef,
     isFileUpdated,
+    userData,
+    openUpdateProfileDialog,
     handleImageClick,
     handleFileChange,
     handleUploadClick,
     handleSaveClick,
     updateSetModalOpen,
+    handleEditClick,
+    updateProfileDetailsHandler,
+    updateOpenUpdateProfileDialog,
+    handleChange,
   };
 };
 

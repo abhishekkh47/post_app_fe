@@ -87,5 +87,20 @@ class UserService {
       throw new Error((error as Error).message);
     }
   }
+
+  async updateProfileDetails(firstName: string, lastName: string, bio: string) {
+    try {
+      const response = await PUT_SERVICE(
+        USER.UPDATE_PROFILE_DETAILS,
+        JSON.stringify({ firstName, lastName, bio })
+      );
+      if (!response.ok) {
+        throw new Error("Cannot complete action at the moment");
+      }
+      return (await response.json())?.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
 }
 export default new UserService();
