@@ -20,7 +20,8 @@ const UserProfile: React.FC<UserProfileProps> = ({
   updateUser,
 }) => {
   if (!profile) {
-    return <div>Loading profile...</div>;
+    // return <div>Loading profile...</div>;
+    return;
   }
 
   const {

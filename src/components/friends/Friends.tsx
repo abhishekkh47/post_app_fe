@@ -3,6 +3,7 @@ import { ChatPopup } from "../chat";
 import { MessageSquare } from "lucide-react";
 import { useFriends } from "../../hooks";
 import { ProfilePicture } from "../profile";
+import { Loader } from "../common";
 
 const Friends: React.FC = () => {
   const {
@@ -53,7 +54,7 @@ const Friends: React.FC = () => {
       {/* Friends List */}
       <div className="mt-6">
         {loading ? (
-          <p className="text-center text-gray-500">Loading...</p>
+          <Loader />
         ) : friends.length > 0 ? (
           <ul className="space-y-3">
             {friends.map((friend) => (

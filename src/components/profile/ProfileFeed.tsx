@@ -1,6 +1,7 @@
 import React from "react";
 import { PostList } from "../post";
 import { useProfileFeed } from "../../hooks";
+import { Loader } from "../common";
 
 interface ProfileFeedProps {
   userId: string | undefined;
@@ -19,7 +20,7 @@ const ProfileFeed: React.FC<ProfileFeedProps> = ({ userId }) => {
   return (
     <div>
       {loading ? (
-        <div className="text-center py-4">Loading posts...</div>
+        <Loader />
       ) : error ? (
         <div className="text-red-500 text-center py-4">{error}</div>
       ) : (
