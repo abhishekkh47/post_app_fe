@@ -47,8 +47,12 @@ const useUserProfile = ({ profile, updateUser }: UserProfileProps) => {
   const handleSaveClick = async () => {
     if (imagePreview) {
       setIsFileUpdated(true);
-      setImage(imagePreview);
-      await UserService.updateProfilePicture(selectedImage as File);
+      const updatedProfileImage = await UserService.updateProfilePicture(
+        selectedImage as File
+      );
+      setImage(updatedProfileImage.filename);
+      setImagePreview(updatedProfileImage.filename);
+      setIsFileUpdated(false);
       updateUser();
     }
     setIsModalOpen(false);
