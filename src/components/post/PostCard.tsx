@@ -76,11 +76,7 @@ const PostCard: React.FC<PostCardProps> = ({
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
           <ProfilePicture
-            profile_pic={
-              user?._id === post?.userId?._id
-                ? user.profile_pic
-                : post?.userId?.profile_pic
-            }
+            profile_pic={post?.userId?.profile_pic}
             firstName={post?.userId?.firstName || ""}
             size={10}
             text={`lg`}
