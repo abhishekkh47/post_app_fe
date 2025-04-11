@@ -13,11 +13,11 @@ const Home: React.FC = () => {
   const { joinGroupData } = useJoinGroup();
 
   return (
-    <div className="flex">
-      <div className="flex-1">
+    <div className="flex mt-16">
+      <div className="flex-1 mr-80">
         <Feed />
       </div>
-      <div className="w-96">
+      <div className="w-96 fixed top-16 right-0 h-[calc(100vh-4rem)]">
         <ChatPage user={user} />
       </div>
       {showGroupJoinModal && inviteToken && (

@@ -22,7 +22,7 @@ const Friends: React.FC = () => {
   } = useFriends();
 
   return (
-    <div className="max-w-2xl mx-auto py-8 px-4">
+    <div className="max-w-2xl mx-auto py-8 px-4 mt-16">
       {/* <h1 className="text-2xl font-bold text-gray-900 text-center mb-6">
         Friends List
       </h1> */}
