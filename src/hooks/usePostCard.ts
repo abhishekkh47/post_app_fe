@@ -26,9 +26,14 @@ const usePostCard = ({
     commentList: Comment[];
     count: number;
   }>({ commentList: post.commentList || [], count: post.comments || 0 });
-  const [reaction, setReaction] = useState<{ status: boolean; count: number }>({
+  const [reaction, setReaction] = useState<{
+    status: boolean;
+    count: number;
+    isUpdating?: boolean;
+  }>({
     status: post.liked,
     count: post.reactions,
+    isUpdating: false,
   });
   const { updateUser } = useAuth();
 

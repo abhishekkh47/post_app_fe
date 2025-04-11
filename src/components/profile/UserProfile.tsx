@@ -4,7 +4,6 @@ import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { UserStats, FollowButton, ProfilePicture } from "./";
 import { User } from "../../types";
 import { useUserProfile } from "../../hooks";
-import config from "../../config";
 import { EditProfileDetails } from "../dialog";
 
 interface UserProfileProps {
@@ -104,11 +103,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
               </button>
               {imagePreview && (
                 <img
-                  src={
-                    isFileUpdated
-                      ? imagePreview
-                      : `${config.API_URL}/uploads/${imagePreview}`
-                  }
+                  src={imagePreview}
                   alt="Preview"
                   loading="lazy"
                   className="w-96 h-96 object-cover rounded-lg"

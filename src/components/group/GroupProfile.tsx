@@ -4,7 +4,6 @@ import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import { NotAdmin, EditGroupDetails, GroupInviteLink } from "../dialog";
 import { useGroupProfile } from "../../hooks";
-import config from "../../config";
 import { ProfilePicture } from "../profile";
 
 interface GroupProfileProps {
@@ -114,12 +113,7 @@ const GroupProfile: React.FC<GroupProfileProps> = ({
           >
             <MenuItem
               as="button"
-              onClick={() =>
-                window.open(
-                  `${config.API_URL}/uploads/${groupData.profile_pic}`,
-                  "_blank"
-                )
-              }
+              onClick={() => window.open(groupData.profile_pic, "_blank")}
               disabled={groupData.profile_pic ? false : true}
               className="block w-full px-4 py-2 text-left text-sm text-gray-700 data-focus:bg-gray-100"
             >

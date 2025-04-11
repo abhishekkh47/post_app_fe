@@ -29,3 +29,17 @@ export const base64ToFile = (
     lastModified: metadata.lastModified,
   });
 };
+
+export const debounce = (
+  func: () => Promise<void>,
+  delay: number
+): React.MouseEventHandler<HTMLButtonElement> => {
+  let timer: NodeJS.Timeout;
+  return (event) => {
+    event.preventDefault();
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      func();
+    }, delay);
+  };
+};

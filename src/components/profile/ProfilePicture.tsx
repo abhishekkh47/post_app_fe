@@ -1,5 +1,5 @@
 import React from "react";
-import config from "../../config";
+// import config from "../../config";
 
 interface ProfilePictureProps {
   profile_pic?: string | null;
@@ -20,8 +20,9 @@ const ProfilePicture: React.FC<ProfilePictureProps> = ({
     <div>
       {profile_pic ? (
         <img
-          src={`${config.API_URL}/uploads/${profile_pic}`}
-          alt={`${firstName}`}
+          // src={`${config.VITE_IMAGE_URL}/${profile_pic}`}
+          src={profile_pic}
+          alt={firstName}
           loading="lazy"
           className={`h-${size} w-${size} rounded-full object-cover`}
         />

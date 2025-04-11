@@ -1,6 +1,5 @@
 import React from "react";
 import { Check, CheckCheck } from "lucide-react";
-import config from "../../config";
 
 interface MessageProps {
   message: any;
@@ -45,7 +44,7 @@ const MessageBubble: React.FC<MessageProps> = ({ message, user }) => {
       {message.attachments?.map((attachment: any, i: any) => (
         <img
           key={i}
-          src={`${config.API_URL}/uploads/${attachment}`}
+          src={attachment}
           alt="attachment"
           loading="lazy"
           className="mt-2 rounded-lg max-w-full"

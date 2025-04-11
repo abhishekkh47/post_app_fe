@@ -12,7 +12,7 @@ import { CommentList, CreateComment } from "../comment";
 import { usePostCard } from "../../hooks";
 import { useAuth } from "../../context/AuthContext";
 import { DeleteAccount } from "../dialog";
-import { CONFIRM_DELETE } from "../../utils";
+import { CONFIRM_DELETE, debounce } from "../../utils";
 import DOMPurify from "dompurify";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
@@ -149,7 +149,11 @@ const PostCard: React.FC<PostCardProps> = ({
       <div className="flex items-center space-x-4 text-gray-500">
         <button
           className="flex items-center space-x-1 hover:text-blue-500"
-          onClick={() => updateReaction(post._id, reaction.status)}
+          onClick={debounce(
+            () => updateReaction(post._id, reaction.status),
+            300
+          )}
+          disabled={reaction.isUpdating}
         >
           <Heart
             className={`h-5 w-5 ${reaction.status ? "fill-red-500" : ""}`}
