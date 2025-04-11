@@ -1,6 +1,7 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import React from "react";
+import { HomeShimmer } from "../shimmer";
 
 interface ProctedRouteProps {
   children: React.ReactNode;
@@ -11,7 +12,8 @@ const ProtectedRoute: React.FC<ProctedRouteProps> = ({ children }) => {
   const location = useLocation();
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <HomeShimmer />;
+    // return <div>Loading...</div>;
   }
   if (!isAuthenticated || !user) {
     return <Navigate to="/auth/login" state={{ from: location }} replace />;

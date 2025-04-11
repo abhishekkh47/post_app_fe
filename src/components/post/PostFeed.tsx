@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useCallback } from "react";
 import { CreatePostV2, PostList } from "./";
 import { usePostFeed } from "../../hooks";
 import { Loader } from "../common";
+import { FeedShimmer } from "../shimmer";
 
 const PostFeed: React.FC = () => {
   const { posts, loading, loadingMore, error, fetchPosts, loadMore, hasMore } =
@@ -47,7 +48,10 @@ const PostFeed: React.FC = () => {
       <CreatePostV2 fetchPosts={() => fetchPosts(true)} />
 
       {loading ? (
-        <Loader />
+        <div>
+          <Loader />
+          <FeedShimmer />
+        </div>
       ) : error ? (
         <div className="text-red-500 text-center py-4">{error}</div>
       ) : (
