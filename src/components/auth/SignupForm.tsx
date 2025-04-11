@@ -77,6 +77,36 @@ const SignupForm: React.FC = () => {
                 placeholder="Password"
               />
             </div>
+            {formData.email &&
+              !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && (
+                <div className="text-red-500 text-sm">
+                  Invalid email address
+                </div>
+              )}
+
+            {formData.password &&
+              (!/.{8,}/.test(formData.password) ||
+                !/(?=.*[A-Z])/.test(formData.password) ||
+                !/(?=.*[a-z])/.test(formData.password) ||
+                !/(?=.*\W)/.test(formData.password)) && (
+                <div className="space-y-1">
+                  <div className="text-red-500 text-sm font-medium">
+                    Password must contain at least:
+                  </div>
+                  <ul className="list-disc list-inside text-red-500 text-sm space-y-1">
+                    {!/.{8,}/.test(formData.password) && <li>8 characters</li>}
+                    {!/(?=.*[A-Z])/.test(formData.password) && (
+                      <li>One uppercase letter</li>
+                    )}
+                    {!/(?=.*[a-z])/.test(formData.password) && (
+                      <li>One lowercase letter</li>
+                    )}
+                    {!/(?=.*\W)/.test(formData.password) && (
+                      <li>One special character</li>
+                    )}
+                  </ul>
+                </div>
+              )}
           </div>
 
           {/* <div className="flex items-center">
