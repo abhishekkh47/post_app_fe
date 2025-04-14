@@ -20,6 +20,8 @@ const useNavBar = () => {
       setSelected("Projects");
     } else if (location.pathname === `/settings/${user?._id}`) {
       setSelected("Settings");
+    } else if (location.pathname === `/messages`) {
+      setSelected("Settings");
     } else if (location.pathname === "/") {
       setSelected("Home"); // Default is home
     } else {
@@ -39,6 +41,9 @@ const useNavBar = () => {
   const handleProfileClick = async () => {
     navigate(`/profile/${user?._id}`);
   };
+  const handleMessageClick = async () => {
+    navigate(`/messages`);
+  };
   const navigation = [
     {
       name: "Home",
@@ -52,12 +57,18 @@ const useNavBar = () => {
       current: false,
       onClick: handleFriendsClick,
     },
-    { name: "Projects", href: "#", current: false },
+    { name: "Games", href: "#", current: false },
     {
       name: "Settings",
       href: `/settings/${user?._id}`,
       current: false,
       onClick: handleSettingsClick,
+    },
+    {
+      name: "Messages",
+      href: `/messages`,
+      current: false,
+      onClick: handleMessageClick,
     },
   ];
 
