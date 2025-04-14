@@ -60,7 +60,7 @@ const Friends: React.FC = () => {
             {friends.map((friend) => (
               <li
                 key={friend._id}
-                className="flex items-center space-x-4 p-3 bg-white rounded-lg shadow cursor-pointer"
+                className="flex flex-col sm:flex-row items-center space-y-4 sm:space-y-0 sm:space-x-4 p-3 bg-white rounded-lg shadow cursor-pointer"
               >
                 <ProfilePicture
                   profile_pic={friend?.profile_pic}

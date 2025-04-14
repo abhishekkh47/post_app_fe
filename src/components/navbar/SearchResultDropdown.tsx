@@ -19,7 +19,7 @@ const SearchResultDropdown: React.FC<SearchResultDropdownProps> = ({
   });
 
   return (
-    <ul className="absolute top-full left-0 bg-white border border-gray-300 rounded mt-1 w-full max-h-60 overflow-y-auto shadow-lg z-10">
+    <ul className="absolute top-full left-0 bg-white border border-gray-300 rounded mt-1 w-full max-h-60 overflow-y-auto shadow-lg z-10 sm:max-h-80">
       {users.map((user) => (
         <li
           key={user._id}
@@ -33,7 +33,7 @@ const SearchResultDropdown: React.FC<SearchResultDropdownProps> = ({
             text={`lg`}
           />
           <div className="flex-1">
-            <span className="font-medium text-gray-800">
+            <span className="font-medium text-gray-800 text-sm sm:text-base">
               {user.firstName} {user.lastName}
             </span>
           </div>

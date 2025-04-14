@@ -7,14 +7,22 @@ import {
   AuthenticatedLayout,
   MaintenancePageLayout,
 } from "./components/layout/";
-import { Profile, Home, Settings, GroupDetails, JoinGroup } from "./pages";
+import {
+  Profile,
+  Home,
+  Settings,
+  GroupDetails,
+  JoinGroup,
+  ChatPage,
+} from "./pages";
 import { Friends } from "./components/friends";
 import { JoinGroupProvider } from "./context/JoinGroupContext";
 import { useEffect, useState } from "react";
 import { CommonService } from "./services";
 
 const AppContent = () => {
-  const { isAuthenticated } = useAuth();
+  const { user, isAuthenticated } = useAuth();
+  if (!user) return;
   const [isMaintenance, setIsMaintenance] = useState<boolean>(false);
 
   useEffect(() => {
@@ -139,8 +147,22 @@ const AppContent = () => {
           </ProtectedRoute>
         }
       ></Route>
+      <Route
+        path="/messages"
+        element={
+          <ProtectedRoute>
+            <SocketProvider>
+              <AuthenticatedLayout>
+                <JoinGroupProvider>
+                  <ChatPage user={user} />
+                </JoinGroupProvider>
+              </AuthenticatedLayout>
+            </SocketProvider>
+          </ProtectedRoute>
+        }
+      ></Route>
 
-      {/* Catch all route - redirect to home or login */}
+      {/* Maintenance Mode */}
       <Route path="/maintenance" element={<MaintenancePageLayout />}></Route>
 
       {/* Catch all route - redirect to home or login */}

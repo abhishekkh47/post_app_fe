@@ -17,8 +17,8 @@ const NotificationList: React.FC<INotificationList> = ({
     useNotificationList({ markNotificationAsRead });
 
   return (
-    <ul className="absolute mt-4 mr-50 bg-white rounded-md z-50 w-64">
-      <div className="text-black text-lg font-bold justify-self-start mx-2 mt-1">
+    <ul className="absolute mt-4 right-0 bg-white rounded-md z-50 w-64 sm:w-80 max-h-96 overflow-y-auto shadow-lg">
+      <div className="text-black text-lg font-bold mx-2 mt-1">
         Notifications
       </div>
       <div className="flex space-x-2 mx-2 mb-2">
@@ -69,7 +69,7 @@ const NotificationList: React.FC<INotificationList> = ({
                 />
                 <span className="text-left flex-1">
                   <p className="font-semibold">{`${sender.firstName} ${sender.lastName}`}</p>
-                  <p>{`${notification.message}`}</p>
+                  <p className="text-sm text-gray-600">{`${notification.message}`}</p>
                 </span>
                 {!notification?.isRead && (
                   <div className="w-3 h-3 min-w-3 bg-indigo-500 rounded-full"></div>
