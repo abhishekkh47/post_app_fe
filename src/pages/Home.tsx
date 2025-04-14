@@ -14,7 +14,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="flex mt-16">
-      <div className="flex-1 mr-80">
+      <div className="flex-1 sm:mr-80">
         <Feed />
       </div>
       <div className="w-96 fixed top-16 right-0 h-[calc(100vh-4rem)] hidden sm:block">
