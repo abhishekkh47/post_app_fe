@@ -79,3 +79,7 @@ export const GROUP_CHAT = {
 export const CHAT_MEDIA = {
   UPLOAD_FILE: `${API_URL}/common/v1/upload-chat-multimedia/${PATH_SLUGS.CHAT_ID}`,
 };
+export const COMMON = {
+  UPLOAD_FILE: `${API_URL}/common/v1/upload-chat-multimedia/${PATH_SLUGS.CHAT_ID}`,
+  APP_STATUS: `${API_URL}/common/v1/status`,
+};

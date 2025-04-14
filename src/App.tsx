@@ -3,13 +3,55 @@ import { SocketProvider } from "./context/SocketContext";
 import { LoginForm, SignupForm, ProtectedRoute } from "./components/auth";
 import { useAuth } from "./context/AuthContext";
 import { Navigate, Route, Routes } from "react-router-dom";
-import { AuthenticatedLayout } from "./components/layout/";
+import {
+  AuthenticatedLayout,
+  MaintenancePageLayout,
+} from "./components/layout/";
 import { Profile, Home, Settings, GroupDetails, JoinGroup } from "./pages";
 import { Friends } from "./components/friends";
 import { JoinGroupProvider } from "./context/JoinGroupContext";
+import { useEffect, useState } from "react";
+import { CommonService } from "./services";
 
 const AppContent = () => {
   const { isAuthenticated } = useAuth();
+  const [isMaintenance, setIsMaintenance] = useState<boolean>(false);
+
+  useEffect(() => {
+    // Function to check if the server is in maintenance mode
+    const checkServerStatus = async () => {
+      try {
+        const response = await CommonService.getAppStatus(); // Replace with your actual endpoint
+        if (response?.response?.status == 503) {
+          setIsMaintenance(true);
+          window.localStorage.setItem("maintenanceMode", "true");
+        } else {
+          window.localStorage.removeItem("maintenanceMode");
+          setIsMaintenance(false);
+        }
+      } catch (error) {
+        console.error("Error checking server status:", error);
+      }
+    };
+
+    // Initial check when the component mounts
+    checkServerStatus();
+
+    // Set up an interval to periodically check if the server is back online (e.g., every 5 seconds)
+    // const intervalId = setInterval(checkServerStatus, 50000); // Checks every 5 seconds
+
+    // Clean up the interval when the component is unmounted
+    // return () => clearInterval(intervalId);
+  }, []);
+
+  // If maintenance mode is active or if it's stored in localStorage, show the maintenance page
+  if (
+    isMaintenance ||
+    window.localStorage.getItem("maintenanceMode") === "true"
+  ) {
+    return <MaintenancePageLayout />;
+  }
+
   return (
     <Routes>
       {/* Public Routes */}
@@ -97,6 +139,9 @@ const AppContent = () => {
           </ProtectedRoute>
         }
       ></Route>
+
+      {/* Catch all route - redirect to home or login */}
+      <Route path="/maintenance" element={<MaintenancePageLayout />}></Route>
 
       {/* Catch all route - redirect to home or login */}
       <Route

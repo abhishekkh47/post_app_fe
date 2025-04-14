@@ -12,10 +12,10 @@ class UserService {
       const response = await GET_SERVICE(
         USER.GET_PROFILE.replace(PATH_SLUGS.USERID, userId)
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to fetch profile");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -24,10 +24,10 @@ class UserService {
   async getAllUsers() {
     try {
       const response = await GET_SERVICE(USER.GET_ALL_USERS);
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to load users");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -38,10 +38,10 @@ class UserService {
       const response = await GET_SERVICE(
         USER.SEARCH_USER.replace(PATH_SLUGS.SEARCH, search)
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to load profile");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -53,10 +53,10 @@ class UserService {
         USER.TOGGLE_PROFILE_TYPE,
         JSON.stringify({ status })
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to update");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -65,10 +65,10 @@ class UserService {
   async deleteAccount() {
     try {
       const response = await DELETE_SERVICE(USER.DELETE_ACCOUNT);
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Cannot complete action at the moment");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -79,10 +79,10 @@ class UserService {
       const formData = new FormData();
       formData.append("profilePicture", file);
       const response = await PUT_SERVICE(USER.UPDATE_PROFILE_PICTURE, formData);
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Cannot complete action at the moment");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -94,10 +94,10 @@ class UserService {
         USER.UPDATE_PROFILE_DETAILS,
         JSON.stringify({ firstName, lastName, bio })
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Cannot complete action at the moment");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }

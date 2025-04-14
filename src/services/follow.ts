@@ -16,10 +16,10 @@ class FollowService {
         ).replace(PATH_SLUGS.USERID, userId)
       );
 
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error(`Failed to ${type} user`);
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -38,7 +38,7 @@ class FollowService {
         })
       );
 
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to follow/unfollow user");
       }
     } catch (error) {
@@ -49,10 +49,10 @@ class FollowService {
   async getFriends() {
     try {
       const response = await GET_SERVICE(FOLLOW.FRIENDS);
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to load friends");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }

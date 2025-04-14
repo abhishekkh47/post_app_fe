@@ -23,10 +23,10 @@ class CommentService {
           type: parentId ? COMMENT_TYPE.REPLY : COMMENT_TYPE.COMMENT,
         })
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to create comment");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -38,7 +38,7 @@ class CommentService {
         COMMENT.DELETE_COMMENT.replace(PATH_SLUGS.COMMENTID, commentId)
       );
 
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to delete comment");
       }
     } catch (error) {
@@ -52,10 +52,10 @@ class CommentService {
         COMMENT.GET_POST_COMMENTS.replace(PATH_SLUGS.POSTID, postId)
       );
 
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("No comments found");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {}
   }
 
@@ -74,10 +74,10 @@ class CommentService {
         })
       );
 
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("An error occurred");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {}
   }
 
@@ -87,10 +87,10 @@ class CommentService {
         COMMENT.GET_NESTED_COMMENT.replace(PATH_SLUGS.COMMENTID, commentId)
       );
 
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("No comments found");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {}
   }
 }

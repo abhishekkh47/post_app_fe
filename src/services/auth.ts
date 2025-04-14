@@ -13,10 +13,10 @@ class AuthService {
     try {
       const response = await SIGNUP_LOGIN_SERVICE(AUTH.LOGIN, credentials);
 
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Login failed");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -26,10 +26,10 @@ class AuthService {
     try {
       const response = await SIGNUP_LOGIN_SERVICE(AUTH.SIGNUP, credentials);
 
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Signup failed");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -41,10 +41,10 @@ class AuthService {
         AUTH.REFRESH_TOKEN,
         JSON.stringify({ refreshToken: this.getRefreshToken() })
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Session expired");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }

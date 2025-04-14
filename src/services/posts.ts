@@ -17,10 +17,10 @@ class PostService {
       const response = await GET_SERVICE(
         `${Config.API_URL}/post/v1/${endpoint}`
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to fetch posts");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -31,10 +31,10 @@ class PostService {
       const response = await GET_SERVICE(
         POSTS.GET_FEED.replace(PATH_SLUGS.PAGE, page.toString())
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to load feed");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -46,10 +46,10 @@ class PostService {
         POSTS.CREATE_POST,
         JSON.stringify({ post: content })
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to create post");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -60,7 +60,7 @@ class PostService {
       const response = await DELETE_SERVICE(
         POSTS.DELETE_POST.replace(PATH_SLUGS.POSTID, postId)
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to delete post");
       }
     } catch (error) {
@@ -74,7 +74,7 @@ class PostService {
         POSTS.UPDATE_POST,
         JSON.stringify({ postId, post })
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to update post");
       }
     } catch (error) {
@@ -88,7 +88,7 @@ class PostService {
         POSTS.LIKE_POST,
         JSON.stringify({ postId })
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to update post");
       }
     } catch (error) {
@@ -102,7 +102,7 @@ class PostService {
         POSTS.DISLIKE_POST,
         JSON.stringify({ postId })
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to update post");
       }
     } catch (error) {

@@ -4,10 +4,10 @@ class ChatService {
   async getConversations() {
     try {
       const response = await GET_SERVICE(CHAT.GET_CONVERSATION);
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to get conversations");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -18,10 +18,10 @@ class ChatService {
       const response = await GET_SERVICE(
         CHAT.GET_MESSAGE.replace(PATH_SLUGS.USERID, userId)
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to load chat");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -37,10 +37,10 @@ class ChatService {
           description: formData.description,
         })
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to create group");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }

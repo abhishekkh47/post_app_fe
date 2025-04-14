@@ -12,10 +12,10 @@ class GroupChatService {
   async getGroups() {
     try {
       const response = await GET_SERVICE(GROUP_CHAT.GET_GROUPS);
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to get groups");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -31,10 +31,10 @@ class GroupChatService {
           members,
         })
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to create group");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -45,10 +45,10 @@ class GroupChatService {
       const response = await GET_SERVICE(
         GROUP_CHAT.DELETE_GROUP.replace(PATH_SLUGS.GROUP_ID, groupId)
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to delete group");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -59,10 +59,10 @@ class GroupChatService {
       const response = await GET_SERVICE(
         GROUP_CHAT.GET_GROUP_BY_ID.replace(PATH_SLUGS.GROUP_ID, groupId)
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to load chat");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -74,10 +74,10 @@ class GroupChatService {
         GROUP_CHAT.UPDATE_GROUP.replace(PATH_SLUGS.GROUP_ID, groupId),
         JSON.stringify({ name, description })
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to load chat");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -89,10 +89,10 @@ class GroupChatService {
         GROUP_CHAT.ADD_GROUP_MEMBERS.replace(PATH_SLUGS.GROUP_ID, groupId),
         JSON.stringify({ members })
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to load chat");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -106,10 +106,10 @@ class GroupChatService {
           groupId
         ).replace(PATH_SLUGS.USERID, userId)
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to load chat");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -120,10 +120,10 @@ class GroupChatService {
       const response = await GET_SERVICE(
         GROUP_CHAT.GET_GROUP_MESSAGE.replace(PATH_SLUGS.GROUP_ID, groupId)
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to load chat");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -134,10 +134,10 @@ class GroupChatService {
       const response = await GET_SERVICE(
         GROUP_CHAT.GET_GROUP_DETAILS.replace(PATH_SLUGS.GROUP_ID, groupId)
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("An error occurred");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -152,10 +152,10 @@ class GroupChatService {
         ).replace(PATH_SLUGS.USERID, userId),
         JSON.stringify({ role })
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("An error occurred");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -169,10 +169,10 @@ class GroupChatService {
         GROUP_CHAT.UPDATE_PROFILE_PICTURE.replace(PATH_SLUGS.GROUP_ID, groupId),
         formData
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("An error occurred");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -186,10 +186,10 @@ class GroupChatService {
           inviteLink
         )
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("An error occurred");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -203,10 +203,10 @@ class GroupChatService {
           inviteLink
         )
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("An error occurred");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
@@ -217,10 +217,10 @@ class GroupChatService {
       const response = await PATCH_SERVICE(
         GROUP_CHAT.RESET_GROUP_INVITE_LINK.replace(PATH_SLUGS.GROUP_ID, groupId)
       );
-      if (!response.ok) {
+      if (response.status < 200 || response.status >= 300) {
         throw new Error("An error occurred");
       }
-      return (await response.json())?.data;
+      return response.data.data;
     } catch (error) {
       throw new Error((error as Error).message);
     }
