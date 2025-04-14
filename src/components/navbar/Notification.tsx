@@ -19,25 +19,23 @@ const Notification: React.FC = () => {
   };
 
   return (
-    <div ref={notificationRef}>
+    <div ref={notificationRef} className="relative">
       <button
         type="button"
-        className="relative rounded-full bg-gray-800 p-0 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden size-8"
+        className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
         onClick={handleNotificationIconClick}
         aria-label="Cart"
       >
         {Number(unreadNotificationCount) > 0 && (
-          <span className="absolute -inset-1 object-right-top -mr-6">
-            <div className="inline-flex items-center justify-center h-4 w-4 px-0 border-1 border-white rounded-full text-[8px] font-medium bg-red-500 text-white">
-              {Number(unreadNotificationCount) < 10
-                ? unreadNotificationCount.toString()
-                : "9+"}
-            </div>
+          <span className="absolute -top-0 -right-0 flex items-center justify-center h-4 w-4 text-[10px] font-medium bg-red-500 text-white rounded-full">
+            {Number(unreadNotificationCount) < 10
+              ? unreadNotificationCount.toString()
+              : "9+"}
           </span>
         )}
         <BellIcon aria-hidden="true" className="size-8" />
         {openNotification && (
-          <div className="absolute right-10 top-10">
+          <div className="absolute right-0 top-10 w-64 sm:w-80">
             <NotificationList
               notifications={notifications}
               markNotificationAsRead={markNotificationAsRead}
