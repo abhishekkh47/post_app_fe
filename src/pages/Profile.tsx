@@ -28,7 +28,7 @@ const Profile: React.FC = () => {
         handleFollow={handleFollow}
         updateUser={updateUser}
       />
-      {(user?._id === userId || isPublicProfile || isFollowing) && (
+      {(profile?._id === userId || isPublicProfile || isFollowing) && (
         <div className="py-8">
           <ProfileFeed userId={userId} />
         </div>

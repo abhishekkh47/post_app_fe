@@ -47,30 +47,32 @@ const UserProfile: React.FC<UserProfileProps> = ({
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <Menu as="div" className="relative">
-        <div className="justify-self-end">
-          <MenuButton className="relative flex focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
-            <span className="absolute -inset-1.5" />
-            <span className="sr-only">Open user menu</span>
-            <Cog6ToothIcon className="h-6 w-6 text-gray-600" />
-          </MenuButton>
-        </div>
-        <MenuItems
-          transition
-          className="absolute right-0 z-10 mt-2 w-30 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
-        >
-          <MenuItem>
-            <a
-              onClick={() => {
-                handleEditClick();
-              }}
-              className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden hover:cursor-pointer"
-            >
-              Edit details
-            </a>
-          </MenuItem>
-        </MenuItems>
-      </Menu>
+      {user?._id === profile._id && (
+        <Menu as="div" className="relative">
+          <div className="justify-self-end">
+            <MenuButton className="relative flex focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
+              <span className="absolute -inset-1.5" />
+              <span className="sr-only">Open user menu</span>
+              <Cog6ToothIcon className="h-6 w-6 text-gray-600" />
+            </MenuButton>
+          </div>
+          <MenuItems
+            transition
+            className="absolute right-0 z-10 mt-2 w-30 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+          >
+            <MenuItem>
+              <a
+                onClick={() => {
+                  handleEditClick();
+                }}
+                className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden hover:cursor-pointer"
+              >
+                Edit details
+              </a>
+            </MenuItem>
+          </MenuItems>
+        </Menu>
+      )}
       {openUpdateProfileDialog && (
         <EditProfileDetails
           open={openUpdateProfileDialog}

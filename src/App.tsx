@@ -22,7 +22,6 @@ import { CommonService } from "./services";
 
 const AppContent = () => {
   const { user, isAuthenticated } = useAuth();
-  if (!user) return;
   const [isMaintenance, setIsMaintenance] = useState<boolean>(false);
 
   useEffect(() => {
@@ -147,20 +146,22 @@ const AppContent = () => {
           </ProtectedRoute>
         }
       ></Route>
-      <Route
-        path="/messages"
-        element={
-          <ProtectedRoute>
-            <SocketProvider>
-              <AuthenticatedLayout>
-                <JoinGroupProvider>
-                  <ChatPage user={user} />
-                </JoinGroupProvider>
-              </AuthenticatedLayout>
-            </SocketProvider>
-          </ProtectedRoute>
-        }
-      ></Route>
+      {user && (
+        <Route
+          path="/messages"
+          element={
+            <ProtectedRoute>
+              <SocketProvider>
+                <AuthenticatedLayout>
+                  <JoinGroupProvider>
+                    <ChatPage user={user} />
+                  </JoinGroupProvider>
+                </AuthenticatedLayout>
+              </SocketProvider>
+            </ProtectedRoute>
+          }
+        ></Route>
+      )}
 
       {/* Maintenance Mode */}
       <Route path="/maintenance" element={<MaintenancePageLayout />}></Route>

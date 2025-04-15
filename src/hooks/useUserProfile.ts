@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { User } from "../types";
 import { UserService } from "../services";
 
@@ -25,6 +25,16 @@ const useUserProfile = ({ profile, updateUser }: UserProfileProps) => {
     lastName: profile?.lastName || "",
     bio: profile?.bio || "",
   });
+
+  useEffect(() => {
+    setImage(profile.profile_pic || null);
+    setImagePreview(profile.profile_pic || null);
+    setUserData({
+      firstName: profile.firstName,
+      lastName: profile?.lastName || "",
+      bio: profile?.bio || "",
+    });
+  }, [profile.profile_pic]);
 
   const handleImageClick = () => {
     setIsModalOpen(true);
