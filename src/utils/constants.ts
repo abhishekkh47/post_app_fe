@@ -75,3 +75,11 @@ export const COMMENT_TYPE = {
   COMMENT: "comment",
   REPLY: "reply",
 };
+
+export const NOTIFICATION_TYPE = {
+  OTHER: 0,
+  FOLLOW: 1,
+  POST: 2,
+  LIKE: 3,
+  COMMENT: 4,
+};

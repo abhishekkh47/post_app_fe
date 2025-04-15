@@ -4,6 +4,7 @@ import { useSignup } from "../../hooks";
 
 const SignupForm: React.FC = () => {
   const { error, formData, handleSubmit, handleChange } = useSignup();
+  let validated = false;
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -84,6 +85,14 @@ const SignupForm: React.FC = () => {
                 </div>
               )}
 
+            {
+              (validated =
+                !/.{8,}/.test(formData.password) ||
+                !/(?=.*[A-Z])/.test(formData.password) ||
+                !/(?=.*[a-z])/.test(formData.password) ||
+                !/(?=.*\W)/.test(formData.password))
+            }
+
             {formData.password &&
               (!/.{8,}/.test(formData.password) ||
                 !/(?=.*[A-Z])/.test(formData.password) ||
@@ -129,6 +138,7 @@ const SignupForm: React.FC = () => {
             <button
               type="submit"
               className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+              disabled={validated}
             >
               Sign up
             </button>
