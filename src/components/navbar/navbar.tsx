@@ -27,12 +27,13 @@ const NavBar: React.FC = () => {
     selected,
     handleLogOutClick,
     handleProfileClick,
+    handleDashboardClick,
   } = useNavBar();
 
   return (
     <Disclosure as="nav" className="bg-gray-800 fixed top-0 left-0 w-full z-50">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-        <div className="relative flex h-16 items-center justify-between">
+        <div className="relative flex h-10 sm:h-16 items-center justify-between">
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             {/* Mobile menu button*/}
             <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:ring-2 focus:ring-white focus:outline-hidden focus:ring-inset">
@@ -55,6 +56,7 @@ const NavBar: React.FC = () => {
                 src={logo}
                 loading="lazy"
                 className="h-8 w-auto"
+                onClick={handleDashboardClick}
               />
             </div>
             <div className="hidden sm:ml-6 sm:block">
@@ -89,8 +91,8 @@ const NavBar: React.FC = () => {
             <Notification />
             {/* Profile dropdown */}
             <Menu as="div" className="relative ml-3">
-              <div>
-                <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden  hover:text-white">
+              <div className="min-w-8">
+                <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden hover:text-white">
                   <span className="absolute -inset-1.5" />
                   <span className="sr-only">Open user menu</span>
                   <ProfilePicture
@@ -108,7 +110,7 @@ const NavBar: React.FC = () => {
                 <MenuItem>
                   <a
                     onClick={handleProfileClick}
-                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden cursor-pointer"
                   >
                     Your Profile
                   </a>
@@ -124,7 +126,7 @@ const NavBar: React.FC = () => {
                 <MenuItem>
                   <a
                     // href="/"
-                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden cursor-pointer"
                     onClick={handleLogOutClick}
                   >
                     <div className="flex items-center">

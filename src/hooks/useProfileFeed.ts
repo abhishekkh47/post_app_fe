@@ -25,7 +25,7 @@ const useProfileFeed = ({ userId }: ProfileFeedProps) => {
 
   useEffect(() => {
     fetchPosts();
-  }, []);
+  }, [userId]);
 
   const updateEditingActive = (postId: string | null) => {
     setEditingActive(postId);
