@@ -105,6 +105,7 @@ const useNavBar = () => {
     handleLogOutClick,
     handleProfileClick,
     toggleNotificationList,
+    handleDashboardClick,
   };
 };
 
