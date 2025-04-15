@@ -19,6 +19,7 @@ import { Friends } from "./components/friends";
 import { JoinGroupProvider } from "./context/JoinGroupContext";
 import { useEffect, useState } from "react";
 import { CommonService } from "./services";
+import { ViewPost } from "./components/post";
 
 const AppContent = () => {
   const { user, isAuthenticated } = useAuth();
@@ -162,6 +163,18 @@ const AppContent = () => {
           }
         ></Route>
       )}
+      <Route
+        path="/post/:postId"
+        element={
+          <ProtectedRoute>
+            <SocketProvider>
+              <AuthenticatedLayout>
+                <ViewPost />
+              </AuthenticatedLayout>
+            </SocketProvider>
+          </ProtectedRoute>
+        }
+      ></Route>
 
       {/* Maintenance Mode */}
       <Route path="/maintenance" element={<MaintenancePageLayout />}></Route>

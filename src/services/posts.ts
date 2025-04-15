@@ -109,5 +109,19 @@ class PostService {
       throw new Error((error as Error).message);
     }
   }
+
+  async getPostById(postId: string) {
+    try {
+      const response = await GET_SERVICE(
+        POSTS.GET_POST_BY_ID.replace(PATH_SLUGS.POSTID, postId)
+      );
+      if (response.status < 200 || response.status >= 300) {
+        throw new Error("Failed to fetch posts");
+      }
+      return response.data.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
 }
 export default new PostService();

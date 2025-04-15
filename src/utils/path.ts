@@ -45,6 +45,7 @@ export const POSTS = {
   UPDATE_POST: `${API_URL}/post/v1/edit-or-update-post`,
   LIKE_POST: `${API_URL}/post/v1/like-post`,
   DISLIKE_POST: `${API_URL}/post/v1/dislike-post`,
+  GET_POST_BY_ID: `${API_URL}/post/v1/get-post/${PATH_SLUGS.POSTID}`,
 };
 export const USER = {
   GET_PROFILE: `${API_URL}/user/v1/get-profile/${PATH_SLUGS.USERID}`,
@@ -59,6 +60,7 @@ export const USER = {
 export const NOTIFICATION = {
   GET_NOTIFICATIONS: `${API_URL}/notification/v1/get-notifications`,
   READ_NOTIFICATION: `${API_URL}/notification/v1/read-notification`,
+  MARK_ALL_READ: `${API_URL}/notification/v1/mark-read-all-notifications`,
 };
 export const GROUP_CHAT = {
   GET_GROUPS: `${API_URL}/group/v1/`,

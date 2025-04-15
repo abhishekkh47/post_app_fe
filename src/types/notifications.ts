@@ -7,4 +7,6 @@ export interface INotification {
   message: string;
   receiverId: string;
   senderId: User;
+  type?: number;
+  contentId?: string;
 }

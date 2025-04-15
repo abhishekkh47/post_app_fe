@@ -68,11 +68,21 @@ const useNotification = () => {
     );
   };
 
+  const markAllNotificationAsRead = async () => {
+    setNotifications((prevNotifications) =>
+      prevNotifications.map((notification) => {
+        return { ...notification, isRead: true };
+      })
+    );
+    setUnreadNotificationCount(0);
+  };
+
   return {
     notifications,
     unreadNotificationCount,
     getNotifications,
     markNotificationAsRead,
+    markAllNotificationAsRead,
   };
 };
 

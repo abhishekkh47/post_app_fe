@@ -79,7 +79,7 @@ export const PUT_SERVICE = async (path: string, body: FormData | string) => {
   };
 
   try {
-    const response = await axios.put(path, body, config);
+    const response = await axios.put(path, body || {}, config);
     return response;
   } catch (error) {
     console.error("Error in PUT_SERVICE:", error);
