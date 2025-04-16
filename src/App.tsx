@@ -20,6 +20,7 @@ import { JoinGroupProvider } from "./context/JoinGroupContext";
 import { useEffect, useState } from "react";
 import { CommonService } from "./services";
 import { ViewPost } from "./components/post";
+import { NotificationInitializer } from "./components/common";
 
 const AppContent = () => {
   const { user, isAuthenticated } = useAuth();
@@ -60,6 +61,17 @@ const AppContent = () => {
     return <MaintenancePageLayout />;
   }
 
+  const ProtectedRouteWithNotifications = ({ children }: any) => {
+    return (
+      <ProtectedRoute>
+        <SocketProvider>
+          <NotificationInitializer />
+          {children}
+        </SocketProvider>
+      </ProtectedRoute>
+    );
+  };
+
   return (
     <Routes>
       {/* Public Routes */}
@@ -76,39 +88,33 @@ const AppContent = () => {
       <Route
         path="/"
         element={
-          <ProtectedRoute>
-            <SocketProvider>
-              <AuthenticatedLayout>
-                <JoinGroupProvider>
-                  <Home />
-                </JoinGroupProvider>
-              </AuthenticatedLayout>
-            </SocketProvider>
-          </ProtectedRoute>
+          <ProtectedRouteWithNotifications>
+            <AuthenticatedLayout>
+              <JoinGroupProvider>
+                <Home />
+              </JoinGroupProvider>
+            </AuthenticatedLayout>
+          </ProtectedRouteWithNotifications>
         }
       ></Route>
       <Route
         path="/profile/:userId"
         element={
-          <ProtectedRoute>
-            <SocketProvider>
-              <AuthenticatedLayout>
-                <Profile />
-              </AuthenticatedLayout>
-            </SocketProvider>
-          </ProtectedRoute>
+          <ProtectedRouteWithNotifications>
+            <AuthenticatedLayout>
+              <Profile />
+            </AuthenticatedLayout>
+          </ProtectedRouteWithNotifications>
         }
       ></Route>
       <Route
         path="/friends"
         element={
-          <ProtectedRoute>
-            <SocketProvider>
-              <AuthenticatedLayout>
-                <Friends />
-              </AuthenticatedLayout>
-            </SocketProvider>
-          </ProtectedRoute>
+          <ProtectedRouteWithNotifications>
+            <AuthenticatedLayout>
+              <Friends />
+            </AuthenticatedLayout>
+          </ProtectedRouteWithNotifications>
         }
       ></Route>
       <Route
@@ -124,55 +130,47 @@ const AppContent = () => {
       <Route
         path="/group/:groupId"
         element={
-          <ProtectedRoute>
-            <SocketProvider>
-              <AuthenticatedLayout>
-                <GroupDetails />
-              </AuthenticatedLayout>
-            </SocketProvider>
-          </ProtectedRoute>
+          <ProtectedRouteWithNotifications>
+            <AuthenticatedLayout>
+              <GroupDetails />
+            </AuthenticatedLayout>
+          </ProtectedRouteWithNotifications>
         }
       ></Route>
       <Route
         path="/group/members/join/:inviteToken"
         element={
-          <ProtectedRoute>
-            <SocketProvider>
-              <AuthenticatedLayout>
-                <JoinGroupProvider>
-                  <JoinGroup />
-                </JoinGroupProvider>
-              </AuthenticatedLayout>
-            </SocketProvider>
-          </ProtectedRoute>
+          <ProtectedRouteWithNotifications>
+            <AuthenticatedLayout>
+              <JoinGroupProvider>
+                <JoinGroup />
+              </JoinGroupProvider>
+            </AuthenticatedLayout>
+          </ProtectedRouteWithNotifications>
         }
       ></Route>
       {user && (
         <Route
           path="/messages"
           element={
-            <ProtectedRoute>
-              <SocketProvider>
-                <AuthenticatedLayout>
-                  <JoinGroupProvider>
-                    <ChatPage user={user} />
-                  </JoinGroupProvider>
-                </AuthenticatedLayout>
-              </SocketProvider>
-            </ProtectedRoute>
+            <ProtectedRouteWithNotifications>
+              <AuthenticatedLayout>
+                <JoinGroupProvider>
+                  <ChatPage user={user} />
+                </JoinGroupProvider>
+              </AuthenticatedLayout>
+            </ProtectedRouteWithNotifications>
           }
         ></Route>
       )}
       <Route
         path="/post/:postId"
         element={
-          <ProtectedRoute>
-            <SocketProvider>
-              <AuthenticatedLayout>
-                <ViewPost />
-              </AuthenticatedLayout>
-            </SocketProvider>
-          </ProtectedRoute>
+          <ProtectedRouteWithNotifications>
+            <AuthenticatedLayout>
+              <ViewPost />
+            </AuthenticatedLayout>
+          </ProtectedRouteWithNotifications>
         }
       ></Route>
 
@@ -183,13 +181,11 @@ const AppContent = () => {
       <Route
         path="*"
         element={
-          <ProtectedRoute>
-            <SocketProvider>
-              <AuthenticatedLayout>
-                <Home />
-              </AuthenticatedLayout>
-            </SocketProvider>
-          </ProtectedRoute>
+          <ProtectedRouteWithNotifications>
+            <AuthenticatedLayout>
+              <Home />
+            </AuthenticatedLayout>
+          </ProtectedRouteWithNotifications>
         }
       />
     </Routes>
