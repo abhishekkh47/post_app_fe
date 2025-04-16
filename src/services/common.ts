@@ -19,9 +19,26 @@ class CommonService {
       throw new Error((error as Error).message);
     }
   }
+
   async getAppStatus() {
     try {
       return await GET_STATUS_SERVICE(COMMON.APP_STATUS);
+    } catch (error) {
+      return error;
+      // throw new Error((error as Error).message);
+    }
+  }
+
+  async subscribeNotifications(subscription: PushSubscription) {
+    try {
+      const response = await POST_SERVICE(
+        COMMON.SUBSCRIBE_NOTIFICATIONS,
+        JSON.stringify({ subscription: subscription })
+      );
+      if (response.status < 200 || response.status >= 300) {
+        throw new Error("No comments found");
+      }
+      return response.data;
     } catch (error) {
       return error;
       // throw new Error((error as Error).message);
