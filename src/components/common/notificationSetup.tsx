@@ -1,3 +1,4 @@
+// NOT USED
 // src/components/NotificationSetup.jsx
 import { useEffect, useState } from "react";
 

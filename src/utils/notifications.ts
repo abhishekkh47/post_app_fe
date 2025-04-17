@@ -22,15 +22,12 @@ export const registerServiceWorker = async () => {
         scope: "/",
       }
     );
-    console.log("Service Worker registered successfully:", registration);
 
     // Wait for the service worker to be ready
     await navigator.serviceWorker.ready;
-    console.log("Service Worker is ready");
 
     return registration;
   } catch (error) {
-    console.error("Service Worker registration failed:", error);
     throw error;
   }
 };
@@ -38,17 +35,13 @@ export const registerServiceWorker = async () => {
 // Subscribe user to push notifications
 export const subscribeUserToPush = async () => {
   try {
-    console.log("Waiting for service worker to be ready...");
     const registration = await navigator.serviceWorker.ready;
-    console.log("Service worker is ready for push subscription");
 
     // Get the server's public key for VAPID
     const vapidPublicKey = import.meta.env.VITE_PUBLIC_VAPID_KEY;
     if (!vapidPublicKey) {
       throw new Error("VAPID public key is missing");
     }
-
-    console.log("Using VAPID key:", vapidPublicKey);
 
     // Convert the public key to Uint8Array
     const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
@@ -57,25 +50,21 @@ export const subscribeUserToPush = async () => {
     const existingSubscription =
       await registration.pushManager.getSubscription();
     if (existingSubscription) {
-      console.log("Found existing subscription, sending to server...");
       await sendSubscriptionToServer(existingSubscription);
       return existingSubscription;
     }
 
     // Subscribe the user
-    console.log("Creating new push subscription...");
     const subscription = await registration.pushManager.subscribe({
       userVisibleOnly: true,
       applicationServerKey: convertedVapidKey,
     });
-    console.log("Push subscription created:", subscription);
 
     // Send the subscription to your server
     await sendSubscriptionToServer(subscription);
 
     return subscription;
   } catch (error) {
-    console.error("Failed to subscribe to push:", error);
     throw error;
   }
 };
@@ -83,9 +72,7 @@ export const subscribeUserToPush = async () => {
 // Send the subscription to your server
 const sendSubscriptionToServer = async (subscription: PushSubscription) => {
   try {
-    console.log("Sending subscription to server:", subscription);
     const response = await CommonService.subscribeNotifications(subscription);
-    console.log("Server response:", response);
 
     if (!response || response.status < 200 || response.status >= 300) {
       throw new Error("Failed to store subscription on server");
@@ -93,7 +80,6 @@ const sendSubscriptionToServer = async (subscription: PushSubscription) => {
 
     return response;
   } catch (error) {
-    console.error("Error sending subscription to server:", error);
     throw error;
   }
 };

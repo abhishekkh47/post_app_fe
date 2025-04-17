@@ -2,13 +2,11 @@
 console.log("Service worker loaded!");
 
 self.addEventListener("push", (event) => {
-  console.log("Push received:", event);
-
   let data = {};
   try {
     data = event.data.json();
   } catch (e) {
-    console.error("Error parsing push data:", e);
+    // console.error("Error parsing push data:", e);
     data = {
       title: "New Notification",
       body: "You have a new notification",
@@ -29,8 +27,6 @@ self.addEventListener("push", (event) => {
     },
   };
 
-  console.log("Showing notification with options:", options);
-
   // Only use one notification call, wrapped in waitUntil
   event.waitUntil(
     self.registration
@@ -43,8 +39,6 @@ self.addEventListener("push", (event) => {
 });
 
 self.addEventListener("notificationclick", (event) => {
-  console.log("Notification clicked:", event);
-
   event.notification.close();
 
   event.waitUntil(clients.openWindow(event.notification.data.url || "/"));
@@ -52,13 +46,13 @@ self.addEventListener("notificationclick", (event) => {
 
 // Log when service worker is installed
 self.addEventListener("install", (event) => {
-  console.log("Service Worker installed!");
+  // console.log("Service Worker installed!");
   self.skipWaiting(); // Ensures the service worker activates right away
 });
 
 // Log when service worker is activated
 self.addEventListener("activate", (event) => {
-  console.log("Service Worker activated!");
+  // console.log("Service Worker activated!");
   // Take control of all clients immediately
   event.waitUntil(clients.claim());
 });
