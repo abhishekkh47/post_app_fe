@@ -6,6 +6,7 @@ import {
   DELETE_SERVICE,
   PATH_SLUGS,
   PUT_SERVICE,
+  MEDIA,
 } from "../utils";
 
 class PostService {
@@ -40,12 +41,14 @@ class PostService {
     }
   }
 
-  async createPost(content: string) {
+  async createPost(content: string, attachments?: File[]) {
     try {
-      const response = await POST_SERVICE(
-        POSTS.CREATE_POST,
-        JSON.stringify({ post: content })
-      );
+      const formData = new FormData();
+      formData.append("post", content);
+      attachments?.forEach((file) => {
+        formData.append(MEDIA.ATTACHMENT, file);
+      });
+      const response = await POST_SERVICE(POSTS.CREATE_POST, formData);
       if (response.status < 200 || response.status >= 300) {
         throw new Error("Failed to create post");
       }

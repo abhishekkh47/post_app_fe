@@ -83,3 +83,9 @@ export const NOTIFICATION_TYPE = {
   LIKE: 3,
   COMMENT: 4,
 };
+
+export const MEDIA = {
+  CHAT: "chatMedia",
+  PROFILE: "profilePicture",
+  ATTACHMENT: "attachment",
+};

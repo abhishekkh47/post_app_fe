@@ -1,11 +1,17 @@
-import { COMMON, GET_STATUS_SERVICE, PATH_SLUGS, POST_SERVICE } from "../utils";
+import {
+  COMMON,
+  GET_STATUS_SERVICE,
+  MEDIA,
+  PATH_SLUGS,
+  POST_SERVICE,
+} from "../utils";
 
 class CommonService {
   async uploadFiles(chatId: string, files: File[]) {
     try {
       const formData = new FormData();
       files.forEach((file) => {
-        formData.append("chatMedia", file);
+        formData.append(MEDIA.CHAT, file);
       });
       const response = await POST_SERVICE(
         COMMON.UPLOAD_FILE.replace(PATH_SLUGS.CHAT_ID, chatId),
