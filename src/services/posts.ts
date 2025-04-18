@@ -41,10 +41,10 @@ class PostService {
     }
   }
 
-  async createPost(content: string, attachments?: File[]) {
+  async createPost(content: string | null, attachments?: File[]) {
     try {
       const formData = new FormData();
-      formData.append("post", content);
+      content ? formData.append("post", content) : {};
       attachments?.forEach((file) => {
         formData.append(MEDIA.ATTACHMENT, file);
       });

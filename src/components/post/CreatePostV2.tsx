@@ -1,6 +1,6 @@
 // components/CreatePostV2.tsx
 import React, { useEffect, useRef } from "react";
-import { Send, Smile, Paperclip } from "lucide-react";
+import { Send, Smile, Paperclip, X } from "lucide-react";
 import { useQuill } from "react-quilljs";
 import EmojiPicker, { EmojiClickData } from "emoji-picker-react";
 import "quill/dist/quill.snow.css";
@@ -27,6 +27,7 @@ const CreatePostV2: React.FC<CreatePostProps> = ({ fetchPosts }) => {
     charCount,
     updateCharCount,
     updateIsFocused,
+    discardSelectedImage,
   } = useCreatePost({
     fetchPosts,
   });
@@ -37,7 +38,7 @@ const CreatePostV2: React.FC<CreatePostProps> = ({ fetchPosts }) => {
     toolbar: [
       ["bold", "italic", "underline"],
       [{ list: "ordered" }, { list: "bullet" }],
-      ["image"],
+      // ["image"],
     ],
   };
 
@@ -135,9 +136,7 @@ const CreatePostV2: React.FC<CreatePostProps> = ({ fetchPosts }) => {
         {/* Attachment Panel */}
         {showAttachmentPanel && (
           <AttachmentPanel
-            onFilesAdded={(files) =>
-              updateAttachments([...attachments, ...files])
-            }
+            onFilesAdded={(files) => updateAttachments([...files])}
           />
         )}
 
@@ -147,7 +146,7 @@ const CreatePostV2: React.FC<CreatePostProps> = ({ fetchPosts }) => {
             {attachments.map((file, index) => (
               <div
                 key={index}
-                className="w-20 h-20 overflow-hidden rounded border"
+                className="relative w-20 h-20 overflow-hidden rounded border"
               >
                 {file.type.startsWith("image/") ? (
                   <img
@@ -162,6 +161,13 @@ const CreatePostV2: React.FC<CreatePostProps> = ({ fetchPosts }) => {
                     controls
                   />
                 )}
+                <button
+                  type="button"
+                  onClick={() => discardSelectedImage(index)}
+                  className="absolute top-1 right-1 bg-gray-700 text-white p-1 rounded-full hover:bg-red-600"
+                >
+                  <X className="w-4 h-4" />
+                </button>
               </div>
             ))}
           </div>
@@ -190,7 +196,9 @@ const CreatePostV2: React.FC<CreatePostProps> = ({ fetchPosts }) => {
           </div>
           <button
             type="submit"
-            disabled={!content.trim() || charCount > MAX_CHARS}
+            disabled={
+              (!content?.trim() && !attachments.length) || charCount > MAX_CHARS
+            }
             className={`
               inline-flex items-center px-4 py-2 text-sm font-medium rounded-md 
               shadow-sm text-white bg-blue-600 hover:bg-blue-700 
