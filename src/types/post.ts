@@ -11,6 +11,7 @@ export interface Post {
   edited?: boolean;
   reactions: number;
   liked: boolean;
+  attachments: string[];
 }
 
 export interface Comment {

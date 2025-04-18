@@ -20,6 +20,7 @@ const AttachmentPanel: React.FC<AttachmentPanelProps> = ({ onFilesAdded }) => {
     accept: {
       "image/*": [],
       "video/*": [],
+      // "application/pdf": [".pdf"],
     },
   });
 
