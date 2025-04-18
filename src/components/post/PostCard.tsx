@@ -17,6 +17,7 @@ import DOMPurify from "dompurify";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
 import { ProfilePicture } from "../profile";
+import RenderAttachment from "./RenderAttachment";
 
 interface PostCardProps {
   post: Post;
@@ -139,10 +140,14 @@ const PostCard: React.FC<PostCardProps> = ({
       {isEditing ? (
         <div ref={quillRef} className="w-full h-36" />
       ) : (
-        <div
-          className="text-gray-800 mb-4"
-          dangerouslySetInnerHTML={{ __html: sanitizedContent }} // Render HTML content
-        />
+        <>
+          <div
+            className="text-gray-800 mb-4"
+            dangerouslySetInnerHTML={{ __html: sanitizedContent }} // Render HTML content
+          />
+          {/* {renderAttachments()} */}
+          <RenderAttachment attachments={post?.attachments} />
+        </>
       )}
 
       {/* Like and comment icons */}
