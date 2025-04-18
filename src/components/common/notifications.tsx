@@ -13,7 +13,20 @@ const NotificationInitializer: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [hasAskedBefore, setHasAskedBefore] = useState(false);
+  const ifAskedBefore = sessionStorage.getItem("notification_asked")
+    ? true
+    : false;
+  const userPermissionStatus = sessionStorage.getItem("user_permission");
 
+  if (ifAskedBefore != hasAskedBefore) {
+    setHasAskedBefore(ifAskedBefore);
+  }
+  if (
+    userPermissionStatus &&
+    (!userPermission || userPermission == "default")
+  ) {
+    setUserPermission(userPermissionStatus);
+  }
   useEffect(() => {
     // Initialize push notifications when component mounts
     const initializePushNotifications = async () => {
@@ -90,7 +103,14 @@ const NotificationInitializer: React.FC = () => {
 
   const dismissModal = () => {
     setShowModal(false);
-    localStorage.setItem("notification_asked", "true");
+    sessionStorage.setItem("notification_asked", "true");
+    setHasAskedBefore(true);
+  };
+
+  const permissionDenied = () => {
+    setShowModal(false);
+    sessionStorage.setItem("notification_asked", "true");
+    sessionStorage.setItem("user_permission", "denied");
     setHasAskedBefore(true);
   };
 
@@ -102,7 +122,7 @@ const NotificationInitializer: React.FC = () => {
   // Show the modal if needed
   return (
     <>
-      {showModal && (
+      {((!hasAskedBefore && !showModal) || showModal) && (
         <div className="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex justify-center items-center">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 overflow-hidden transform transition-all">
             <div className="relative">
@@ -220,7 +240,7 @@ const NotificationInitializer: React.FC = () => {
             {/* Actions */}
             <div className="bg-gray-50 px-6 py-4 flex justify-end space-x-3">
               <button
-                onClick={dismissModal}
+                onClick={permissionDenied}
                 className="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 focus:outline-none"
               >
                 Not Now
@@ -238,7 +258,7 @@ const NotificationInitializer: React.FC = () => {
       )}
 
       {/* Display a small button if we've asked before but permission is still not decided */}
-      {!hasAskedBefore &&
+      {ifAskedBefore &&
         userPermission !== "granted" &&
         userPermission !== "denied" && (
           <div className="fixed bottom-4 left-4 z-40">
