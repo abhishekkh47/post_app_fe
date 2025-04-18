@@ -238,10 +238,10 @@ const NotificationInitializer: React.FC = () => {
       )}
 
       {/* Display a small button if we've asked before but permission is still not decided */}
-      {hasAskedBefore &&
+      {!hasAskedBefore &&
         userPermission !== "granted" &&
         userPermission !== "denied" && (
-          <div className="fixed bottom-4 right-4 z-40">
+          <div className="fixed bottom-4 left-4 z-40">
             <button
               onClick={() => setShowModal(true)}
               className="flex items-center space-x-2 px-4 py-2 bg-blue-500 text-white rounded-md shadow-lg hover:bg-blue-600 transition"
