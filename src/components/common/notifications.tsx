@@ -91,9 +91,14 @@ const NotificationInitializer: React.FC = () => {
         // }
 
         await subscribeUserToPush();
+        sessionStorage.setItem("user_permission", "granted");
       } else if (permission === "denied") {
         setError("Notification permission denied");
+        sessionStorage.setItem("user_permission", "denied");
       }
+      setShowModal(false);
+      sessionStorage.setItem("notification_asked", "true");
+      setHasAskedBefore(true);
     } catch (error) {
       setError("Failed to subscribe to notifications");
     } finally {
