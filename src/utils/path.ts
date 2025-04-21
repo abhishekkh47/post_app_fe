@@ -56,6 +56,8 @@ export const USER = {
   GET_ALL_USERS: `${API_URL}/user/v1/get-all-users`,
   UPDATE_PROFILE_PICTURE: `${API_URL}/user/v1/update-profile-picture`,
   UPDATE_PROFILE_DETAILS: `${API_URL}/user/v1/update-my-details`,
+  SEND_RESET_PASSWORD_LINK: `${API_URL}/user/v1/send-reset-link`,
+  RESET_PASSWORD: `${API_URL}/user/v1/reset-password`,
 };
 export const NOTIFICATION = {
   GET_NOTIFICATIONS: `${API_URL}/notification/v1/get-notifications`,

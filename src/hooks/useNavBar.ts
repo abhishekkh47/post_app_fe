@@ -77,7 +77,7 @@ const useNavBar = () => {
     try {
       setIsLoggingOut(true);
       logout();
-      navigate("/auth/login", { replace: true });
+      navigate("/login", { replace: true });
     } catch (error) {
       console.log("Logout Failed : ", error);
     } finally {

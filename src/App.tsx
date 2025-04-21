@@ -1,6 +1,12 @@
 import { AuthProvider } from "./context/AuthContext";
 import { SocketProvider } from "./context/SocketContext";
-import { LoginForm, SignupForm, ProtectedRoute } from "./components/auth";
+import {
+  LoginForm,
+  SignupForm,
+  ProtectedRoute,
+  ResetPassword,
+  SearchAccount,
+} from "./components/auth";
 import { useAuth } from "./context/AuthContext";
 import { Navigate, Route, Routes } from "react-router-dom";
 import {
@@ -76,12 +82,24 @@ const AppContent = () => {
     <Routes>
       {/* Public Routes */}
       <Route
-        path="/auth/login"
+        path="/login"
         element={isAuthenticated ? <Navigate to="/" replace /> : <LoginForm />}
       />
       <Route
-        path="/auth/signup"
+        path="/signup"
         element={isAuthenticated ? <Navigate to="/" replace /> : <SignupForm />}
+      />
+      <Route
+        path="/login/identity"
+        element={
+          isAuthenticated ? <Navigate to="/" replace /> : <SearchAccount />
+        }
+      />
+      <Route
+        path="/login/reset-password"
+        element={
+          isAuthenticated ? <Navigate to="/" replace /> : <ResetPassword />
+        }
       />
 
       {/* Protected Routes */}

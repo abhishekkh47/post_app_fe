@@ -23,13 +23,13 @@ const LoginForm: React.FC = () => {
           <AnimatedBrand />
 
           {/* Right Side - Login Form */}
-          <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
-            <div>
+          <div className="max-w-md w-full space-y-6 p-4 bg-white rounded-lg shadow-md">
+            {/* <div>
               <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
                 Sign in to your account
               </h2>
-            </div>
-            <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+            </div> */}
+            <form className="space-y-2" onSubmit={handleSubmit}>
               {error && (
                 <div className="text-red-500 text-sm text-center">{error}</div>
               )}
@@ -66,7 +66,7 @@ const LoginForm: React.FC = () => {
                 </div>
               </div>
 
-              <div>
+              <div className="pl-2 pr-2">
                 <button
                   type="submit"
                   className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -74,15 +74,24 @@ const LoginForm: React.FC = () => {
                   Sign in
                 </button>
                 <br />
-                <button
-                  onClick={() => navigate("/auth/signup")}
-                  type="button"
-                  className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                <div
+                  className="flex justify-center hover:underline"
+                  onClick={() => navigate("/login/identity")}
                 >
-                  Sign Up
-                </button>
+                  forgot password?
+                </div>
               </div>
             </form>
+            <div className="border"></div>
+            <div className="flex justify-center">
+              <button
+                onClick={() => navigate("/signup")}
+                type="button"
+                className="group relative w-[60%] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+              >
+                Create new account
+              </button>
+            </div>
           </div>
         </div>
       </div>

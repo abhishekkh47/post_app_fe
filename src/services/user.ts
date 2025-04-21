@@ -2,6 +2,7 @@ import {
   DELETE_SERVICE,
   GET_SERVICE,
   PATH_SLUGS,
+  POST_SERVICE,
   PUT_SERVICE,
   USER,
 } from "../utils";
@@ -93,6 +94,36 @@ class UserService {
       const response = await PUT_SERVICE(
         USER.UPDATE_PROFILE_DETAILS,
         JSON.stringify({ firstName, lastName, bio })
+      );
+      if (response.status < 200 || response.status >= 300) {
+        throw new Error("Cannot complete action at the moment");
+      }
+      return response.data.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async sendResetPasswordLink(email: string) {
+    try {
+      const response = await POST_SERVICE(
+        USER.SEND_RESET_PASSWORD_LINK,
+        JSON.stringify({ email })
+      );
+      if (response.status < 200 || response.status >= 300) {
+        throw new Error("Cannot complete action at the moment");
+      }
+      return response.data.data;
+    } catch (error) {
+      throw new Error((error as Error).message);
+    }
+  }
+
+  async resetPassword(password: string, token: string) {
+    try {
+      const response = await POST_SERVICE(
+        USER.RESET_PASSWORD,
+        JSON.stringify({ password, token })
       );
       if (response.status < 200 || response.status >= 300) {
         throw new Error("Cannot complete action at the moment");
