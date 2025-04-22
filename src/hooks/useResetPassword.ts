@@ -7,6 +7,9 @@ const useResetPassword = () => {
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [showNewPassword, setShowNewPassword] = useState<boolean>(false);
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState<boolean>(false);
   const location = useLocation();
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
@@ -39,14 +42,24 @@ const useResetPassword = () => {
   const updateConfirmPassword = (password: string) => {
     setConfirmPassword(password);
   };
+  const updateShowNewPassword = () => {
+    setShowNewPassword(!showNewPassword);
+  };
+  const updateShowConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
 
   return {
     error,
     newPassword,
     confirmPassword,
+    showNewPassword,
+    showConfirmPassword,
     handleSubmit,
     updateNewPassword,
     updateConfirmPassword,
+    updateShowNewPassword,
+    updateShowConfirmPassword,
   };
 };
 

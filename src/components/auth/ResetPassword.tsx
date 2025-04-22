@@ -8,9 +8,13 @@ const ResetPassword: React.FC = () => {
     error,
     newPassword,
     confirmPassword,
+    showNewPassword,
+    showConfirmPassword,
     handleSubmit,
     updateNewPassword,
     updateConfirmPassword,
+    updateShowNewPassword,
+    updateShowConfirmPassword,
   } = useResetPassword();
 
   const navigate = useNavigate();
@@ -50,7 +54,7 @@ const ResetPassword: React.FC = () => {
               {/* Outer Box (Rounded Corners) */}
               <div className="p-2 rounded-lg bg-white">
                 <div className="flex flex-col">
-                  <div className="items-center border border-gray-300 p-2 rounded-md mb-2">
+                  <div className="items-center border border-gray-300 p-2 rounded-md mb-2 relative">
                     <input
                       type="password"
                       required
@@ -60,8 +64,15 @@ const ResetPassword: React.FC = () => {
                       placeholder="New Password"
                       autoComplete=""
                     />
+                    <button
+                      type="button"
+                      onClick={() => updateShowNewPassword()}
+                      className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+                    >
+                      {showNewPassword ? "👁️" : "🙈"}
+                    </button>
                   </div>
-                  <div className="items-center border border-gray-300 p-2 rounded-md mb-2">
+                  <div className="items-center border border-gray-300 p-2 rounded-md mb-2 relative">
                     <input
                       type="password"
                       required
@@ -71,6 +82,13 @@ const ResetPassword: React.FC = () => {
                       placeholder="Confirm Password"
                       autoComplete=""
                     />
+                    <button
+                      type="button"
+                      onClick={() => updateShowConfirmPassword()}
+                      className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+                    >
+                      {showConfirmPassword ? "👁️" : "🙈"}
+                    </button>
                   </div>
                 </div>
               </div>

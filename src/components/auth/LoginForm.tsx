@@ -53,7 +53,7 @@ const LoginForm: React.FC = () => {
                   </div>
 
                   {/* Password Input */}
-                  <div className="flex flex-row items-center border border-gray-300 p-2 rounded-b-md">
+                  <div className="relative flex flex-row items-center border border-gray-300 p-2 rounded-b-md">
                     <Lock className="h-5 w-5 text-gray-400 mr-2" />
                     <input
                       type={showPassword ? "text" : "password"}
