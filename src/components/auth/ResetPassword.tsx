@@ -1,46 +1,19 @@
-import React, { useEffect, useState } from "react";
-// import { Lock } from "lucide-react";
+import React from "react";
 import { Footer } from "../footer";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { UserService } from "../../services";
+import { useNavigate } from "react-router-dom";
+import { useResetPassword } from "../../hooks";
 
 const ResetPassword: React.FC = () => {
+  const {
+    error,
+    newPassword,
+    confirmPassword,
+    handleSubmit,
+    updateNewPassword,
+    updateConfirmPassword,
+  } = useResetPassword();
+
   const navigate = useNavigate();
-  const [newPassword, setNewPassword] = useState<string>("");
-  const [confirmPassword, setConfirmPassword] = useState<string>("");
-  const [error, setError] = useState<string>("");
-  const location = useLocation();
-  const [searchParams] = useSearchParams();
-  const token = searchParams.get("token");
-
-  useEffect(() => {
-    if (!token) {
-      alert("Invalid request");
-      const from = (location.state as any)?.from?.pathname || "/";
-      navigate(from, { replace: true });
-    }
-  }, []);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      const response = await UserService.resetPassword(newPassword, token!);
-      if (response) {
-        const from = (location.state as any)?.from?.pathname || "/";
-        navigate(from, { replace: true });
-        alert("Password updated successfully");
-      }
-    } catch (err) {
-      setError("An error occurred while resetting the password");
-    }
-  };
-
-  const updateNewPassword = (password: string) => {
-    setNewPassword(password);
-  };
-  const updateConfirmPassword = (password: string) => {
-    setConfirmPassword(password);
-  };
 
   return (
     <div>
@@ -73,10 +46,6 @@ const ResetPassword: React.FC = () => {
               <div className="text-red-500 text-sm text-center">{error}</div>
             )}
             <div className="border border-gray-100"></div>
-            {/* <div className="text-md p-2">
-              Please enter your email address or mobile number to search for
-              your account.
-            </div> */}
             <div className="rounded-lg shadow-sm -space-y-px">
               {/* Outer Box (Rounded Corners) */}
               <div className="p-2 rounded-lg bg-white">

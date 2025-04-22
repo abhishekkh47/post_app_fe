@@ -7,6 +7,7 @@ const useLogin = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const { login } = useAuth();
   const location = useLocation();
 
@@ -31,14 +32,20 @@ const useLogin = () => {
     setPassword(email);
   };
 
+  const updateShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   return {
     error,
     email,
     password,
+    showPassword,
     handleSubmit,
     updateEmail,
     updatePassword,
     navigate,
+    updateShowPassword,
   };
 };
 export default useLogin;
