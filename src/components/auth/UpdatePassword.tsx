@@ -59,7 +59,7 @@ const UpdatePassword: React.FC = () => {
                     onClick={() => setShowOldPassword((prev) => !prev)}
                     className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
                   >
-                    {showOldPassword ? "👁️" : "🙈"}
+                    {showOldPassword ? "🐵" : "🙈"}
                   </button>
                 </div>
 
@@ -78,7 +78,7 @@ const UpdatePassword: React.FC = () => {
                     onClick={() => setShowNewPassword((prev) => !prev)}
                     className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
                   >
-                    {showNewPassword ? "👁️" : "🙈"}
+                    {showNewPassword ? "🐵" : "🙈"}
                   </button>
                 </div>
                 <div className="items-center border border-gray-300 p-2 rounded-md mb-2 relative">
@@ -96,7 +96,7 @@ const UpdatePassword: React.FC = () => {
                     onClick={() => setShowConfirmPassword((prev) => !prev)}
                     className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
                   >
-                    {showConfirmPassword ? "👁️" : "🙈"}
+                    {showConfirmPassword ? "🐵" : "🙈"}
                   </button>
                 </div>
               </div>

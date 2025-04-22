@@ -56,7 +56,7 @@ const ResetPassword: React.FC = () => {
                 <div className="flex flex-col">
                   <div className="items-center border border-gray-300 p-2 rounded-md mb-2 relative">
                     <input
-                      type="password"
+                      type={showNewPassword ? "text" : "password"}
                       required
                       value={newPassword}
                       onChange={(e) => updateNewPassword(e.target.value)}
@@ -69,12 +69,12 @@ const ResetPassword: React.FC = () => {
                       onClick={() => updateShowNewPassword()}
                       className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
                     >
-                      {showNewPassword ? "👁️" : "🙈"}
+                      {showNewPassword ? "🐵" : "🙈"}
                     </button>
                   </div>
                   <div className="items-center border border-gray-300 p-2 rounded-md mb-2 relative">
                     <input
-                      type="password"
+                      type={showConfirmPassword ? "text" : "password"}
                       required
                       value={confirmPassword}
                       onChange={(e) => updateConfirmPassword(e.target.value)}
@@ -87,7 +87,7 @@ const ResetPassword: React.FC = () => {
                       onClick={() => updateShowConfirmPassword()}
                       className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
                     >
-                      {showConfirmPassword ? "👁️" : "🙈"}
+                      {showConfirmPassword ? "🐵" : "🙈"}
                     </button>
                   </div>
                 </div>

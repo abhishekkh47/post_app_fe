@@ -89,7 +89,7 @@ const SignupForm: React.FC = () => {
                 onClick={() => updateShowPassword()}
                 className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
               >
-                {showPassword ? "👁️" : "🙈"}
+                {showPassword ? "🐵" : "🙈"}
               </button>
             </div>
             {formData.email &&
