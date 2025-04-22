@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { UserService } from "../services";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const useSettings = () => {
   const { logout, user, togglePrivateProfile } = useAuth();
+  const navigate = useNavigate();
   const [publicProfileToggle, setPublicProfileToggle] = useState<boolean>(
     !user?.isPrivate
   );
@@ -40,12 +42,17 @@ const useSettings = () => {
     handleDeleteClick();
   };
 
+  const handleUpdatePasswordClick = () => {
+    navigate("/settings/update-password");
+  };
+
   return {
     publicProfileToggle,
     openDeleteDialog,
     handleProfileToggle,
     updateOpenDeleteDialog,
     handleDelete,
+    handleUpdatePasswordClick,
   };
 };
 

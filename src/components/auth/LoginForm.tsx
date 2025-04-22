@@ -75,7 +75,7 @@ const LoginForm: React.FC = () => {
                 </button>
                 <br />
                 <div
-                  className="flex justify-center hover:underline"
+                  className="flex justify-center hover:underline cursor-pointer"
                   onClick={() => navigate("/login/identity")}
                 >
                   forgot password?

@@ -28,6 +28,7 @@ const ResetPassword: React.FC = () => {
       if (response) {
         const from = (location.state as any)?.from?.pathname || "/";
         navigate(from, { replace: true });
+        alert("Password updated successfully");
       }
     } catch (err) {
       setError("An error occurred while resetting the password");
