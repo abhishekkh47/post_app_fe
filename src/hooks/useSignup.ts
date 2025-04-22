@@ -11,6 +11,7 @@ const useSignup = () => {
     isPrivate: true,
   });
   const [error, setError] = useState<string>("");
+  const [showPassword, setShowPassword] = useState<boolean>(false);
   const { signup } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -30,7 +31,18 @@ const useSignup = () => {
     }));
   };
 
-  return { error, formData, handleSubmit, handleChange };
+  const updateShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  return {
+    error,
+    formData,
+    showPassword,
+    handleSubmit,
+    handleChange,
+    updateShowPassword,
+  };
 };
 
 export default useSignup;

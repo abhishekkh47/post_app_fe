@@ -13,6 +13,8 @@ const LoginForm: React.FC = () => {
     updateEmail,
     updatePassword,
     navigate,
+    showPassword,
+    updateShowPassword,
   } = useLogin();
 
   return (
@@ -54,7 +56,7 @@ const LoginForm: React.FC = () => {
                   <div className="flex flex-row items-center border border-gray-300 p-2 rounded-b-md">
                     <Lock className="h-5 w-5 text-gray-400 mr-2" />
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       required
                       value={password}
                       onChange={(e) => updatePassword(e.target.value)}
@@ -62,6 +64,13 @@ const LoginForm: React.FC = () => {
                       placeholder="Password"
                       autoComplete="current-password"
                     />
+                    <button
+                      type="button"
+                      onClick={() => updateShowPassword()}
+                      className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+                    >
+                      {showPassword ? "👁️" : "🙈"}
+                    </button>
                   </div>
                 </div>
               </div>
@@ -75,7 +84,7 @@ const LoginForm: React.FC = () => {
                 </button>
                 <br />
                 <div
-                  className="flex justify-center hover:underline"
+                  className="flex justify-center hover:underline cursor-pointer"
                   onClick={() => navigate("/login/identity")}
                 >
                   forgot password?

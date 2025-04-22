@@ -3,7 +3,14 @@ import { Mail, Lock, User } from "lucide-react";
 import { useSignup } from "../../hooks";
 
 const SignupForm: React.FC = () => {
-  const { error, formData, handleSubmit, handleChange } = useSignup();
+  const {
+    error,
+    formData,
+    showPassword,
+    handleSubmit,
+    handleChange,
+    updateShowPassword,
+  } = useSignup();
   let validated = false;
 
   return (
@@ -69,7 +76,7 @@ const SignupForm: React.FC = () => {
                 <Lock className="h-5 w-5 text-gray-500" />
               </div>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 name="password"
                 required
                 value={formData.password}
@@ -77,6 +84,13 @@ const SignupForm: React.FC = () => {
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="Password"
               />
+              <button
+                type="button"
+                onClick={() => updateShowPassword()}
+                className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? "👁️" : "🙈"}
+              </button>
             </div>
             {formData.email &&
               !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && (

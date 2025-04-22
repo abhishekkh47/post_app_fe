@@ -27,3 +27,5 @@ export { default as useGroupUserList } from "./useGroupUserList";
 export { default as useUserProfile } from "./useUserProfile";
 export { default as useHome } from "./useHome";
 export { default as useCommentCard } from "./useCommentCard";
+export { default as useUpdatePassword } from "./useUpdatePassword";
+export { default as useResetPassword } from "./useResetPassword";

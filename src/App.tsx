@@ -6,6 +6,7 @@ import {
   ProtectedRoute,
   ResetPassword,
   SearchAccount,
+  UpdatePassword,
 } from "./components/auth";
 import { useAuth } from "./context/AuthContext";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -141,6 +142,16 @@ const AppContent = () => {
           <ProtectedRoute>
             <AuthenticatedLayout>
               <Settings />
+            </AuthenticatedLayout>
+          </ProtectedRoute>
+        }
+      ></Route>
+      <Route
+        path="/settings/update-password"
+        element={
+          <ProtectedRoute>
+            <AuthenticatedLayout>
+              <UpdatePassword />
             </AuthenticatedLayout>
           </ProtectedRoute>
         }
