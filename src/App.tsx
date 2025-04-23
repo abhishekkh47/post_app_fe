@@ -21,6 +21,7 @@ import {
   GroupDetails,
   JoinGroup,
   ChatPage,
+  Explore,
 } from "./pages";
 import { Friends } from "./components/friends";
 import { JoinGroupProvider } from "./context/JoinGroupContext";
@@ -185,7 +186,7 @@ const AppContent = () => {
             <ProtectedRouteWithNotifications>
               <AuthenticatedLayout>
                 <JoinGroupProvider>
-                  <ChatPage user={user} />
+                  <ChatPage user={user} customClass={`top-10`} />
                 </JoinGroupProvider>
               </AuthenticatedLayout>
             </ProtectedRouteWithNotifications>
@@ -198,6 +199,16 @@ const AppContent = () => {
           <ProtectedRouteWithNotifications>
             <AuthenticatedLayout>
               <ViewPost />
+            </AuthenticatedLayout>
+          </ProtectedRouteWithNotifications>
+        }
+      ></Route>
+      <Route
+        path="/explore"
+        element={
+          <ProtectedRouteWithNotifications>
+            <AuthenticatedLayout>
+              <Explore />
             </AuthenticatedLayout>
           </ProtectedRouteWithNotifications>
         }

@@ -5,9 +5,10 @@ import { User } from "../types";
 
 interface ChatPageProps {
   user: User;
+  customClass?: string;
 }
 
-const ChatPage: React.FC<ChatPageProps> = ({ user }) => {
+const ChatPage: React.FC<ChatPageProps> = ({ user, customClass }) => {
   const {
     conversations,
     groups,
@@ -23,7 +24,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ user }) => {
   } = useChat();
 
   return (
-    <div className="relative h-screen flex">
+    <div className={`relative h-screen flex ${customClass}`}>
       <ChatList
         user={user}
         conversations={conversations}

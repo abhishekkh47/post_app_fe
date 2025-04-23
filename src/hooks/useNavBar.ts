@@ -1,33 +1,14 @@
-import React, { useState, useEffect, useRef } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import useClickOutside from "./useClickOutside";
 
 const useNavBar = () => {
   const { logout, user } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
-  const [selected, setSelected] = useState<string>("Home");
   const [openNotification, setOpenNotification] = useState<boolean>(false);
   const notificationRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
-  const location = useLocation();
-
-  useEffect(() => {
-    // Update the selected navigation item based on the current route path
-    if (location.pathname === "/friends") {
-      setSelected("Friends");
-    } else if (location.pathname === "/projects") {
-      setSelected("Projects");
-    } else if (location.pathname === `/settings/${user?._id}`) {
-      setSelected("Settings");
-    } else if (location.pathname === `/messages`) {
-      setSelected("Settings");
-    } else if (location.pathname === "/") {
-      setSelected("Home"); // Default is home
-    } else {
-      setSelected("");
-    }
-  }, [location.pathname]); // Re-run when the location (URL) changes
 
   const handleDashboardClick = async () => {
     navigate(`/`);
@@ -37,6 +18,9 @@ const useNavBar = () => {
   };
   const handleSettingsClick = async () => {
     navigate(`/settings/${user?._id}`);
+  };
+  const handleExploreClick = async () => {
+    navigate(`/explore`);
   };
   const handleProfileClick = async () => {
     navigate(`/profile/${user?._id}`);
@@ -57,7 +41,12 @@ const useNavBar = () => {
       current: false,
       onClick: handleFriendsClick,
     },
-    { name: "Games", href: "#", current: false },
+    {
+      name: "Explore",
+      href: "/explore",
+      current: false,
+      onclick: handleExploreClick,
+    },
     {
       name: "Settings",
       href: `/settings/${user?._id}`,
@@ -99,7 +88,6 @@ const useNavBar = () => {
     user,
     navigation,
     isLoggingOut,
-    selected,
     openNotification,
     notificationRef,
     handleLogOutClick,

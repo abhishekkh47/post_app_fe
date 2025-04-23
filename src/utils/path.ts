@@ -37,6 +37,7 @@ export const FOLLOW = {
   FOLLOWERS: `${API_URL}/follow/v1/followers/${PATH_SLUGS.USERID}`,
   FOLLOWING: `${API_URL}/follow/v1/following/${PATH_SLUGS.USERID}`,
   FRIENDS: `${API_URL}/follow/v1/my-friends`,
+  FRIEND_RECOMMENDATION: `${API_URL}/follow/v1/friend-recommendations`,
 };
 export const POSTS = {
   GET_FEED: `${API_URL}/post/v1/get-feed?page=${PATH_SLUGS.PAGE}`,
