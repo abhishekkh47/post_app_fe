@@ -30,7 +30,7 @@ const GroupDetails: React.FC = () => {
   }
 
   return (
-    <div className="flex flex-col max-w-2xl mx-auto py-8 px-4 mt-16">
+    <div className="flex flex-col max-w-2xl mx-auto py-8 px-4">
       <div>
         <GroupProfile
           groupProfile={groupProfile}

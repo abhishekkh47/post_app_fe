@@ -13,7 +13,7 @@ const Home: React.FC = () => {
   const { joinGroupData } = useJoinGroup();
 
   return (
-    <div className="flex sm:mt-16 mt-10">
+    <div className="flex">
       <div className="flex-1 sm:mr-80">
         <Feed />
       </div>

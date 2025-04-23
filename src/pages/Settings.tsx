@@ -14,7 +14,7 @@ const Settings: React.FC = () => {
   } = useSettings();
 
   return (
-    <div className="max-w-2xl mx-auto py-8 px-8 mt-16">
+    <div className="max-w-2xl mx-auto py-8 px-8">
       <div className="bg-white rounded-lg shadow-md p-6 space-y-6">
         <div className="flex items-center justify-between">
           <span className="label flex items-center text-md font-medium text-black">

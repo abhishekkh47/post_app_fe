@@ -6,7 +6,7 @@ import { Loader } from "../components/common";
 const Explore: React.FC = () => {
   const { loading, friendSuggestions, handleFriendClick } = useFriends();
   return (
-    <div className="max-w-2xl mx-auto py-8 px-4 mt-16">
+    <div className="max-w-2xl mx-auto py-8 px-4">
       {loading ? (
         <Loader />
       ) : (
@@ -23,7 +23,7 @@ const Explore: React.FC = () => {
           {/* <FriendSuggestions /> */}
           {friendSuggestions?.length && (
             <>
-              <h1 className="text-xl text-gray-900 text-start mt-6">
+              <h1 className="text-xl text-gray-900 text-start">
                 People you may know
               </h1>
               <FriendSuggestions

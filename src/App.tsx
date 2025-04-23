@@ -175,7 +175,7 @@ const AppContent = () => {
           element={
             <ProtectedRouteWithNotifications>
               <JoinGroupProvider>
-                <ChatPage user={user} customClass={`top-10`} />
+                <ChatPage user={user} />
               </JoinGroupProvider>
             </ProtectedRouteWithNotifications>
           }
@@ -185,9 +185,7 @@ const AppContent = () => {
         path="/post/:postId"
         element={
           <ProtectedRouteWithNotifications>
-            <AuthenticatedLayout>
-              <ViewPost />
-            </AuthenticatedLayout>
+            <ViewPost />
           </ProtectedRouteWithNotifications>
         }
       ></Route>
@@ -195,9 +193,7 @@ const AppContent = () => {
         path="/explore"
         element={
           <ProtectedRouteWithNotifications>
-            <AuthenticatedLayout>
-              <Explore />
-            </AuthenticatedLayout>
+            <Explore />
           </ProtectedRouteWithNotifications>
         }
       ></Route>
@@ -210,9 +206,7 @@ const AppContent = () => {
         path="*"
         element={
           <ProtectedRouteWithNotifications>
-            <AuthenticatedLayout>
-              <Home />
-            </AuthenticatedLayout>
+            <Home />
           </ProtectedRouteWithNotifications>
         }
       />

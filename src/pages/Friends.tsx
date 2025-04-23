@@ -20,7 +20,7 @@ const Friends: React.FC = () => {
     selectedGroup,
   } = useFriends();
   return (
-    <div className="max-w-2xl mx-auto py-8 px-4 mt-16">
+    <div className="max-w-2xl mx-auto py-8 px-4">
       {loading ? (
         <Loader />
       ) : (

@@ -11,7 +11,7 @@ const AuthenticatedLayout: React.FC<AuthenticatedLayoutProps> = ({
   return (
     <>
       <NavBar />
-      <div className="min-h-screen bg-gray-100">{children}</div>
+      <div className="min-h-screen bg-gray-100 sm:pt-16 pt-10">{children}</div>
     </>
   );
 };
