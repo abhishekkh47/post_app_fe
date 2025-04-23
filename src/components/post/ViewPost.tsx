@@ -28,7 +28,7 @@ const ViewPost: React.FC = () => {
   };
   return (
     // <div className="space-y-4">
-    <div className="max-w-2xl mx-auto py-8 px-4 mt-16">
+    <div className="max-w-4xl mx-auto py-8 px-4 mt-16">
       {/* List all posts */}
       {post && (
         <PostCard
