@@ -22,8 +22,8 @@ import {
   JoinGroup,
   ChatPage,
   Explore,
+  Friends,
 } from "./pages";
-import { Friends } from "./components/friends";
 import { JoinGroupProvider } from "./context/JoinGroupContext";
 import { useEffect, useState } from "react";
 import { CommonService } from "./services";
@@ -74,7 +74,7 @@ const AppContent = () => {
       <ProtectedRoute>
         <SocketProvider>
           <NotificationInitializer />
-          {children}
+          <AuthenticatedLayout>{children}</AuthenticatedLayout>
         </SocketProvider>
       </ProtectedRoute>
     );
@@ -109,11 +109,9 @@ const AppContent = () => {
         path="/"
         element={
           <ProtectedRouteWithNotifications>
-            <AuthenticatedLayout>
-              <JoinGroupProvider>
-                <Home />
-              </JoinGroupProvider>
-            </AuthenticatedLayout>
+            <JoinGroupProvider>
+              <Home />
+            </JoinGroupProvider>
           </ProtectedRouteWithNotifications>
         }
       ></Route>
@@ -121,9 +119,7 @@ const AppContent = () => {
         path="/profile/:userId"
         element={
           <ProtectedRouteWithNotifications>
-            <AuthenticatedLayout>
-              <Profile />
-            </AuthenticatedLayout>
+            <Profile />
           </ProtectedRouteWithNotifications>
         }
       ></Route>
@@ -131,9 +127,7 @@ const AppContent = () => {
         path="/friends"
         element={
           <ProtectedRouteWithNotifications>
-            <AuthenticatedLayout>
-              <Friends />
-            </AuthenticatedLayout>
+            <Friends />
           </ProtectedRouteWithNotifications>
         }
       ></Route>
@@ -161,9 +155,7 @@ const AppContent = () => {
         path="/group/:groupId"
         element={
           <ProtectedRouteWithNotifications>
-            <AuthenticatedLayout>
-              <GroupDetails />
-            </AuthenticatedLayout>
+            <GroupDetails />
           </ProtectedRouteWithNotifications>
         }
       ></Route>
@@ -171,11 +163,9 @@ const AppContent = () => {
         path="/group/members/join/:inviteToken"
         element={
           <ProtectedRouteWithNotifications>
-            <AuthenticatedLayout>
-              <JoinGroupProvider>
-                <JoinGroup />
-              </JoinGroupProvider>
-            </AuthenticatedLayout>
+            <JoinGroupProvider>
+              <JoinGroup />
+            </JoinGroupProvider>
           </ProtectedRouteWithNotifications>
         }
       ></Route>
@@ -184,11 +174,9 @@ const AppContent = () => {
           path="/messages"
           element={
             <ProtectedRouteWithNotifications>
-              <AuthenticatedLayout>
-                <JoinGroupProvider>
-                  <ChatPage user={user} customClass={`top-10`} />
-                </JoinGroupProvider>
-              </AuthenticatedLayout>
+              <JoinGroupProvider>
+                <ChatPage user={user} />
+              </JoinGroupProvider>
             </ProtectedRouteWithNotifications>
           }
         ></Route>
@@ -197,9 +185,7 @@ const AppContent = () => {
         path="/post/:postId"
         element={
           <ProtectedRouteWithNotifications>
-            <AuthenticatedLayout>
-              <ViewPost />
-            </AuthenticatedLayout>
+            <ViewPost />
           </ProtectedRouteWithNotifications>
         }
       ></Route>
@@ -207,9 +193,7 @@ const AppContent = () => {
         path="/explore"
         element={
           <ProtectedRouteWithNotifications>
-            <AuthenticatedLayout>
-              <Explore />
-            </AuthenticatedLayout>
+            <Explore />
           </ProtectedRouteWithNotifications>
         }
       ></Route>
@@ -222,9 +206,7 @@ const AppContent = () => {
         path="*"
         element={
           <ProtectedRouteWithNotifications>
-            <AuthenticatedLayout>
-              <Home />
-            </AuthenticatedLayout>
+            <Home />
           </ProtectedRouteWithNotifications>
         }
       />

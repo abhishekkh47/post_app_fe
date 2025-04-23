@@ -19,7 +19,7 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto py-8 px-4 mt-16">
+    <div className="max-w-4xl mx-auto py-8 px-4">
       {/* <UserProfile userId={user._id} /> */}
       <UserProfile
         user={user}

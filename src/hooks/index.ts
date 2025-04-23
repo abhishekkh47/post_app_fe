@@ -29,4 +29,3 @@ export { default as useHome } from "./useHome";
 export { default as useCommentCard } from "./useCommentCard";
 export { default as useUpdatePassword } from "./useUpdatePassword";
 export { default as useResetPassword } from "./useResetPassword";
-export { default as useFriendSuggestions } from "./useFriendSuggestions";

@@ -82,7 +82,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           handleChange={handleChange}
         />
       )}
-      <div className="flex items-center space-x-4">
+      <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4">
         <div className="relative inline-block" onClick={handleImageClick}>
           <ProfilePicture
             profile_pic={image}
@@ -134,7 +134,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
           </div>
         )}
 
-        <div className="flex-1">
+        <div className="flex-1 text-center sm:text-left">
           <h2 className="text-2xl font-bold">
             {profile.firstName} {profile.lastName}
           </h2>
@@ -144,7 +144,11 @@ const UserProfile: React.FC<UserProfileProps> = ({
           <FollowButton following={isFollowing} onFollow={handleFollow} />
         )}
       </div>
-      {profile.bio && <p className="text-gray-600 mt-1">{profile.bio}</p>}
+      {profile.bio && (
+        <p className="text-gray-600 mt-1 text-center sm:text-left">
+          {profile.bio}
+        </p>
+      )}
     </div>
   );
 };
