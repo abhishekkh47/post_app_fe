@@ -36,6 +36,7 @@ const useFriends = () => {
   // Fetch data based on selected tab
   useEffect(() => {
     fetchFriends(activeTab);
+    fetchFriendRecommendation();
   }, [activeTab]);
 
   useEffect(() => {
@@ -70,6 +71,20 @@ const useFriends = () => {
         const data =
           type == "followers" ? response?.followers : response?.following;
         setFriends(data?.users || []);
+      }
+    } catch (error) {
+      console.error((error as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchFriendRecommendation = async () => {
+    setLoading(true);
+    try {
+      if (user) {
+        const response = await FollowService.getFriendRecommendation();
+        console.log("RECOMMENDATIONS : ", response);
       }
     } catch (error) {
       console.error((error as Error).message);

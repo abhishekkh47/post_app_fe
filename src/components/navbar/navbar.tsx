@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router";
 import {
   Disclosure,
   DisclosureButton,
@@ -24,7 +25,6 @@ const NavBar: React.FC = () => {
     user,
     navigation,
     isLoggingOut,
-    selected,
     handleLogOutClick,
     handleProfileClick,
     handleDashboardClick,
@@ -62,26 +62,28 @@ const NavBar: React.FC = () => {
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
                 {navigation.map((item) => (
-                  <a
+                  <NavLink
                     key={item.name}
-                    href={item.href}
-                    aria-current={item.name == selected ? "page" : undefined}
-                    className={classNames(
-                      item.name == selected
-                        ? "bg-gray-900 text-white"
-                        : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                      classNames(item.name == "Messages" ? "hidden" : ""),
-                      "rounded-md px-3 py-2 text-sm font-medium"
-                    )}
+                    to={item.href}
+                    end
                     onClick={(e) => {
                       if (item?.onClick) {
                         e.preventDefault();
                         item.onClick();
                       }
                     }}
+                    className={({ isActive }) =>
+                      classNames(
+                        isActive
+                          ? "bg-gray-900 text-white"
+                          : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                        item.name === "Messages" ? "hidden" : "",
+                        "rounded-md px-3 py-2 text-sm font-medium"
+                      )
+                    }
                   >
                     {item.name}
-                  </a>
+                  </NavLink>
                 ))}
               </div>
             </div>
@@ -144,20 +146,25 @@ const NavBar: React.FC = () => {
       <DisclosurePanel className="sm:hidden">
         <div className="space-y-1 px-2 pt-2 pb-3">
           {navigation.map((item) => (
-            <DisclosureButton
+            <NavLink
               key={item.name}
-              as="a"
-              href={item.href}
-              aria-current={item.name == selected ? "page" : undefined}
-              className={classNames(
-                item.name == selected
-                  ? "bg-gray-900 text-white"
-                  : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                "block rounded-md px-3 py-2 text-base font-medium"
-              )}
-            >
-              {item.name}
-            </DisclosureButton>
+              to={item.href}
+              end
+              onClick={(e) => {
+                if (item?.onClick) {
+                  e.preventDefault();
+                  item.onClick();
+                }
+              }}
+              className={({ isActive }) =>
+                classNames(
+                  isActive
+                    ? "bg-gray-900 text-white"
+                    : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                  "block rounded-md px-3 py-2 text-base font-medium"
+                )
+              }
+            ></NavLink>
           ))}
         </div>
       </DisclosurePanel>
