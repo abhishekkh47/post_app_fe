@@ -22,8 +22,8 @@ import {
   JoinGroup,
   ChatPage,
   Explore,
+  Friends,
 } from "./pages";
-import { Friends } from "./components/friends";
 import { JoinGroupProvider } from "./context/JoinGroupContext";
 import { useEffect, useState } from "react";
 import { CommonService } from "./services";

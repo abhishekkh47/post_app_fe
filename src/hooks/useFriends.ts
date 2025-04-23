@@ -12,19 +12,14 @@ const useFriends = () => {
     "followers"
   );
   const [friends, setFriends] = useState<User[]>([]);
+  const [friendSuggestions, setFriendSuggestions] = useState<User[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [messages, setMessages] = useState<Message[]>([]); // Store messages
   const { user } = useAuth();
   const navigate = useNavigate();
   const { socket } = useSocket();
-  const {
-    // selectedUser,
-    selectedGroup,
-    // handleCloseChat,
-    // updateSelectedUser,
-    // updateMessages,
-  } = useChat();
+  const { selectedGroup } = useChat();
 
   const {
     CHAT: {
@@ -82,10 +77,8 @@ const useFriends = () => {
   const fetchFriendRecommendation = async () => {
     setLoading(true);
     try {
-      if (user) {
-        const response = await FollowService.getFriendRecommendation();
-        console.log("RECOMMENDATIONS : ", response);
-      }
+      const response = await FollowService.getFriendRecommendation();
+      setFriendSuggestions(response?.friends);
     } catch (error) {
       console.error((error as Error).message);
     } finally {
@@ -169,6 +162,8 @@ const useFriends = () => {
     handleMessageClick,
     handleSendMessage,
     handleCloseChat,
+    friendSuggestions,
+    setFriendSuggestions,
   };
 };
 
