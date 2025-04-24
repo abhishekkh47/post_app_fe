@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { SignupCredentials } from "../types";
 
@@ -16,6 +16,14 @@ const useSignup = () => {
   const [error, setError] = useState<string>("");
   const [signupSuccess, setSignupSuccess] = useState<boolean>(false);
   const { signup } = useAuth();
+
+  const firstNameInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (firstNameInputRef.current) {
+      firstNameInputRef.current.focus(); // Focus the First Name input field when the page loads
+    }
+  }, []); // Empty dependency array ensures this runs once when the component mounts
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,12 +48,21 @@ const useSignup = () => {
     }));
   };
 
+  const handleContactChange = (contact: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      contact: contact,
+    }));
+  };
+
   return {
     error,
     formData,
     handleSubmit,
     handleChange,
     signupSuccess,
+    handleContactChange,
+    firstNameInputRef,
   };
 };
 

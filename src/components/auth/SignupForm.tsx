@@ -3,10 +3,19 @@ import { Mail, User } from "lucide-react";
 import { useSignup } from "../../hooks";
 import { useNavigate } from "react-router-dom";
 import successGif from "../../assets/success.gif";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 
 const SignupForm: React.FC = () => {
-  const { error, formData, handleSubmit, handleChange, signupSuccess } =
-    useSignup();
+  const {
+    error,
+    formData,
+    handleSubmit,
+    handleChange,
+    signupSuccess,
+    handleContactChange,
+    firstNameInputRef,
+  } = useSignup();
   const navigate = useNavigate();
   let validated = false;
 
@@ -50,6 +59,7 @@ const SignupForm: React.FC = () => {
                 <User className="h-5 w-5 text-gray-500" />
               </div>
               <input
+                ref={firstNameInputRef}
                 type="text"
                 name="firstName"
                 required
@@ -57,6 +67,7 @@ const SignupForm: React.FC = () => {
                 onChange={handleChange}
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="First Name"
+                autoFocus={true}
               />
             </div>
 
@@ -91,31 +102,28 @@ const SignupForm: React.FC = () => {
             </div>
 
             <div className="relative">
-              <div className="flex">
-                {/* Country Code Dropdown */}
-                <select
-                  name="countryCode"
-                  value={formData.countryCode || "+91"}
-                  onChange={handleChange}
-                  className="block w-2/10 px-3 py-2 border border-gray-300 rounded-l-md text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                >
-                  <option value="+91">🇮🇳 +91</option>
-                  <option value="+1">🇺🇸 +1</option>
-                  <option value="+44">🇬🇧 +44</option>
-                  <option value="+61">🇦🇺 +61</option>
-                  <option value="+81">🇯🇵 +81</option>
-                </select>
-
-                <input
-                  type="tel"
-                  name="contact"
-                  value={formData.contact}
-                  onChange={handleChange}
-                  className="block w-4/5 px-3 py-2 border-t border-b border-r border-gray-300 rounded-r-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  placeholder="Phone number"
-                  required
-                />
-              </div>
+              <PhoneInput
+                country={"in"}
+                onlyCountries={["in"]}
+                value={formData.contact}
+                onChange={(phone) => handleContactChange(phone)}
+                inputStyle={{
+                  width: "100%",
+                  height: "42px",
+                  fontSize: "14px",
+                  paddingLeft: "48px",
+                  borderRadius: "0.375rem",
+                  border: "1px solid rgb(209, 213, 219)",
+                }}
+                buttonStyle={{
+                  border: "1px solid rgb(209, 213, 219)",
+                  borderRight: "none",
+                  borderTopLeftRadius: "0.375rem",
+                  borderBottomLeftRadius: "0.375rem",
+                }}
+                containerClass="w-full"
+                dropdownStyle={{ maxHeight: "200px", overflow: "auto" }}
+              />
             </div>
 
             <div>
@@ -157,7 +165,7 @@ const SignupForm: React.FC = () => {
                 </div>
               )}
             {formData.contact &&
-              !/^[6-9]{1}[0-9]{9}$/.test(formData.contact) && (
+              !/(?:\+91|91)?[6-9]\d{9}$/.test(formData.contact) && (
                 <div className="text-red-500 text-sm">
                   Invalid contact number
                 </div>
@@ -165,7 +173,7 @@ const SignupForm: React.FC = () => {
 
             {
               (validated =
-                !/^[6-9]{1}[0-9]{9}$/.test(formData.contact) ||
+                !/(?:\+91|91)?[6-9]\d{9}$/.test(formData.contact) ||
                 !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) ||
                 !(formData.firstName.length > 0) ||
                 !(formData.lastName.length > 0))
