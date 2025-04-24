@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { User, Conversation, Group } from "../../types";
 import { LucideUsers2 } from "lucide-react";
 import CreateChatGroup from "./CreateChatGroup";
-import { FollowService } from "../../services";
 import { ProfilePicture } from "../profile";
+import { useChatList } from "../../hooks";
 
 interface ChatListProps {
   user: User;
@@ -26,42 +26,14 @@ const ChatList: React.FC<ChatListProps> = ({
   onSelectGroup,
   newGroupCreated,
 }) => {
-  // const {
-  //   isModalOpen,
-  //   openModal,
-  //   closeModal,
-  //   friends,
-  //   modalPage,
-  //   updateModalPage,
-  // } = useChatList({ user });
-  const [friends, setFriends] = useState<User[]>([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalPage, setModalPage] = useState(1);
-
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => {
-    setIsModalOpen(false);
-    updateModalPage(1);
-  };
-
-  useEffect(() => {
-    fetchFriends();
-  }, []);
-
-  const fetchFriends = async () => {
-    try {
-      if (user) {
-        const myFriends = await FollowService.getFriends();
-        setFriends(myFriends.friends || []);
-      }
-    } catch (error) {
-      console.error((error as Error).message);
-    }
-  };
-
-  const updateModalPage = (page: number) => {
-    setModalPage(page);
-  };
+  const {
+    isModalOpen,
+    openModal,
+    closeModal,
+    friends,
+    modalPage,
+    updateModalPage,
+  } = useChatList({ user });
 
   return (
     <div className="w-full overflow-y-auto">

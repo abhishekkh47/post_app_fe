@@ -21,7 +21,7 @@ const Explore: React.FC = () => {
           </div> */}
 
           {/* <FriendSuggestions /> */}
-          {friendSuggestions?.length && (
+          {friendSuggestions?.length > 0 && (
             <>
               <h1 className="text-xl text-gray-900 text-start">
                 People you may know

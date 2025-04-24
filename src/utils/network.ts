@@ -1,10 +1,10 @@
 import axios from "axios";
 import { AuthService } from "../services";
-import { LoginCredentials } from "../types";
+import { LoginCredentials, SignupCredentials } from "../types";
 
 export const SIGNUP_LOGIN_SERVICE = async (
   path: string,
-  credentials: LoginCredentials
+  credentials: LoginCredentials | SignupCredentials
 ) => {
   try {
     const response = await axios.post(path, credentials, {
