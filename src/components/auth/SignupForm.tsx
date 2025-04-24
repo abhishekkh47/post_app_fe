@@ -1,18 +1,37 @@
 import React from "react";
-import { Mail, Lock, User } from "lucide-react";
+import { Mail, User } from "lucide-react";
 import { useSignup } from "../../hooks";
+import { useNavigate } from "react-router-dom";
+import successGif from "../../assets/success.gif";
 
 const SignupForm: React.FC = () => {
-  const {
-    error,
-    formData,
-    showPassword,
-    handleSubmit,
-    handleChange,
-    updateShowPassword,
-  } = useSignup();
+  const { error, formData, handleSubmit, handleChange, signupSuccess } =
+    useSignup();
+  const navigate = useNavigate();
   let validated = false;
 
+  if (signupSuccess) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-gray-100">
+        <div className="bg-white p-8 rounded shadow-md text-center">
+          <img src={successGif} alt="success" className="h-16 w-16 mx-auto" />
+          <h2 className="text-2xl font-semibold text-gray-800 mt-4">
+            Signup Successful!
+          </h2>
+          <p className="text-gray-600 mt-2">
+            Thank you for signing up. Please check your mail to update your
+            password.
+          </p>
+          <button
+            onClick={() => navigate("/")}
+            className="mt-6 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          >
+            Login
+          </button>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow-md">
@@ -72,82 +91,86 @@ const SignupForm: React.FC = () => {
             </div>
 
             <div className="relative">
-              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                <Lock className="h-5 w-5 text-gray-500" />
+              <div className="flex">
+                {/* Country Code Dropdown */}
+                <select
+                  name="countryCode"
+                  value={formData.countryCode || "+91"}
+                  onChange={handleChange}
+                  className="block w-2/10 px-3 py-2 border border-gray-300 rounded-l-md text-gray-900 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  <option value="+91">🇮🇳 +91</option>
+                  <option value="+1">🇺🇸 +1</option>
+                  <option value="+44">🇬🇧 +44</option>
+                  <option value="+61">🇦🇺 +61</option>
+                  <option value="+81">🇯🇵 +81</option>
+                </select>
+
+                <input
+                  type="tel"
+                  name="contact"
+                  value={formData.contact}
+                  onChange={handleChange}
+                  className="block w-4/5 px-3 py-2 border-t border-b border-r border-gray-300 rounded-r-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  placeholder="Phone number"
+                  required
+                />
               </div>
-              <input
-                type={showPassword ? "text" : "password"}
-                name="password"
-                required
-                value={formData.password}
-                onChange={handleChange}
-                className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Password"
-              />
-              <button
-                type="button"
-                onClick={() => updateShowPassword()}
-                className="absolute right-2 top-2 text-gray-500 hover:text-gray-700"
-              >
-                {showPassword ? "🐵" : "🙈"}
-              </button>
             </div>
+
+            <div>
+              <div className="block text-sm font-medium text-gray-700 mb-1">
+                {/* <Phone className="h-5 w-5 text-gray-500" /> */}
+                Gender
+              </div>
+              <div className="flex space-x-4">
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="M"
+                    checked={formData.gender === "M"}
+                    onChange={handleChange}
+                    className="text-indigo-600 focus:ring-indigo-500"
+                    required
+                  />
+                  <span className="text-gray-700">Male</span>
+                </label>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="radio"
+                    name="gender"
+                    value="F"
+                    checked={formData.gender === "F"}
+                    onChange={handleChange}
+                    className="text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <span className="text-gray-700">Female</span>
+                </label>
+              </div>
+            </div>
+
             {formData.email &&
               !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) && (
                 <div className="text-red-500 text-sm">
                   Invalid email address
                 </div>
               )}
+            {formData.contact &&
+              !/^[6-9]{1}[0-9]{9}$/.test(formData.contact) && (
+                <div className="text-red-500 text-sm">
+                  Invalid contact number
+                </div>
+              )}
 
             {
               (validated =
-                !/.{8,}/.test(formData.password) ||
-                !/(?=.*[A-Z])/.test(formData.password) ||
-                !/(?=.*[a-z])/.test(formData.password) ||
-                !/(?=.*\W)/.test(formData.password))
+                !/^[6-9]{1}[0-9]{9}$/.test(formData.contact) ||
+                !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email) ||
+                !(formData.firstName.length > 0) ||
+                !(formData.lastName.length > 0))
             }
-
-            {formData.password &&
-              (!/.{8,}/.test(formData.password) ||
-                !/(?=.*[A-Z])/.test(formData.password) ||
-                !/(?=.*[a-z])/.test(formData.password) ||
-                !/(?=.*\W)/.test(formData.password)) && (
-                <div className="space-y-1">
-                  <div className="text-red-500 text-sm font-medium">
-                    Password must contain at least:
-                  </div>
-                  <ul className="list-disc list-inside text-red-500 text-sm space-y-1">
-                    {!/.{8,}/.test(formData.password) && <li>8 characters</li>}
-                    {!/(?=.*[A-Z])/.test(formData.password) && (
-                      <li>One uppercase letter</li>
-                    )}
-                    {!/(?=.*[a-z])/.test(formData.password) && (
-                      <li>One lowercase letter</li>
-                    )}
-                    {!/(?=.*\W)/.test(formData.password) && (
-                      <li>One special character</li>
-                    )}
-                  </ul>
-                </div>
-              )}
           </div>
-
-          {/* <div className="flex items-center">
-            <input
-              type="checkbox"
-              name="isPrivate"
-              checked={formData.isPrivate}
-              onChange={handleChange}
-              className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-            />
-            <label
-              htmlFor="isPrivate"
-              className="ml-2 block text-sm text-gray-900"
-            >
-              Private Account
-            </label>
-          </div> */}
-
           <div>
             <button
               type="submit"
@@ -155,6 +178,14 @@ const SignupForm: React.FC = () => {
               disabled={validated}
             >
               Sign up
+            </button>
+            <br />
+            <button
+              type="button"
+              onClick={() => navigate("/login")}
+              className="w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              Login
             </button>
           </div>
         </form>

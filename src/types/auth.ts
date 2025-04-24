@@ -13,10 +13,12 @@ export interface LoginCredentials {
 
 export interface SignupCredentials {
   email: string;
-  password: string;
   firstName: string;
   lastName: string;
   bio?: string;
   profile_pic?: string;
   isPrivate?: boolean;
+  contact: string;
+  gender: "M" | "F";
+  countryCode: string;
 }

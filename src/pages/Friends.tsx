@@ -38,7 +38,7 @@ const Friends: React.FC = () => {
             handleCloseChat={handleCloseChat}
             selectedGroup={selectedGroup}
           />
-          {friendSuggestions?.length && (
+          {friendSuggestions?.length > 0 && (
             <>
               <h1 className="text-xl text-gray-900 text-start mt-6">
                 People you may know

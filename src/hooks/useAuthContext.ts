@@ -64,10 +64,7 @@ const useAuthContext = () => {
 
   const signup = async (credentials: SignupCredentials) => {
     try {
-      const data: AuthResponse = await AuthService.signup(credentials);
-      setAuthData(data);
-      setUser(data.user);
-      setIsAuthenticated(true);
+      await AuthService.signup(credentials);
     } catch (err) {
       throw new Error(`${(err as Error).message}`);
     }
