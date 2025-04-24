@@ -19,7 +19,6 @@ const ChatPage: React.FC<ChatPageProps> = ({ user }) => {
     selectedUser,
     updateMessages,
     selectedGroup,
-    newGroupCreated,
   } = useChat();
 
   return (
@@ -32,7 +31,6 @@ const ChatPage: React.FC<ChatPageProps> = ({ user }) => {
         selectedGroup={selectedGroup}
         onSelectConversation={handleSelectConversation}
         onSelectGroup={handleSelectGroupChat}
-        newGroupCreated={newGroupCreated}
       />
       {/* <ChatWindow
         selectedUser={selectedUser}

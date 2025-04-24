@@ -2,21 +2,9 @@ import React, { useState } from "react";
 import { User } from "../../types";
 import { GroupChatService } from "../../services";
 
-interface Group {
-  _id: string;
-  name: string;
-  description: string;
-  avatar?: string;
-  members: {
-    userId: string;
-    role: string;
-    joinedAt: Date;
-  }[];
-  createdAt: Date;
-}
 interface CreateChatGroupProps {
   isOpen: any;
-  onClose: any;
+  onClose: () => void;
   users: any;
   modalPage: number;
   updateModalPage: (page: number) => void;
@@ -30,7 +18,6 @@ const CreateChatGroup: React.FC<CreateChatGroupProps> = ({
   users,
   modalPage,
   updateModalPage,
-  user,
   newGroupCreated,
 }) => {
   if (!isOpen) return null;
@@ -82,12 +69,6 @@ const CreateChatGroup: React.FC<CreateChatGroupProps> = ({
     } catch (error) {
       console.error("Error creating group:", error);
     }
-  };
-
-  const isGroupAdmin = (group: Group) => {
-    return group.members.some(
-      (member) => member.userId === user._id && member.role === "admin"
-    );
   };
 
   const handleCancel = () => {
