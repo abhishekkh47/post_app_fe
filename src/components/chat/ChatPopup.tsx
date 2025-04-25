@@ -62,7 +62,7 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
   }
 
   return (
-    <div className={`fixed bottom-4 right-4 z-50 `}>
+    <div>
       <div
         className={`bg-white rounded-lg shadow-lg w-80 transition-all duration-300 ease-in-out ${
           isMinimized ? "h-12" : "h-[500px]"
@@ -81,7 +81,7 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
                 size={8}
                 text={`lg`}
               />
-            ) : selectedGroup?.profile_pic ? (
+            ) : selectedGroup ? (
               <ProfilePicture
                 profile_pic={selectedGroup.profile_pic}
                 firstName={selectedGroup.name || ""}

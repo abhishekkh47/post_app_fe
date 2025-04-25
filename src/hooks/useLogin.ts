@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -10,6 +10,14 @@ const useLogin = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const { login } = useAuth();
   const location = useLocation();
+
+  const emailInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (emailInputRef.current) {
+      emailInputRef.current.focus(); // Focus the First Name input field when the page loads
+    }
+  }, []); // Empty dependency array ensures this runs once when the component mounts
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,6 +54,7 @@ const useLogin = () => {
     updatePassword,
     navigate,
     updateShowPassword,
+    emailInputRef,
   };
 };
 export default useLogin;

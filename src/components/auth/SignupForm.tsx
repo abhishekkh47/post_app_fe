@@ -67,7 +67,6 @@ const SignupForm: React.FC = () => {
                 onChange={handleChange}
                 className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                 placeholder="First Name"
-                autoFocus={true}
               />
             </div>
 

@@ -1,9 +1,6 @@
 import React from "react";
 import { User, Conversation, Group } from "../../types";
-import { LucideUsers2 } from "lucide-react";
-import CreateChatGroup from "./CreateChatGroup";
 import { ProfilePicture } from "../profile";
-import { useChatList } from "../../hooks";
 
 interface ChatListProps {
   user: User;
@@ -13,7 +10,6 @@ interface ChatListProps {
   selectedGroup: Group | null;
   onSelectConversation: (user: User) => void;
   onSelectGroup: (group: Group) => void;
-  newGroupCreated: () => void;
 }
 
 const ChatList: React.FC<ChatListProps> = ({
@@ -24,35 +20,9 @@ const ChatList: React.FC<ChatListProps> = ({
   selectedGroup,
   onSelectConversation,
   onSelectGroup,
-  newGroupCreated,
 }) => {
-  const {
-    isModalOpen,
-    openModal,
-    closeModal,
-    friends,
-    modalPage,
-    updateModalPage,
-  } = useChatList({ user });
-
   return (
     <div className="w-full overflow-y-auto">
-      <div className="flex flex-row p-4 border-b border-gray-200">
-        <h2 className="flex-1 text-xl font-semibold">Messages</h2>
-        {/* <GroupManagement users={friends} user={user} /> */}
-        <button onClick={openModal}>
-          <LucideUsers2 />
-        </button>
-        <CreateChatGroup
-          isOpen={isModalOpen}
-          onClose={closeModal}
-          users={friends} // Pass the list of users to choose from
-          modalPage={modalPage}
-          updateModalPage={updateModalPage}
-          user={user}
-          newGroupCreated={newGroupCreated}
-        />
-      </div>
       <div className="divide-y divide-gray-200">
         {conversations?.map((conversation) => (
           <div

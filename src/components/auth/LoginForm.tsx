@@ -15,6 +15,7 @@ const LoginForm: React.FC = () => {
     navigate,
     showPassword,
     updateShowPassword,
+    emailInputRef,
   } = useLogin();
 
   return (
@@ -42,6 +43,7 @@ const LoginForm: React.FC = () => {
                   <div className="flex flex-row items-center border-t border-l border-r border-gray-300 p-2 rounded-t-md">
                     <Mail className="h-5 w-5 text-gray-400 mr-2" />
                     <input
+                      ref={emailInputRef}
                       type="email"
                       required
                       value={email}
