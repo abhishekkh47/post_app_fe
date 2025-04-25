@@ -32,14 +32,6 @@ const ChatPage: React.FC<ChatPageProps> = ({ user }) => {
         onSelectConversation={handleSelectConversation}
         onSelectGroup={handleSelectGroupChat}
       />
-      {/* <ChatWindow
-        selectedUser={selectedUser}
-        messages={messages}
-        setMessages={setMessages}
-        onSendMessage={handleSendMessage}
-        onBackButtonClick={handleBackButtonClick}
-        className="absolute top-0 left-0 w-full h-full z-20"
-      /> */}
       <ChatPopup
         selectedUser={selectedUser}
         selectedGroup={selectedGroup}
