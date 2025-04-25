@@ -88,9 +88,7 @@ const ChatPopup: React.FC<ChatWindowProps> = ({
                 size={8}
                 text={`lg`}
               />
-            ) : (
-              ""
-            )}
+            ) : null}
             <span className="font-medium text-sm">
               {selectedUser
                 ? `${selectedUser?.firstName} ${selectedUser?.lastName}`
