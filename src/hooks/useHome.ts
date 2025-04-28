@@ -4,6 +4,8 @@ import { useLocation } from "react-router-dom";
 
 const useHome = () => {
   const [showGroupJoinModal, setShowGroupJoinModal] = useState<boolean>(false);
+  const [showCreatePostModal, setShowCreatePostModal] =
+    useState<boolean>(false);
   const [inviteToken, setInviteToken] = useState<string | null>(null);
 
   const location = useLocation();
@@ -26,11 +28,22 @@ const useHome = () => {
     setShowGroupJoinModal(false);
   };
 
+  const handleCancelPost = () => {
+    setShowCreatePostModal(false);
+  };
+
+  const updateCreatePostModal = () => {
+    setShowCreatePostModal(true);
+  };
+
   return {
     showGroupJoinModal,
     inviteToken,
+    showCreatePostModal,
     handleJoin,
     handleCancel,
+    handleCancelPost,
+    updateCreatePostModal,
   };
 };
 

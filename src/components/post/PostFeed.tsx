@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useCallback } from "react";
-import { CreatePostV2, PostList } from "./";
+import { PostList } from "./";
 import { usePostFeed } from "../../hooks";
 import { Loader } from "../common";
 import { FeedShimmer } from "../shimmer";
@@ -45,8 +45,6 @@ const PostFeed: React.FC = () => {
 
   return (
     <div>
-      <CreatePostV2 fetchPosts={() => fetchPosts(true)} />
-
       {loading ? (
         <div>
           <Loader />

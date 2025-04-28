@@ -45,7 +45,12 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ user }) => {
         >
           <h2 className="font-semibold text-lg">Messages</h2>
           <div>
-            <button onClick={openModal}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                openModal();
+              }}
+            >
               <LucideUsers2 />
             </button>
           </div>
