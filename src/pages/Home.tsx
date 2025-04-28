@@ -25,7 +25,7 @@ const Home: React.FC = () => {
   return (
     <div className="flex">
       <button
-        className="fixed top-16 sm:top-24 right-6 bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition-all z-10 md:px-6 md:py-3 md:w-auto md:h-auto w-14 h-14 flex items-center justify-center"
+        className="fixed top-16 sm:top-20 right-4 bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition-all z-10 md:px-6 md:py-3 md:w-auto md:h-auto w-14 h-14 flex items-center justify-center"
         onClick={updateCreatePostModal}
       >
         <span className="hidden md:inline">➕ Create Post</span>
@@ -56,8 +56,7 @@ const Home: React.FC = () => {
       <div className="flex-1 max-w-4xl mx-auto py-8 px-4">
         <PostFeed />
       </div>
-      <div className="w-80 fixed top-16 right-0 h-[calc(100vh-4rem)] hidden sm:block">
-        {/* <ChatPage user={user} /> */}
+      <div className="w-80 fixed h-[calc(100vh-4rem)] hidden sm:block">
         <ChatDrawer user={user} />
       </div>
       {showGroupJoinModal && inviteToken && (
