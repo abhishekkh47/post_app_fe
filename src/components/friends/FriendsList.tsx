@@ -98,16 +98,18 @@ const FriendsList: React.FC<FriendsListProps> = ({ friends }) => {
         )}
       </div>
       {/* Conditionally render the ChatPopup if a friend is selected */}
-      {selectedUser && (
-        <ChatPopup
-          selectedUser={selectedUser}
-          messages={messages}
-          updateMessages={updateMessages}
-          onSendMessage={handleSendMessage}
-          onClose={handleCloseChat}
-          selectedGroup={selectedGroup}
-        />
-      )}
+      <div className="fixed bottom-4 right-4 z-50 ">
+        {selectedUser && (
+          <ChatPopup
+            selectedUser={selectedUser}
+            messages={messages}
+            updateMessages={updateMessages}
+            onSendMessage={handleSendMessage}
+            onClose={handleCloseChat}
+            selectedGroup={selectedGroup}
+          />
+        )}
+      </div>
     </>
   );
 };

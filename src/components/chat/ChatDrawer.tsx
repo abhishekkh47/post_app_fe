@@ -68,11 +68,7 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ user }) => {
 
       {/* Chat Popup beside drawer */}
       {(selectedUser || selectedGroup) && (
-        <div
-          className={`absolute ${
-            isOpen ? "right-[340px]" : "right-[70px]"
-          } bottom-0`}
-        >
+        <div className={`absolute right-[340px] bottom-0`}>
           <ChatPopup
             selectedUser={selectedUser}
             selectedGroup={selectedGroup}
