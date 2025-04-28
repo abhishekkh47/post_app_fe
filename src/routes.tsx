@@ -1,6 +1,7 @@
 // src/routes/routesConfig.tsx
 import { lazy } from "react";
 import { ReactNode } from "react";
+import { useNavigate } from "react-router-dom";
 
 // Define route types for better type safety
 export interface RouteConfig {
@@ -33,13 +34,14 @@ const MaintenancePageLayout = lazy(
 
 // Define the routes configuration
 const createRoutesConfig = (isAuthenticated: boolean, user: any) => {
+  const navigate = useNavigate();
   const routesConfig: RouteConfig[] = [
     // Public Routes
     {
       path: "/login",
       component: isAuthenticated
         ? () => {
-            window.location.href = "/";
+            navigate("/", { replace: true });
             return null;
           }
         : LoginForm,
@@ -49,7 +51,7 @@ const createRoutesConfig = (isAuthenticated: boolean, user: any) => {
           path: "identity",
           component: isAuthenticated
             ? () => {
-                window.location.href = "/";
+                navigate("/", { replace: true });
                 return null;
               }
             : SearchAccount,
@@ -59,7 +61,7 @@ const createRoutesConfig = (isAuthenticated: boolean, user: any) => {
           path: "reset-password",
           component: isAuthenticated
             ? () => {
-                window.location.href = "/";
+                navigate("/", { replace: true });
                 return null;
               }
             : ResetPassword,
@@ -71,7 +73,7 @@ const createRoutesConfig = (isAuthenticated: boolean, user: any) => {
       path: "/signup",
       component: isAuthenticated
         ? () => {
-            window.location.href = "/";
+            navigate("/", { replace: true });
             return null;
           }
         : SignupForm,
