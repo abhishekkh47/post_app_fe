@@ -111,18 +111,23 @@ const AppContent = () => {
     return element;
   };
 
+  // Recursively render routes including children
+  const renderRoutes = (routes: RouteConfig[]) => {
+    return routes.map((route, index) => (
+      <Route
+        key={`route-${index}-${route.path}`}
+        path={route.path}
+        element={getWrappedElement(route)}
+      >
+        {route.children && renderRoutes(route.children)}
+      </Route>
+    ));
+  };
+
   // Render routes from config
   return (
     <Suspense fallback={<LoadingFallback />}>
-      <Routes>
-        {routesConfig.map((route, index) => (
-          <Route
-            key={`route-${index}-${route.path}`}
-            path={route.path}
-            element={getWrappedElement(route)}
-          />
-        ))}
-      </Routes>
+      <Routes>{renderRoutes(routesConfig)}</Routes>
     </Suspense>
   );
 };

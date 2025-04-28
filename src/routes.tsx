@@ -44,6 +44,28 @@ const createRoutesConfig = (isAuthenticated: boolean, user: any) => {
           }
         : LoginForm,
       protected: false,
+      children: [
+        {
+          path: "identity",
+          component: isAuthenticated
+            ? () => {
+                window.location.href = "/";
+                return null;
+              }
+            : SearchAccount,
+          protected: false,
+        },
+        {
+          path: "reset-password",
+          component: isAuthenticated
+            ? () => {
+                window.location.href = "/";
+                return null;
+              }
+            : ResetPassword,
+          protected: false,
+        },
+      ],
     },
     {
       path: "/signup",
@@ -53,26 +75,6 @@ const createRoutesConfig = (isAuthenticated: boolean, user: any) => {
             return null;
           }
         : SignupForm,
-      protected: false,
-    },
-    {
-      path: "/login/identity",
-      component: isAuthenticated
-        ? () => {
-            window.location.href = "/";
-            return null;
-          }
-        : SearchAccount,
-      protected: false,
-    },
-    {
-      path: "/login/reset-password",
-      component: isAuthenticated
-        ? () => {
-            window.location.href = "/";
-            return null;
-          }
-        : ResetPassword,
       protected: false,
     },
 
@@ -97,27 +99,42 @@ const createRoutesConfig = (isAuthenticated: boolean, user: any) => {
       withNotifications: true,
     },
     {
-      path: "/settings/:userId",
+      path: "/settings",
       component: Settings,
       protected: true,
+      children: [
+        {
+          path: ":userId",
+          component: UpdatePassword,
+          protected: true,
+        },
+        {
+          path: "update-password",
+          component: UpdatePassword,
+          protected: true,
+        },
+      ],
     },
     {
-      path: "/settings/update-password",
-      component: UpdatePassword,
-      protected: true,
-    },
-    {
-      path: "/group/:groupId",
+      path: "/group",
       component: GroupDetails,
       protected: true,
       withNotifications: true,
-    },
-    {
-      path: "/group/members/join/:inviteToken",
-      component: JoinGroup,
-      protected: true,
-      withNotifications: true,
-      withJoinGroup: true,
+      children: [
+        {
+          path: ":groupId",
+          component: GroupDetails,
+          protected: true,
+          withNotifications: true,
+        },
+        {
+          path: "members/join/:inviteToken",
+          component: JoinGroup,
+          protected: true,
+          withNotifications: true,
+          withJoinGroup: true,
+        },
+      ],
     },
     {
       path: "/post/:postId",
