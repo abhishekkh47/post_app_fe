@@ -45,7 +45,12 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ user }) => {
         >
           <h2 className="font-semibold text-lg">Messages</h2>
           <div>
-            <button onClick={openModal}>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                openModal();
+              }}
+            >
               <LucideUsers2 />
             </button>
           </div>
@@ -68,11 +73,7 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ user }) => {
 
       {/* Chat Popup beside drawer */}
       {(selectedUser || selectedGroup) && (
-        <div
-          className={`absolute ${
-            isOpen ? "right-[340px]" : "right-[70px]"
-          } bottom-0`}
-        >
+        <div className={`absolute right-[340px] bottom-0`}>
           <ChatPopup
             selectedUser={selectedUser}
             selectedGroup={selectedGroup}

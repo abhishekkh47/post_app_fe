@@ -1,45 +1,58 @@
+import { Suspense, useEffect, useState, ReactNode } from "react";
 import { AuthProvider } from "./context/AuthContext";
 import { SocketProvider } from "./context/SocketContext";
-import {
-  LoginForm,
-  SignupForm,
-  ProtectedRoute,
-  ResetPassword,
-  SearchAccount,
-  UpdatePassword,
-} from "./components/auth";
+import { ProtectedRoute } from "./components/auth";
 import { useAuth } from "./context/AuthContext";
 import { Navigate, Route, Routes } from "react-router-dom";
 import {
   AuthenticatedLayout,
   MaintenancePageLayout,
 } from "./components/layout/";
-import {
-  Profile,
-  Home,
-  Settings,
-  GroupDetails,
-  JoinGroup,
-  ChatPage,
-  Explore,
-  Friends,
-} from "./pages";
 import { JoinGroupProvider } from "./context/JoinGroupContext";
-import { useEffect, useState } from "react";
 import { CommonService } from "./services";
-import { ViewPost } from "./components/post";
 import { NotificationInitializer } from "./components/common";
+import createRoutesConfig, { RouteConfig } from "./routes";
+
+// Loading component for Suspense fallback
+const LoadingFallback = () => (
+  <div className="flex items-center justify-center h-screen">Loading...</div>
+);
+
+// Wrapper components for different route types
+const ProtectedRouteWithNotifications = ({
+  children,
+}: {
+  children: ReactNode;
+}) => (
+  <ProtectedRoute>
+    <SocketProvider>
+      <NotificationInitializer />
+      <AuthenticatedLayout>{children}</AuthenticatedLayout>
+    </SocketProvider>
+  </ProtectedRoute>
+);
+
+const ProtectedRouteBasic = ({ children }: { children: ReactNode }) => (
+  <ProtectedRoute>
+    <AuthenticatedLayout>{children}</AuthenticatedLayout>
+  </ProtectedRoute>
+);
+
+const WithJoinGroupProvider = ({ children }: { children: ReactNode }) => (
+  <JoinGroupProvider>{children}</JoinGroupProvider>
+);
 
 const AppContent = () => {
   const { user, isAuthenticated } = useAuth();
   const [isMaintenance, setIsMaintenance] = useState<boolean>(false);
+  const routesConfig = createRoutesConfig(isAuthenticated, user);
 
   useEffect(() => {
     // Function to check if the server is in maintenance mode
     const checkServerStatus = async () => {
       try {
-        const response = await CommonService.getAppStatus(); // Replace with your actual endpoint
-        if (response?.response?.status == 503) {
+        const response = await CommonService.getAppStatus();
+        if (response?.response?.status === 503) {
           setIsMaintenance(true);
           window.localStorage.setItem("maintenanceMode", "true");
         } else {
@@ -53,164 +66,69 @@ const AppContent = () => {
 
     // Initial check when the component mounts
     checkServerStatus();
-
-    // Set up an interval to periodically check if the server is back online (e.g., every 5 seconds)
-    // const intervalId = setInterval(checkServerStatus, 50000); // Checks every 5 seconds
-
-    // Clean up the interval when the component is unmounted
-    // return () => clearInterval(intervalId);
   }, []);
 
-  // If maintenance mode is active or if it's stored in localStorage, show the maintenance page
+  // If maintenance mode is active, show the maintenance page
   if (
     isMaintenance ||
     window.localStorage.getItem("maintenanceMode") === "true"
   ) {
-    return <MaintenancePageLayout />;
+    return (
+      <Suspense fallback={<LoadingFallback />}>
+        <MaintenancePageLayout />
+      </Suspense>
+    );
   }
 
-  const ProtectedRouteWithNotifications = ({ children }: any) => {
-    return (
-      <ProtectedRoute>
-        <SocketProvider>
-          <NotificationInitializer />
-          <AuthenticatedLayout>{children}</AuthenticatedLayout>
-        </SocketProvider>
-      </ProtectedRoute>
-    );
+  // Helper function to wrap elements based on route config
+  const getWrappedElement = (route: RouteConfig) => {
+    // Handle redirect for public routes when authenticated
+    if (!route.protected && "redirect" in route.component) {
+      return <Navigate to={(route.component as any).redirect} replace />;
+    }
+
+    // Get the component
+    const Component = route.component;
+    let element = <Component />;
+
+    // Apply wrappers based on route config
+    if (route.protected) {
+      if (route.withJoinGroup) {
+        element = <WithJoinGroupProvider>{element}</WithJoinGroupProvider>;
+      }
+
+      if (route.withNotifications) {
+        element = (
+          <ProtectedRouteWithNotifications>
+            {element}
+          </ProtectedRouteWithNotifications>
+        );
+      } else {
+        element = <ProtectedRouteBasic>{element}</ProtectedRouteBasic>;
+      }
+    }
+
+    return element;
   };
 
+  // Recursively render routes including children
+  const renderRoutes = (routes: RouteConfig[]) => {
+    return routes.map((route, index) => (
+      <Route
+        key={`route-${index}-${route.path}`}
+        path={route.path}
+        element={getWrappedElement(route)}
+      >
+        {route.children && renderRoutes(route.children)}
+      </Route>
+    ));
+  };
+
+  // Render routes from config
   return (
-    <Routes>
-      {/* Public Routes */}
-      <Route
-        path="/login"
-        element={isAuthenticated ? <Navigate to="/" replace /> : <LoginForm />}
-      />
-      <Route
-        path="/signup"
-        element={isAuthenticated ? <Navigate to="/" replace /> : <SignupForm />}
-      />
-      <Route
-        path="/login/identity"
-        element={
-          isAuthenticated ? <Navigate to="/" replace /> : <SearchAccount />
-        }
-      />
-      <Route
-        path="/login/reset-password"
-        element={
-          isAuthenticated ? <Navigate to="/" replace /> : <ResetPassword />
-        }
-      />
-
-      {/* Protected Routes */}
-      <Route
-        path="/"
-        element={
-          <ProtectedRouteWithNotifications>
-            <JoinGroupProvider>
-              <Home />
-            </JoinGroupProvider>
-          </ProtectedRouteWithNotifications>
-        }
-      ></Route>
-      <Route
-        path="/profile/:userId"
-        element={
-          <ProtectedRouteWithNotifications>
-            <Profile />
-          </ProtectedRouteWithNotifications>
-        }
-      ></Route>
-      <Route
-        path="/friends"
-        element={
-          <ProtectedRouteWithNotifications>
-            <Friends />
-          </ProtectedRouteWithNotifications>
-        }
-      ></Route>
-      <Route
-        path="/settings/:userId"
-        element={
-          <ProtectedRoute>
-            <AuthenticatedLayout>
-              <Settings />
-            </AuthenticatedLayout>
-          </ProtectedRoute>
-        }
-      ></Route>
-      <Route
-        path="/settings/update-password"
-        element={
-          <ProtectedRoute>
-            <AuthenticatedLayout>
-              <UpdatePassword />
-            </AuthenticatedLayout>
-          </ProtectedRoute>
-        }
-      ></Route>
-      <Route
-        path="/group/:groupId"
-        element={
-          <ProtectedRouteWithNotifications>
-            <GroupDetails />
-          </ProtectedRouteWithNotifications>
-        }
-      ></Route>
-      <Route
-        path="/group/members/join/:inviteToken"
-        element={
-          <ProtectedRouteWithNotifications>
-            <JoinGroupProvider>
-              <JoinGroup />
-            </JoinGroupProvider>
-          </ProtectedRouteWithNotifications>
-        }
-      ></Route>
-      {user && (
-        <Route
-          path="/messages"
-          element={
-            <ProtectedRouteWithNotifications>
-              <JoinGroupProvider>
-                <ChatPage user={user} />
-              </JoinGroupProvider>
-            </ProtectedRouteWithNotifications>
-          }
-        ></Route>
-      )}
-      <Route
-        path="/post/:postId"
-        element={
-          <ProtectedRouteWithNotifications>
-            <ViewPost />
-          </ProtectedRouteWithNotifications>
-        }
-      ></Route>
-      <Route
-        path="/explore"
-        element={
-          <ProtectedRouteWithNotifications>
-            <Explore />
-          </ProtectedRouteWithNotifications>
-        }
-      ></Route>
-
-      {/* Maintenance Mode */}
-      <Route path="/maintenance" element={<MaintenancePageLayout />}></Route>
-
-      {/* Catch all route - redirect to home or login */}
-      <Route
-        path="*"
-        element={
-          <ProtectedRouteWithNotifications>
-            <Home />
-          </ProtectedRouteWithNotifications>
-        }
-      />
-    </Routes>
+    <Suspense fallback={<LoadingFallback />}>
+      <Routes>{renderRoutes(routesConfig)}</Routes>
+    </Suspense>
   );
 };
 
