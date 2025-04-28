@@ -13,51 +13,31 @@ const useNavBar = () => {
   const handleDashboardClick = async () => {
     navigate(`/`);
   };
-  const handleFriendsClick = async () => {
-    navigate(`/friends`);
-  };
-  const handleSettingsClick = async () => {
-    navigate(`/settings/${user?._id}`);
-  };
-  const handleExploreClick = async () => {
-    navigate(`/explore`);
-  };
-  const handleProfileClick = async () => {
-    navigate(`/profile/${user?._id}`);
-  };
-  const handleMessageClick = async () => {
-    navigate(`/messages`);
-  };
   const navigation = [
     {
       name: "Home",
       href: "/",
       current: true,
-      onClick: handleDashboardClick,
     },
     {
       name: "Friends",
       href: "/friends",
       current: false,
-      onClick: handleFriendsClick,
     },
     {
       name: "Explore",
       href: "/explore",
       current: false,
-      onclick: handleExploreClick,
     },
     {
       name: "Settings",
       href: `/settings/${user?._id}`,
       current: false,
-      onClick: handleSettingsClick,
     },
     {
       name: "Messages",
       href: `/messages`,
       current: false,
-      onClick: handleMessageClick,
     },
   ];
 
@@ -91,7 +71,6 @@ const useNavBar = () => {
     openNotification,
     notificationRef,
     handleLogOutClick,
-    handleProfileClick,
     toggleNotificationList,
     handleDashboardClick,
   };

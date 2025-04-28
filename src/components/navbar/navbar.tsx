@@ -26,13 +26,13 @@ const NavBar: React.FC = () => {
     navigation,
     isLoggingOut,
     handleLogOutClick,
-    handleProfileClick,
     handleDashboardClick,
   } = useNavBar();
 
   return (
     <Disclosure as="nav" className="bg-gray-800 fixed top-0 left-0 w-full z-50">
-      {({ open, close }) => (
+      {/* {({ open, close }) => ( */}
+      {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
             <div className="relative flex h-10 sm:h-16 items-center justify-between">
@@ -65,12 +65,6 @@ const NavBar: React.FC = () => {
                         key={item.name}
                         to={item.href}
                         end
-                        onClick={(e) => {
-                          if (item?.onClick) {
-                            e.preventDefault();
-                            item.onClick();
-                          }
-                        }}
                         className={({ isActive }) =>
                           classNames(
                             isActive
@@ -109,32 +103,32 @@ const NavBar: React.FC = () => {
                     className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
                   >
                     <MenuItem>
-                      <a
-                        onClick={handleProfileClick}
-                        className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden cursor-pointer"
+                      <NavLink
+                        key="Profile"
+                        to={`/profile/${user?._id}`}
+                        end
+                        className={
+                          "block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden cursor-pointer"
+                        }
                       >
                         Your Profile
-                      </a>
+                      </NavLink>
                     </MenuItem>
-                    {/* <MenuItem>
-                  <a
-                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                    onClick={handleSettingsClick}
-                  >
-                    Settings
-                  </a>
-                </MenuItem> */}
                     <MenuItem>
-                      <a
-                        // href="/"
-                        className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden cursor-pointer"
+                      <NavLink
+                        key="Signout"
+                        to={`/profile/${user?._id}`}
+                        end
                         onClick={handleLogOutClick}
+                        className={
+                          "block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden cursor-pointer"
+                        }
                       >
                         <div className="flex items-center">
                           <span>Sign out</span>
                           {isLoggingOut && <Loader2 className="" />}
                         </div>
-                      </a>
+                      </NavLink>
                     </MenuItem>
                   </MenuItems>
                 </Menu>
@@ -149,13 +143,6 @@ const NavBar: React.FC = () => {
                   key={item.name}
                   to={item.href}
                   end
-                  onClick={(e) => {
-                    if (item?.onClick) {
-                      e.preventDefault();
-                      item.onClick();
-                      close();
-                    }
-                  }}
                   className={({ isActive }) =>
                     classNames(
                       isActive

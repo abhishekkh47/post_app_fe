@@ -32,7 +32,7 @@ const useHome = () => {
     setShowCreatePostModal(false);
   };
 
-  const updateCreatePostModal = () => {
+  const openCreatePostModal = () => {
     setShowCreatePostModal(true);
   };
 
@@ -43,7 +43,7 @@ const useHome = () => {
     handleJoin,
     handleCancel,
     handleCancelPost,
-    updateCreatePostModal,
+    openCreatePostModal,
   };
 };
 

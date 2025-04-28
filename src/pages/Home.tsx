@@ -1,10 +1,13 @@
 import { useAuth } from "../context/AuthContext";
-import { JoinGroupDialog } from "../components/dialog";
+import {
+  JoinGroupDialog,
+  CreatePost as CreatePostDialog,
+} from "../components/dialog";
 import { useHome, usePostFeed } from "../hooks";
 import { useJoinGroup } from "../context/JoinGroupContext";
 import { ChatDrawer } from "../components/chat";
-import { CreatePostV2, PostFeed } from "../components/post";
-import { X } from "lucide-react";
+import { PostFeed } from "../components/post";
+import { LeftPanel, RightPanel } from "../components/sidePanels";
 
 const Home: React.FC = () => {
   const { user } = useAuth();
@@ -13,50 +16,40 @@ const Home: React.FC = () => {
   const {
     showGroupJoinModal,
     inviteToken,
+    showCreatePostModal,
     handleCancel,
     handleJoin,
     handleCancelPost,
-    showCreatePostModal,
-    updateCreatePostModal,
+    openCreatePostModal,
   } = useHome();
-  const { fetchPosts } = usePostFeed();
+
   const { joinGroupData } = useJoinGroup();
+  const { fetchPosts } = usePostFeed();
 
   return (
-    <div className="flex">
+    <div className="flex flex-col">
       <button
-        className="fixed top-16 sm:top-20 right-4 bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition-all z-10 md:px-6 md:py-3 md:w-auto md:h-auto w-14 h-14 flex items-center justify-center"
-        onClick={updateCreatePostModal}
+        onClick={openCreatePostModal}
+        className="bg-blue-600 size-10 rounded-full fixed block lg:hidden bottom-4 right-4 z-50 align-middle"
       >
-        <span className="hidden md:inline">➕ Create Post</span>
-        <span className="md:hidden text-xl">➕</span>
+        +
       </button>
-      {/* Modal */}
-      {showCreatePostModal && (
-        <div
-          className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50"
-          onClick={handleCancelPost} // Close modal when clicking outside
-        >
-          <div
-            className="bg-white rounded-lg shadow-lg w-full max-w-lg p-4 relative"
-            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
-          >
-            <button
-              onClick={handleCancelPost}
-              className="absolute top-0 right-0 text-gray-500 hover:text-red-500"
-            >
-              <X className="w-5 h-5" />
-            </button>
+      <div className="hidden lg:block fixed top-16 left-0 w-48 xl:w-72 2xl:w-96 h-[calc(100vh-4rem)] bg-white transition-all duration-300 ease-in-out">
+        <LeftPanel />
+      </div>
+      <div className="hidden lg:block fixed top-16 right-0 w-48 xl:w-72 2xl:w-96 h-[calc(100vh-4rem)] bg-white transition-all duration-300 ease-in-out">
+        <RightPanel
+          fetchPosts={fetchPosts}
+          showCreatePostModal={showCreatePostModal}
+          handleCancelPost={handleCancelPost}
+          openCreatePostModal={openCreatePostModal}
+        />
+      </div>
 
-            <CreatePostV2 fetchPosts={fetchPosts} />
-          </div>
-        </div>
-      )}
-
-      <div className="flex-1 max-w-4xl mx-auto py-8 px-4">
+      <div className="flex-1 justify-between max-w-xl xl:max-w-4xl mx-auto py-8 px-4">
         <PostFeed />
       </div>
-      <div className="w-80 fixed h-[calc(100vh-4rem)] hidden sm:block">
+      <div className="w-80 fixed h-[calc(100vh-4rem)] hidden lg:block">
         <ChatDrawer user={user} />
       </div>
       {showGroupJoinModal && inviteToken && (
@@ -66,6 +59,12 @@ const Home: React.FC = () => {
           joinGroupData={joinGroupData}
           inviteToken={inviteToken}
           handleJoin={handleJoin}
+        />
+      )}
+      {showCreatePostModal && (
+        <CreatePostDialog
+          fetchPosts={fetchPosts}
+          handleCancelPost={handleCancelPost}
         />
       )}
     </div>
