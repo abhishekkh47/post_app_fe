@@ -22,7 +22,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ user }) => {
   } = useChat();
 
   return (
-    <div className={`relative flex`}>
+    <div className="w-full lg:pl-64 xl:pr-80">
       {!selectedUser && !selectedGroup ? (
         <ChatList
           user={user}

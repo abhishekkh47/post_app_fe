@@ -19,20 +19,21 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-8 px-4">
-      {/* <UserProfile userId={user._id} /> */}
-      <UserProfile
-        user={user}
-        profile={profile}
-        isFollowing={isFollowing}
-        handleFollow={handleFollow}
-        updateUser={updateUser}
-      />
-      {(profile?._id === userId || isPublicProfile || isFollowing) && (
-        <div className="py-8">
-          <ProfileFeed userId={userId} />
-        </div>
-      )}
+    <div className="w-full lg:pl-64 xl:pr-80">
+      <div className="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <UserProfile
+          user={user}
+          profile={profile}
+          isFollowing={isFollowing}
+          handleFollow={handleFollow}
+          updateUser={updateUser}
+        />
+        {(profile?._id === userId || isPublicProfile || isFollowing) && (
+          <div className="py-8">
+            <ProfileFeed userId={userId} />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

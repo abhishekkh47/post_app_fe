@@ -5,9 +5,9 @@ import {
   Users,
   MessageSquare,
   Compass,
-  Bell,
+  //   Bell,
   Settings,
-  LogOut,
+  //   LogOut,
   PlusSquare,
 } from "react-feather";
 import { useAuth } from "../../context/AuthContext";
@@ -30,7 +30,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
   handleCancelPost,
   openCreatePostModal,
 }) => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   if (!user) return null;
 
@@ -44,11 +44,11 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
     { icon: <Users size={20} />, label: "Friends", path: "/friends" },
     { icon: <MessageSquare size={20} />, label: "Chats", path: "/messages" },
     { icon: <Compass size={20} />, label: "Explore", path: "/explore" },
-    {
-      icon: <Bell size={20} />,
-      label: "Notifications",
-      path: "/notifications",
-    },
+    // {
+    //   icon: <Bell size={20} />,
+    //   label: "Notifications",
+    //   path: "/notifications",
+    // },
     { icon: <Settings size={20} />, label: "Settings", path: "/settings" },
   ];
 
@@ -98,7 +98,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
       </div>
 
       {/* Bottom Section - Logout */}
-      <div className="p-4 border-t border-gray-200">
+      {/* <div className="p-4 border-t border-gray-200">
         <button
           onClick={logout}
           className="flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-100 transition-colors rounded-lg text-red-500"
@@ -106,7 +106,7 @@ const LeftPanel: React.FC<LeftPanelProps> = ({
           <LogOut size={20} />
           <span className="font-medium">Logout</span>
         </button>
-      </div>
+      </div> */}
 
       {/* Create Post Modal */}
       {showCreatePostModal && (

@@ -36,6 +36,10 @@ const useHome = () => {
     setShowCreatePostModal(true);
   };
 
+  const openCreatePostModal = () => {
+    setShowCreatePostModal(true);
+  };
+
   return {
     showGroupJoinModal,
     inviteToken,
@@ -44,6 +48,7 @@ const useHome = () => {
     handleCancel,
     handleCancelPost,
     updateCreatePostModal,
+    openCreatePostModal,
   };
 };
 
