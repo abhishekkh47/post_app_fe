@@ -22,7 +22,7 @@ const ChatList: React.FC<ChatListProps> = ({
   onSelectGroup,
 }) => {
   return (
-    <div className="flex flex-col max-w-2xl mx-auto py-4 px-4 bg-white relative">
+    <div className="flex flex-col max-w-2xl mx-auto px-4 bg-white relative">
       <div className="divide-y divide-gray-200">
         {conversations?.map((conversation) => (
           <div
