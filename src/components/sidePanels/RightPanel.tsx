@@ -11,7 +11,6 @@ import {
   PlusSquare,
 } from "react-feather";
 import { useAuth } from "../../context/AuthContext";
-import { CreatePost as CreatePostDialog } from "../dialog";
 import { ProfilePicture } from "../profile";
 import { NavLink } from "react-router-dom";
 
@@ -25,11 +24,7 @@ function classNames(...classes: any) {
   return classes.filter(Boolean).join(" ");
 }
 
-const RightPanel: React.FC<RightPanelProps> = ({
-  showCreatePostModal,
-  handleCancelPost,
-  openCreatePostModal,
-}) => {
+const RightPanel: React.FC<RightPanelProps> = ({ openCreatePostModal }) => {
   const { user } = useAuth();
 
   if (!user) return null;
@@ -44,11 +39,6 @@ const RightPanel: React.FC<RightPanelProps> = ({
     { icon: <Users size={20} />, label: "Friends", path: "/friends" },
     { icon: <MessageSquare size={20} />, label: "Chats", path: "/messages" },
     { icon: <Compass size={20} />, label: "Explore", path: "/explore" },
-    // {
-    //   icon: <Bell size={20} />,
-    //   label: "Notifications",
-    //   path: "/notifications",
-    // },
     { icon: <Settings size={20} />, label: "Settings", path: "/settings" },
   ];
 
@@ -95,23 +85,39 @@ const RightPanel: React.FC<RightPanelProps> = ({
             <span>{item.label}</span>
           </NavLink>
         ))}
+        {navItems.map((item) => (
+          <NavLink
+            key={item.label}
+            to={item.path}
+            end
+            className={({ isActive }) =>
+              classNames(
+                isActive ? "text-blue-500" : "",
+                "flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-100 transition-colors mx-2 rounded-lg"
+              )
+            }
+          >
+            {item.icon}
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
+        {navItems.map((item) => (
+          <NavLink
+            key={item.label}
+            to={item.path}
+            end
+            className={({ isActive }) =>
+              classNames(
+                isActive ? "text-blue-500" : "",
+                "flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-100 transition-colors mx-2 rounded-lg"
+              )
+            }
+          >
+            {item.icon}
+            <span>{item.label}</span>
+          </NavLink>
+        ))}
       </div>
-
-      {/* Bottom Section - Logout */}
-      {/* <div className="p-4 border-t border-gray-200">
-        <button
-          onClick={logout}
-          className="flex items-center space-x-3 px-4 py-3 text-left hover:bg-gray-100 transition-colors rounded-lg text-red-500"
-        >
-          <LogOut size={20} />
-          <span className="font-medium">Logout</span>
-        </button>
-      </div> */}
-
-      {/* Create Post Modal */}
-      {showCreatePostModal && (
-        <CreatePostDialog handleCancelPost={handleCancelPost} />
-      )}
     </div>
   );
 };
