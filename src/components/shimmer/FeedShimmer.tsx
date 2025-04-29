@@ -2,7 +2,7 @@ import React from "react";
 
 const FeedShimmer: React.FC = () => {
   return (
-    <div className="bg-white rounded-md shadow p-4 w-[calc(100vh-40vh)] mb-6 animate-pulse">
+    <div className="bg-white rounded-md shadow p-4 w-[calc(100vh-10vh)] mb-6 animate-pulse">
       <div className="flex items-center gap-4 mb-4">
         <div className="w-10 h-10 bg-gray-300 rounded-full"></div>
         <div className="flex-1 space-y-2">

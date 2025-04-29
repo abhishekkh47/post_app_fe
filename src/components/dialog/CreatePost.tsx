@@ -1,16 +1,14 @@
 import React from "react";
 import { CreatePostV2 } from "../post";
 import { X } from "lucide-react";
+import { usePostFeed } from "../../hooks";
 
 interface CreatePostProps {
-  fetchPosts: () => void;
   handleCancelPost: () => void;
 }
 
-const CreatePost: React.FC<CreatePostProps> = ({
-  fetchPosts,
-  handleCancelPost,
-}) => {
+const CreatePost: React.FC<CreatePostProps> = ({ handleCancelPost }) => {
+  const { fetchPosts } = usePostFeed();
   return (
     <div
       className="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-50"

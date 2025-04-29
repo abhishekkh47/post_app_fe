@@ -3,14 +3,12 @@ import React from "react";
 import { CreatePost as CreatePostDialog } from "../dialog";
 
 interface RightPanelProps {
-  fetchPosts: () => void;
   showCreatePostModal: boolean;
   handleCancelPost: () => void;
   openCreatePostModal: () => void;
 }
 
 const RightPanel: React.FC<RightPanelProps> = ({
-  fetchPosts,
   showCreatePostModal,
   handleCancelPost,
   openCreatePostModal,
@@ -28,10 +26,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
 
       {/* Modal */}
       {showCreatePostModal && (
-        <CreatePostDialog
-          fetchPosts={fetchPosts}
-          handleCancelPost={handleCancelPost}
-        />
+        <CreatePostDialog handleCancelPost={handleCancelPost} />
       )}
 
       {/* Panel Content */}

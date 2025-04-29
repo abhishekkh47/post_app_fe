@@ -17,27 +17,22 @@ const useNavBar = () => {
     {
       name: "Home",
       href: "/",
-      current: true,
     },
     {
       name: "Friends",
       href: "/friends",
-      current: false,
     },
     {
       name: "Explore",
       href: "/explore",
-      current: false,
     },
     {
       name: "Settings",
       href: `/settings/${user?._id}`,
-      current: false,
     },
     {
       name: "Messages",
       href: `/messages`,
-      current: false,
     },
   ];
 
