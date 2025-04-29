@@ -35,8 +35,8 @@ const NavBar: React.FC = () => {
       {({ open, close }) => (
         <>
           <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div className="relative flex h-10 sm:h-16 items-center justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+            <div className="relative flex h-10 lg:h-16 items-center justify-between">
+              <div className="absolute inset-y-0 left-0 flex items-center lg:hidden">
                 {/* Mobile menu button*/}
                 <DisclosureButton className="group relative inline-flex items-center justify-center rounded-md p-1 text-gray-400">
                   <span className="absolute -inset-0.5" />
@@ -48,7 +48,7 @@ const NavBar: React.FC = () => {
                   )}
                 </DisclosureButton>
               </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+              <div className="flex flex-1 items-center justify-center lg:items-stretch lg:justify-start">
                 <div className="flex shrink-0 items-center">
                   <img
                     alt="Postal"
@@ -57,34 +57,6 @@ const NavBar: React.FC = () => {
                     className="h-8 w-auto"
                     onClick={handleDashboardClick}
                   />
-                </div>
-                <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <NavLink
-                        key={item.name}
-                        to={item.href}
-                        end
-                        onClick={(e) => {
-                          if (item?.onClick) {
-                            e.preventDefault();
-                            item.onClick();
-                          }
-                        }}
-                        className={({ isActive }) =>
-                          classNames(
-                            isActive
-                              ? "bg-gray-900 text-white"
-                              : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                            item.name === "Messages" ? "hidden" : "",
-                            "rounded-md px-3 py-2 text-sm font-medium"
-                          )
-                        }
-                      >
-                        {item.name}
-                      </NavLink>
-                    ))}
-                  </div>
                 </div>
               </div>
               <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
@@ -142,7 +114,7 @@ const NavBar: React.FC = () => {
             </div>
           </div>
 
-          <DisclosurePanel className="sm:hidden fixed left-0 top-10 w-36 h-[calc(100vh-2.5rem)] bg-gray-800 transform transition-transform duration-1000 ease-in-out z-40 overflow-y-auto data-closed:-translate-x-full data-open:translate-x-0">
+          <DisclosurePanel className="lg:hidden fixed left-0 top-10 w-36 h-[calc(100vh-2.5rem)] bg-gray-800 transform transition-transform duration-1000 ease-in-out z-40 overflow-y-auto data-closed:-translate-x-full data-open:translate-x-0">
             <div className="space-y-1 px-2 pt-2 pb-3">
               {navigation.map((item) => (
                 <NavLink

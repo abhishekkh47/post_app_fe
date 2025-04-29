@@ -55,9 +55,9 @@ const ChatMessageView: React.FC<ChatMessageViewProps> = ({
   });
 
   return (
-    <div className="flex flex-col h-full w-full bg-white relative">
+    <div className="flex flex-col max-w-2xl mx-auto pt-2 px-4 bg-white relative h-[calc(100vh-4rem)]">
       {/* Header with fixed position */}
-      <div className="sticky top-10 md:top-16 z-10 bg-white p-2 border-b border-gray-200 flex items-center">
+      <div className="sticky top-10 md:top-16 z-10 bg-white p-2 pt-0 border-b border-gray-200 flex items-center">
         <button
           onClick={onCloseChatPopup}
           className="mr-3 p-1 hover:bg-gray-100 rounded-full"
