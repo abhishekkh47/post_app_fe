@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { NOTIFICATION_TAB, NOTIFICATION_TYPE } from "../utils";
 import useNavBar from "./useNavBar";
 import { useNavigate } from "react-router-dom";
@@ -17,6 +17,8 @@ const useNotificationList = ({
   const { toggleNotificationList } = useNavBar();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<string>(NOTIFICATION_TAB.ALL);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   const updateActiveTab = (tab: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -52,11 +54,29 @@ const useNotificationList = ({
     await NotificationService.readAllNotifications();
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const updateMenuOpen = () => {
+    setMenuOpen((prev) => !prev);
+  };
+
   return {
     activeTab,
+    menuOpen,
+    menuRef,
     updateActiveTab,
     handleNotificationClick,
     readAllNotification,
+    updateMenuOpen,
   };
 };
 

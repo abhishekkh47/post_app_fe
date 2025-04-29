@@ -4,10 +4,6 @@ import {
   Disclosure,
   DisclosureButton,
   DisclosurePanel,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import logo from "../../image.png";
@@ -25,9 +21,12 @@ const NavBar: React.FC = () => {
     user,
     navigation,
     isLoggingOut,
+    profileMenuOpen,
+    profileMenuRef,
     handleLogOutClick,
     handleProfileClick,
     handleDashboardClick,
+    toggleProfileDropdown,
   } = useNavBar();
 
   return (
@@ -63,10 +62,15 @@ const NavBar: React.FC = () => {
                 <SearchBar />
                 <Notification />
                 {/* Profile dropdown */}
-                <Menu as="div" className="relative ml-3">
+                <div className="relative ml-3" ref={profileMenuRef}>
                   <div className="min-w-8">
-                    <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden hover:text-white">
-                      <span className="absolute -inset-1.5" />
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleProfileDropdown(!profileMenuOpen);
+                      }}
+                      className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none hover:text-white"
+                    >
                       <span className="sr-only">Open user menu</span>
                       <ProfilePicture
                         profile_pic={user?.profile_pic}
@@ -74,42 +78,37 @@ const NavBar: React.FC = () => {
                         size={8}
                         text={`lg`}
                       />
-                    </MenuButton>
+                    </button>
                   </div>
-                  <MenuItems
-                    transition
-                    className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
-                  >
-                    <MenuItem>
-                      <a
-                        onClick={handleProfileClick}
-                        className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden cursor-pointer"
+
+                  {profileMenuOpen && (
+                    <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5">
+                      <div
+                        onClick={() => {
+                          handleProfileClick();
+                          toggleProfileDropdown(false);
+                        }}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                       >
                         Your Profile
-                      </a>
-                    </MenuItem>
-                    {/* <MenuItem>
-                  <a
-                    className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                    onClick={handleSettingsClick}
-                  >
-                    Settings
-                  </a>
-                </MenuItem> */}
-                    <MenuItem>
-                      <a
-                        // href="/"
-                        className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden cursor-pointer"
-                        onClick={handleLogOutClick}
+                      </div>
+                      <div
+                        onClick={(e) => {
+                          handleLogOutClick(e);
+                          toggleProfileDropdown(false);
+                        }}
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
                       >
                         <div className="flex items-center">
                           <span>Sign out</span>
-                          {isLoggingOut && <Loader2 className="" />}
+                          {isLoggingOut && (
+                            <Loader2 className="ml-2 animate-spin" />
+                          )}
                         </div>
-                      </a>
-                    </MenuItem>
-                  </MenuItems>
-                </Menu>
+                      </div>
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
