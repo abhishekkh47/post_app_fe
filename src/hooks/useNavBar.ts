@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import useClickOutside from "./useClickOutside";
@@ -8,6 +8,8 @@ const useNavBar = () => {
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
   const [openNotification, setOpenNotification] = useState<boolean>(false);
   const notificationRef = useRef<HTMLDivElement>(null);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   const handleDashboardClick = async () => {
@@ -84,16 +86,40 @@ const useNavBar = () => {
   const toggleNotificationList = () => {
     setOpenNotification(!openNotification);
   };
+
+  // Close on outside click
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (
+        profileMenuRef.current &&
+        !profileMenuRef.current.contains(event.target as Node)
+      ) {
+        setProfileMenuOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
+  const toggleProfileDropdown = (status?: boolean) => {
+    setProfileMenuOpen(status ? status : (profileMenuOpen) => !profileMenuOpen);
+  };
+
   return {
     user,
     navigation,
     isLoggingOut,
     openNotification,
     notificationRef,
+    profileMenuOpen,
+    profileMenuRef,
     handleLogOutClick,
     handleProfileClick,
     toggleNotificationList,
     handleDashboardClick,
+    toggleProfileDropdown,
   };
 };
 
