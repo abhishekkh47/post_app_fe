@@ -18,8 +18,7 @@ const Home: React.FC = () => {
       <div className="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <PostFeed />
       </div>
-      <div className="w-80 fixed top-16 right-0 h-[calc(100vh-4rem)] hidden sm:block">
-        {/* <ChatPage user={user} /> */}
+      <div className="w-80 fixed top-16 right-0 h-[calc(100vh-4rem)] hidden sm:block z-50">
         <ChatDrawer user={user} />
       </div>
       {showGroupJoinModal && inviteToken && (
