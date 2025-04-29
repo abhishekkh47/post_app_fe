@@ -32,7 +32,7 @@ const ChatPage: React.FC<ChatPageProps> = ({ user }) => {
   } = useChatList({ user });
 
   return (
-    <div className="w-full lg:pl-64 xl:pr-80">
+    <div className="w-full lg:pl-48 xl:pl-72 2xl:pl-96 lg:pr-48 xl:pr-72 2xl:pr-96 transition-all duration-300">
       <div className="flex max-w-2xl mx-auto px-4 pb-4 bg-white relative border-b border-gray-200">
         <div className="font-semibold text-xl px-4 pt-4">Messages</div>
         <div className="justify-end flex-1 flex items-center pt-4">
