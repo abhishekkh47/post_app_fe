@@ -14,9 +14,11 @@ const Home: React.FC = () => {
   const { joinGroupData } = useJoinGroup();
 
   return (
-    <div className="w-full lg:pl-48 xl:pl-72 2xl:pl-96 lg:pr-48 xl:pr-72 2xl:pr-96 transition-all duration-300">
-      <div className="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <PostFeed />
+    <div className="w-full h-[calc(100vh-5rem)] lg:pl-48 xl:pl-72 2xl:pl-96 lg:pr-48 xl:pr-72 2xl:pr-96 transition-all duration-300">
+      <div className="h-full overflow-y-auto custom-scrollbar">
+        <div className="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <PostFeed />
+        </div>
       </div>
       <ChatDrawer user={user} />
       {showGroupJoinModal && inviteToken && (
