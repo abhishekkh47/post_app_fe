@@ -59,7 +59,7 @@ const RenderAttachment: React.FC<PostListProps> = ({ attachments }) => {
   };
 
   return (
-    <div className="mt-4 rounded-lg overflow-hidden">
+    <div className="mt-4 rounded-lg overflow-hidden pb-4">
       {attachments.length === 1 ? (
         renderSingleAttachment(attachments[0])
       ) : (
