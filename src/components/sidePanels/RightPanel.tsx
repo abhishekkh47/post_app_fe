@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { User, Users, TrendingUp, Star, ChevronRight } from "react-feather";
 import { useAuth } from "../../context/AuthContext";
 import { useSocket } from "../../context/SocketContext";
+import { Group } from "../../types";
+import { GroupChatService } from "../../services";
+import { Loader } from "../common";
+import { ProfilePicture } from "../profile";
+import { useNavigate } from "react-router-dom";
 
 interface RightPanelProps {
-  userGroups?: Array<{
-    _id: string;
-    name: string;
-    imageUrl: string;
-  }>;
   trendingTopics?: Array<{
     _id: string;
     title: string;
@@ -23,22 +23,38 @@ interface RightPanelProps {
 }
 
 const RightPanel: React.FC<RightPanelProps> = ({
-  userGroups = [],
   trendingTopics = [],
   recommendedContent = [],
 }) => {
   const { user } = useAuth();
   const { onlineUsers, isConnected, getActiveFriends } = useSocket();
+  const navigate = useNavigate();
+
+  const [groups, setGroups] = useState<Group[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (!isConnected) return;
 
     const timer = setTimeout(() => {
       getActiveFriends();
+      fetchGroups();
     }, 3000);
 
     return () => clearTimeout(timer); // Clean up on unmount
   }, [isConnected]);
+
+  const fetchGroups = async () => {
+    try {
+      setLoading(true);
+      const response = await GroupChatService.getGroups();
+      setGroups(response.groups);
+    } catch (error) {
+      console.error("Error fetching groups:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (!user) return null;
 
@@ -64,10 +80,11 @@ const RightPanel: React.FC<RightPanelProps> = ({
                 className="flex items-center space-x-2 hover:bg-gray-50 p-2 rounded-lg cursor-pointer"
               >
                 <div className="relative">
-                  <img
-                    src={friend.profile_pic || "/api/placeholder/32/32"}
-                    alt={friend.firstName}
-                    className="w-8 h-8 rounded-full object-cover"
+                  <ProfilePicture
+                    profile_pic={friend?.profile_pic}
+                    firstName={friend.firstName || ""}
+                    size={8}
+                    text="lg"
                   />
                   <span className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full border border-white"></span>
                 </div>
@@ -99,16 +116,19 @@ const RightPanel: React.FC<RightPanelProps> = ({
         </div>
 
         <div className="space-y-3">
-          {userGroups.length > 0 ? (
-            userGroups.slice(0, 3).map((group) => (
+          {loading ? (
+            <Loader />
+          ) : groups.length > 0 ? (
+            groups.slice(0, 3).map((group) => (
               <div
                 key={group._id}
                 className="flex items-center space-x-2 hover:bg-gray-50 p-2 rounded-lg cursor-pointer"
               >
-                <img
-                  src={group.imageUrl || "/api/placeholder/32/32"}
-                  alt={group.name}
-                  className="w-8 h-8 rounded-lg object-cover"
+                <ProfilePicture
+                  profile_pic={group?.profile_pic}
+                  firstName={group.name || ""}
+                  size={8}
+                  text="lg"
                 />
                 <span className="text-sm font-medium text-gray-700">
                   {group.name}
@@ -121,8 +141,13 @@ const RightPanel: React.FC<RightPanelProps> = ({
             </p>
           )}
 
-          {userGroups.length > 0 && (
-            <div className="text-sm text-blue-500 flex items-center justify-center cursor-pointer hover:underline mt-2">
+          {groups.length > 0 && (
+            <div
+              className="text-sm text-blue-500 flex items-center justify-center cursor-pointer hover:underline mt-2"
+              onClick={() => {
+                navigate("/messages");
+              }}
+            >
               See all groups
               <ChevronRight size={16} />
             </div>
