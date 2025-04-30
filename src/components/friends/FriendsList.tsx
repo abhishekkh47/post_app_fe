@@ -1,7 +1,6 @@
 import React from "react";
 import { ChatPopup } from "../chat";
 import { MessageSquare } from "lucide-react";
-import { useFriends } from "../../hooks";
 import { ProfilePicture } from "../profile";
 import { Group, Message, User } from "../../types";
 
@@ -9,8 +8,6 @@ interface FriendsListProps {
   friends: User[];
   selectedUser: User | null;
   messages: Message[];
-  activeTab: string;
-  updateActiveTab: (tab: "followers" | "following") => void;
   updateMessages: (newMessage: Message) => void;
   handleFriendClick: (userId: string) => void;
   handleMessageClick: (friend: User, e: React.MouseEvent) => void;
@@ -19,46 +16,19 @@ interface FriendsListProps {
   selectedGroup: Group | null;
 }
 
-const FriendsList: React.FC<FriendsListProps> = ({ friends }) => {
-  const {
-    selectedUser,
-    messages,
-    activeTab,
-    updateActiveTab,
-    updateMessages,
-    handleFriendClick,
-    handleMessageClick,
-    handleSendMessage,
-    handleCloseChat,
-    selectedGroup,
-  } = useFriends();
-
+const FriendsList: React.FC<FriendsListProps> = ({
+  friends,
+  selectedUser,
+  messages,
+  updateMessages,
+  handleFriendClick,
+  handleMessageClick,
+  handleSendMessage,
+  handleCloseChat,
+  selectedGroup,
+}) => {
   return (
     <>
-      {/* Toggle Buttons */}
-      <div className="flex space-x-2">
-        <button
-          className={`px-4 py-2 rounded-md font-semibold transition ${
-            activeTab === "followers"
-              ? "bg-indigo-600 text-white"
-              : "bg-gray-200 text-gray-800"
-          }`}
-          onClick={() => updateActiveTab("followers")}
-        >
-          Followers
-        </button>
-        <button
-          className={`px-4 py-2 rounded-md font-semibold transition ${
-            activeTab === "following"
-              ? "bg-indigo-600 text-white"
-              : "bg-gray-200 text-gray-800"
-          }`}
-          onClick={() => updateActiveTab("following")}
-        >
-          Following
-        </button>
-      </div>
-
       {/* Friends List */}
       <div className="mt-6">
         {friends.length > 0 ? (
