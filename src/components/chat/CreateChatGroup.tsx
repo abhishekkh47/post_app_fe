@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { User } from "../../types";
-import { GroupChatService } from "../../services";
+import { useCreateChatGroup } from "../../hooks";
 
 interface CreateChatGroupProps {
   isOpen: any;
@@ -21,60 +21,18 @@ const CreateChatGroup: React.FC<CreateChatGroupProps> = ({
   newGroupCreated,
 }) => {
   if (!isOpen) return null;
-  const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
-  const [groupDescription, setGroupDescription] = useState<string>("");
-  const [groupName, setGroupName] = useState<string>("");
-  const [groupPic, setGroupPic] = useState<string | null>(null);
-
-  const handleMemberToggle = (userId: string) => {
-    if (selectedMembers.includes(userId)) {
-      setSelectedMembers(selectedMembers.filter((id) => id !== userId));
-    } else {
-      setSelectedMembers([...selectedMembers, userId]);
-    }
-  };
-
-  const handleFileChange = (event: any) => {
-    setGroupPic(event.target.files[0]);
-  };
-
-  const handleGroupDescriptionChange = (event: any) => {
-    setGroupDescription(event.target.value);
-  };
-
-  const handleGroupNameChange = (event: any) => {
-    setGroupName(event.target.value);
-  };
-
-  const handleCreateGroup = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!groupName.trim()) {
-      return;
-    }
-
-    try {
-      await GroupChatService.createGroup(
-        groupName,
-        groupDescription,
-        selectedMembers
-      );
-
-      newGroupCreated();
-      // Reset form
-      setGroupName("");
-      setGroupDescription("");
-      setSelectedMembers([]);
-      onClose();
-    } catch (error) {
-      console.error("Error creating group:", error);
-    }
-  };
-
-  const handleCancel = () => {
-    setSelectedMembers([]);
-    onClose();
-  };
+  const {
+    selectedMembers,
+    groupDescription,
+    groupName,
+    groupPic,
+    handleMemberToggle,
+    handleFileChange,
+    handleGroupDescriptionChange,
+    handleGroupNameChange,
+    handleCreateGroup,
+    handleCancel,
+  } = useCreateChatGroup({ newGroupCreated, onClose });
 
   return (
     <div className="fixed inset-0 flex justify-center items-center bg-gray-600 bg-opacity-50">

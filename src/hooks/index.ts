@@ -20,6 +20,7 @@ export { default as useClickOutside } from "./useClickOutside";
 export { default as useNotification } from "./useNotification";
 export { default as useNotificationList } from "./useNotificationList";
 export { default as useChatList } from "./useChatList";
+export { default as useCreateChatGroup } from "./useCreateChatGroup";
 export { default as useGroupDetails } from "./useGroupDetails";
 export { default as useGroupProfile } from "./useGroupProfile";
 export { default as useGroupUserList } from "./useGroupUserList";
