@@ -18,3 +18,11 @@ export interface fileMetadata {
   size: number;
   lastModified: number;
 }
+
+export interface OnlineUsers {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  profile_pic: string;
+  email: string;
+}

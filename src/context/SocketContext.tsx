@@ -8,11 +8,13 @@ import React, {
 } from "react";
 import { io, Socket } from "socket.io-client";
 import { WS_EVENTS } from "../utils";
+import { OnlineUsers } from "../types";
 
 const { CHAT, GROUP, NOTIFICATIONS } = WS_EVENTS;
 interface SocketContextType {
   socket: Socket | null;
   isConnected: boolean;
+  onlineUsers: OnlineUsers[];
   // private chat methods
   sendPrivateMessage: (
     receiverId: string,
@@ -45,11 +47,13 @@ interface SocketContextType {
     commentId: string,
     content: string
   ) => void;
+  getActiveFriends: () => void;
 }
 
 const SocketContext = createContext<SocketContextType>({
   socket: null,
   isConnected: false,
+  onlineUsers: [],
   sendPrivateMessage: () => {},
   notifyTyping: () => {},
   markAsRead: () => {},
@@ -62,6 +66,7 @@ const SocketContext = createContext<SocketContextType>({
   commentOnPost: () => {},
   likeAComment: () => {},
   replyOnComment: () => {},
+  getActiveFriends: () => {},
 });
 
 export const useSocket = () => useContext(SocketContext);
@@ -72,6 +77,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false); // Initialize as false
   const [error, setError] = useState<string | null>(null);
+  const [onlineUsers, setOnlineUsers] = useState<OnlineUsers[]>([]);
 
   const sendPrivateMessage = useCallback(
     (receiverId: string, content: string, attachments: string[] = []) => {
@@ -197,6 +203,14 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
     },
     [socket, isConnected]
   );
+  const getActiveFriends = useCallback(() => {
+    socket?.emit(CHAT.EMITTER.GET_ACTIVE_USERS, (users: OnlineUsers[]) => {
+      setOnlineUsers(() => users);
+      users.forEach((user: OnlineUsers) => {
+        console.log(user);
+      });
+    });
+  }, [isConnected]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -260,6 +274,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         socket,
         isConnected,
+        onlineUsers,
         sendPrivateMessage,
         notifyTyping,
         markAsRead,
@@ -272,6 +287,7 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
         commentOnPost,
         likeAComment,
         replyOnComment,
+        getActiveFriends,
       }}
     >
       {children}
