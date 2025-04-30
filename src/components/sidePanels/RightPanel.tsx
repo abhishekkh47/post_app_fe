@@ -1,14 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { User, Users, TrendingUp, Star, ChevronRight } from "react-feather";
 import { useAuth } from "../../context/AuthContext";
+import { useSocket } from "../../context/SocketContext";
 
 interface RightPanelProps {
-  onlineUsers?: Array<{
-    _id: string;
-    name: string;
-    avatar: string;
-    isOnline: boolean;
-  }>;
   userGroups?: Array<{
     _id: string;
     name: string;
@@ -28,17 +23,27 @@ interface RightPanelProps {
 }
 
 const RightPanel: React.FC<RightPanelProps> = ({
-  onlineUsers = [],
   userGroups = [],
   trendingTopics = [],
   recommendedContent = [],
 }) => {
   const { user } = useAuth();
+  const { onlineUsers, isConnected, getActiveFriends } = useSocket();
+
+  useEffect(() => {
+    if (!isConnected) return;
+
+    const timer = setTimeout(() => {
+      getActiveFriends();
+    }, 3000);
+
+    return () => clearTimeout(timer); // Clean up on unmount
+  }, [isConnected]);
 
   if (!user) return null;
 
   return (
-    <div className="flex flex-col h-full bg-white border-l border-gray-200 w-80 overflow-y-auto">
+    <div className="flex flex-col h-full bg-white border-l border-gray-200 max-w-80">
       {/* Friends Online Section */}
       <div className="p-4 border-b border-gray-200">
         <div className="flex items-center justify-between mb-3">
@@ -60,14 +65,14 @@ const RightPanel: React.FC<RightPanelProps> = ({
               >
                 <div className="relative">
                   <img
-                    src={friend.avatar || "/api/placeholder/32/32"}
-                    alt={friend.name}
+                    src={friend.profile_pic || "/api/placeholder/32/32"}
+                    alt={friend.firstName}
                     className="w-8 h-8 rounded-full object-cover"
                   />
                   <span className="absolute bottom-0 right-0 w-2 h-2 bg-green-500 rounded-full border border-white"></span>
                 </div>
                 <span className="text-sm font-medium text-gray-700">
-                  {friend.name}
+                  {friend.firstName} {friend.lastName}
                 </span>
               </div>
             ))

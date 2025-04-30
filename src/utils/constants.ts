@@ -11,6 +11,7 @@ export const WS_EVENTS = {
       USER_TYPING: "user_typing",
       MARK_READ: "mark_read",
       TYPING: "typing",
+      ACTIVE_USERS: "active_users",
     },
     EMITTER: {
       TYPING: "typing",
@@ -19,6 +20,7 @@ export const WS_EVENTS = {
       MESSAGE_SENT: "message_sent",
       USER_TYPING: "user_typing",
       MESSAGE_MARKED_READ: "message_marked_read",
+      GET_ACTIVE_USERS: "get_active_users",
     },
   },
   GROUP: {

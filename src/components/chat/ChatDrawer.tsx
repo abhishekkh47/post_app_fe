@@ -36,7 +36,7 @@ const ChatDrawer: React.FC<ChatDrawerProps> = ({ user }) => {
   } = useChatList({ user });
 
   return (
-    <div className="fixed bottom-4 right-4 z-50">
+    <div className="fixed bottom-4 right-4 z-50 hidden sm:block">
       {/* Minimized Button */}
       <div className="bg-white rounded-lg shadow-xl w-80  flex flex-col transition-all duration-300 ease-in-out">
         <div
