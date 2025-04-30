@@ -11,6 +11,10 @@ const useProfile = ({ userId }: ProfileProps) => {
   const [profile, setProfile] = useState<User | null>(null);
   const [isPublicProfile, setIsPublicProfile] = useState<boolean>(false);
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
+  const [showFriends, setShowFriends] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<
+    "followers" | "following" | "posts"
+  >("posts");
   const { user, updateUser } = useAuth();
 
   // get user profile
@@ -48,15 +52,27 @@ const useProfile = ({ userId }: ProfileProps) => {
     }
   };
 
+  const updateShowFriends = (status: boolean) => {
+    setShowFriends(status);
+  };
+
+  const updateActiveTab = (tab: "followers" | "following" | "posts") => {
+    setActiveTab(tab);
+  };
+
   return {
     user,
     profile,
     isPublicProfile,
     isFollowing,
+    showFriends,
+    activeTab,
     setIsPublicProfile,
     setIsFollowing,
     handleFollow,
     updateUser,
+    updateShowFriends,
+    updateActiveTab,
   };
 };
 

@@ -25,12 +25,32 @@ const Friends: React.FC = () => {
         <Loader />
       ) : (
         <>
+          <div className="flex space-x-2">
+            <button
+              className={`px-4 py-2 rounded-md font-semibold transition ${
+                activeTab === "followers"
+                  ? "bg-indigo-600 text-white"
+                  : "bg-gray-200 text-gray-800"
+              }`}
+              onClick={() => updateActiveTab("followers")}
+            >
+              Followers
+            </button>
+            <button
+              className={`px-4 py-2 rounded-md font-semibold transition ${
+                activeTab === "following"
+                  ? "bg-indigo-600 text-white"
+                  : "bg-gray-200 text-gray-800"
+              }`}
+              onClick={() => updateActiveTab("following")}
+            >
+              Following
+            </button>
+          </div>
           <FriendsList
             friends={friends}
             selectedUser={selectedUser}
             messages={messages}
-            activeTab={activeTab}
-            updateActiveTab={updateActiveTab}
             updateMessages={updateMessages}
             handleFriendClick={handleFriendClick}
             handleMessageClick={handleMessageClick}

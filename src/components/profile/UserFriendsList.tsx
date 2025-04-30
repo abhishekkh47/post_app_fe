@@ -1,10 +1,10 @@
 import React from "react";
 import { ChatPopup } from "../chat";
 import { MessageSquare } from "lucide-react";
-import { ProfilePicture } from "../profile";
+import { ProfilePicture } from ".";
 import { Group, Message, User } from "../../types";
 
-interface FriendsListProps {
+interface UserFriendsListProps {
   friends: User[];
   selectedUser: User | null;
   messages: Message[];
@@ -16,7 +16,7 @@ interface FriendsListProps {
   selectedGroup: Group | null;
 }
 
-const FriendsList: React.FC<FriendsListProps> = ({
+const UserFriendsList: React.FC<UserFriendsListProps> = ({
   friends,
   selectedUser,
   messages,
@@ -84,4 +84,4 @@ const FriendsList: React.FC<FriendsListProps> = ({
   );
 };
 
-export default FriendsList;
+export default UserFriendsList;

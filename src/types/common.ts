@@ -26,3 +26,5 @@ export interface OnlineUsers {
   profile_pic: string;
   email: string;
 }
+
+export type Tab = "followers" | "following";
