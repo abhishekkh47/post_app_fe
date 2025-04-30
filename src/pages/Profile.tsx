@@ -43,69 +43,71 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="w-full lg:pl-48 xl:pl-72 2xl:pl-96 lg:pr-48 xl:pr-72 2xl:pr-96 transition-all duration-300">
-      <div className="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-        <UserProfile
-          user={user}
-          profile={profile}
-          isFollowing={isFollowing}
-          handleFollow={handleFollow}
-          updateUser={updateUser}
-        />
-        <div className="flex flex-col py-8">
-          <div className="flex space-x-2">
-            <button
-              className={`px-4 py-2 rounded-md font-semibold transition w-1/3 ${
-                activeTab === "posts"
-                  ? "bg-indigo-600 text-white"
-                  : "bg-gray-200 text-gray-800"
-              }`}
-              onClick={() => updateActiveTabProfile("posts")}
-            >
-              Posts
-            </button>
-            <button
-              className={`px-4 py-2 rounded-md font-semibold transition w-1/3 ${
-                activeTab === "followers"
-                  ? "bg-indigo-600 text-white"
-                  : "bg-gray-200 text-gray-800"
-              }`}
-              onClick={() => setActiveTab("followers")}
-            >
-              Followers
-            </button>
-            <button
-              className={`px-4 py-2 rounded-md font-semibold transition w-1/3 ${
-                activeTab === "following"
-                  ? "bg-indigo-600 text-white"
-                  : "bg-gray-200 text-gray-800"
-              }`}
-              onClick={() => setActiveTab("following")}
-            >
-              Following
-            </button>
+    <div className="w-full h-[calc(100vh-5rem)] lg:pl-48 xl:pl-72 2xl:pl-96 lg:pr-48 xl:pr-72 2xl:pr-96 transition-all duration-300">
+      <div className="h-full overflow-y-auto custom-scrollbar">
+        <div className="max-w-3xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          <UserProfile
+            user={user}
+            profile={profile}
+            isFollowing={isFollowing}
+            handleFollow={handleFollow}
+            updateUser={updateUser}
+          />
+          <div className="flex flex-col py-8">
+            <div className="flex space-x-2">
+              <button
+                className={`px-4 py-2 rounded-md font-semibold transition w-1/3 ${
+                  activeTab === "posts"
+                    ? "bg-indigo-600 text-white"
+                    : "bg-gray-200 text-gray-800"
+                }`}
+                onClick={() => updateActiveTabProfile("posts")}
+              >
+                Posts
+              </button>
+              <button
+                className={`px-4 py-2 rounded-md font-semibold transition w-1/3 ${
+                  activeTab === "followers"
+                    ? "bg-indigo-600 text-white"
+                    : "bg-gray-200 text-gray-800"
+                }`}
+                onClick={() => setActiveTab("followers")}
+              >
+                Followers
+              </button>
+              <button
+                className={`px-4 py-2 rounded-md font-semibold transition w-1/3 ${
+                  activeTab === "following"
+                    ? "bg-indigo-600 text-white"
+                    : "bg-gray-200 text-gray-800"
+                }`}
+                onClick={() => setActiveTab("following")}
+              >
+                Following
+              </button>
+            </div>
+            {activeTab == "posts" ? (
+              (profile?._id === userId || isPublicProfile || isFollowing) && (
+                <div className="py-6">
+                  <ProfileFeed userId={userId} />
+                </div>
+              )
+            ) : loading ? (
+              <Loader />
+            ) : (
+              <FriendsList
+                friends={friends}
+                selectedUser={selectedUser}
+                messages={messages}
+                updateMessages={updateMessages}
+                handleFriendClick={handleFriendClick}
+                handleMessageClick={handleMessageClick}
+                handleSendMessage={handleSendMessage}
+                handleCloseChat={handleCloseChat}
+                selectedGroup={selectedGroup}
+              />
+            )}
           </div>
-          {activeTab == "posts" ? (
-            (profile?._id === userId || isPublicProfile || isFollowing) && (
-              <div className="py-6">
-                <ProfileFeed userId={userId} />
-              </div>
-            )
-          ) : loading ? (
-            <Loader />
-          ) : (
-            <FriendsList
-              friends={friends}
-              selectedUser={selectedUser}
-              messages={messages}
-              updateMessages={updateMessages}
-              handleFriendClick={handleFriendClick}
-              handleMessageClick={handleMessageClick}
-              handleSendMessage={handleSendMessage}
-              handleCloseChat={handleCloseChat}
-              selectedGroup={selectedGroup}
-            />
-          )}
         </div>
       </div>
     </div>
