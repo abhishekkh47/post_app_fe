@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Message, User } from "../types";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSocket } from "../context/SocketContext";
 import { useAuth } from "../context/AuthContext";
 import { ChatService, FollowService } from "../services";
@@ -20,6 +20,7 @@ const useFriends = () => {
   const navigate = useNavigate();
   const { socket } = useSocket();
   const { selectedGroup } = useChat();
+  const { userId } = useParams();
 
   const {
     CHAT: {
@@ -32,7 +33,7 @@ const useFriends = () => {
   useEffect(() => {
     fetchFriends(activeTab);
     fetchFriendRecommendation();
-  }, [activeTab]);
+  }, [activeTab, userId]);
 
   useEffect(() => {
     if (!socket) return;
@@ -58,9 +59,9 @@ const useFriends = () => {
   const fetchFriends = async (type: "followers" | "following") => {
     setLoading(true);
     try {
-      if (user) {
+      if (user || userId) {
         const response = await FollowService.getFollowersOrFollowing(
-          user._id,
+          userId || user!._id,
           type
         );
         const data =
