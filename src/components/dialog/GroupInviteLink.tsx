@@ -38,10 +38,37 @@ const GroupInviteLink: React.FC<IGroupInviteLink> = ({
   const [showQrCode, setShowQrCode] = useState<boolean>(false);
 
   const inviteLink = `http://localhost:5173/group/members/join/${inviteToken}`;
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(inviteLink);
-    toast("Link Copied");
-  };
+  // const handleCopyLink = () => {
+  //   navigator.clipboard.writeText(inviteLink);
+  //   toast("Link Copied");
+  // };
+  const handleCopyLink = async () => {
+    try {
+      if (!inviteToken) {
+        toast.error("No invite link available");
+        return;
+      }
+      await navigator.clipboard.writeText(inviteLink);
+      toast.success("Link copied to clipboard!");
+    } catch (error) {
+      console.error("Failed to copy:", error);
+      // Fallback method for older browsers
+      const textArea = document.createElement("textarea");
+      textArea.value = inviteLink;
+      textArea.style.position = "fixed";
+      textArea.style.left = "-999999px";
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand("copy");
+        toast.success("Link copied to clipboard!");
+      } catch (err) {
+        console.error("Failed to copy:", err);
+        toast.error("Failed to copy link");
+      }
+      document.body.removeChild(textArea);
+    }
+  }
 
   const handleShowQRCode = () => {
     setShowQrCode(!showQrCode);

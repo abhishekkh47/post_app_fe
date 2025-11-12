@@ -1,18 +1,22 @@
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { GroupChatService } from "../services";
 import { useJoinGroup } from "../context/JoinGroupContext";
 
 const JoinGroup: React.FC = () => {
   const { user } = useAuth();
-  if (!user) return;
   const { inviteToken } = useParams<{ inviteToken: string }>();
-  if (!inviteToken) return;
   const { updateJoinGroupData } = useJoinGroup();
-
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
+
   useEffect(() => {
+    if (!user || !inviteToken) {
+      setError("Invalid request");
+      return;
+    }
+
     const getGroupDetails = async () => {
       try {
         const groupData = (
@@ -23,15 +27,19 @@ const JoinGroup: React.FC = () => {
           navigate(`/?inviteToken=${inviteToken}`);
         }
       } catch (error) {
-        return (
-          <div className="max-w-full">
-            <div className="flex-1">Invalid Group Invite</div>
-          </div>
-        );
+        setError(`Invalid Group Invite: ${(error as Error).message}`);
       }
     };
     getGroupDetails();
-  });
+  }, [user, inviteToken, navigate, updateJoinGroupData]);
+
+  if (error) {
+    return (
+      <div className="max-w-full">
+        <div className="flex-1">{error}</div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-full">

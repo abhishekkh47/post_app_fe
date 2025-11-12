@@ -1,7 +1,7 @@
 // src/routes/routesConfig.tsx
 import { lazy } from "react";
 import { ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 // Define route types for better type safety
 export interface RouteConfig {
@@ -34,36 +34,26 @@ const MaintenancePageLayout = lazy(
 
 // Define the routes configuration
 const createRoutesConfig = (isAuthenticated: boolean, user: any) => {
-  const navigate = useNavigate();
   const routesConfig: RouteConfig[] = [
     // Public Routes
     {
       path: "/login",
       component: isAuthenticated
-        ? () => {
-            navigate("/", { replace: true });
-            return null;
-          }
+        ? () => <Navigate to="/" replace />
         : LoginForm,
       protected: false,
       children: [
         {
           path: "identity",
           component: isAuthenticated
-            ? () => {
-                navigate("/", { replace: true });
-                return null;
-              }
+            ? () => <Navigate to="/" replace />
             : SearchAccount,
           protected: false,
         },
         {
           path: "reset-password",
           component: isAuthenticated
-            ? () => {
-                navigate("/", { replace: true });
-                return null;
-              }
+            ? () => <Navigate to="/" replace />
             : ResetPassword,
           protected: false,
         },
@@ -72,10 +62,7 @@ const createRoutesConfig = (isAuthenticated: boolean, user: any) => {
     {
       path: "/signup",
       component: isAuthenticated
-        ? () => {
-            navigate("/", { replace: true });
-            return null;
-          }
+        ? () => <Navigate to="/" replace />
         : SignupForm,
       protected: false,
     },
@@ -105,39 +92,31 @@ const createRoutesConfig = (isAuthenticated: boolean, user: any) => {
       component: Settings,
       protected: true,
       withNotifications: true,
-      children: [
-        {
-          path: ":userId",
-          component: UpdatePassword,
-          protected: true,
-        },
-        {
-          path: "update-password",
-          component: UpdatePassword,
-          protected: true,
-        },
-      ],
     },
     {
-      path: "/group",
+      path: "/settings/:userId",
+      component: UpdatePassword,
+      protected: true,
+      withNotifications: true,
+    },
+    {
+      path: "/settings/update-password",
+      component: UpdatePassword,
+      protected: true,
+      withNotifications: true,
+    },
+    {
+      path: "/group/:groupId",
       component: GroupDetails,
       protected: true,
       withNotifications: true,
-      children: [
-        {
-          path: ":groupId",
-          component: GroupDetails,
-          protected: true,
-          withNotifications: true,
-        },
-        {
-          path: "members/join/:inviteToken",
-          component: JoinGroup,
-          protected: true,
-          withNotifications: true,
-          withJoinGroup: true,
-        },
-      ],
+    },
+    {
+      path: "/group/members/join/:inviteToken",
+      component: JoinGroup,
+      protected: true,
+      withNotifications: true,
+      withJoinGroup: true,
     },
     {
       path: "/post/:postId",
