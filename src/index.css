@@ -2,6 +2,12 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+/* Prevent body scrolling - only internal scrolling allowed */
+html, body, #root {
+  height: 100%;
+  overflow: hidden;
+}
+
 /* Smooth scrolling for the navigation */
 /* .left-panel-scroll {
     scrollbar-width: thin;

@@ -32,8 +32,8 @@ const ChatPage: React.FC<ChatPageProps> = ({ user }) => {
   } = useChatList({ user });
 
   return (
-    <div className="w-full lg:pl-48 xl:pl-72 2xl:pl-96 lg:pr-48 xl:pr-72 2xl:pr-96 transition-all duration-300">
-      <div className="flex max-w-2xl mx-auto px-4 pb-4 bg-white relative border-b border-gray-200">
+    <div className="w-full lg:pl-48 xl:pl-72 2xl:pl-96 lg:pr-48 xl:pr-72 2xl:pr-96 transition-all duration-300 sm:pt-6 pt-6">
+      {/* <div className="flex max-w-2xl mx-auto px-4 pb-4 bg-white relative border-b border-gray-200">
         <div className="font-semibold text-xl px-4 pt-4">Messages</div>
         <div className="justify-end flex-1 flex items-center pt-4">
           <button
@@ -45,8 +45,8 @@ const ChatPage: React.FC<ChatPageProps> = ({ user }) => {
             <LucideUsers2 />
           </button>
         </div>
-      </div>
-      {!selectedUser && !selectedGroup ? (
+      </div> */}
+      {/* {!selectedUser && !selectedGroup ? (
         <ChatList
           user={user}
           conversations={conversations}
@@ -57,6 +57,42 @@ const ChatPage: React.FC<ChatPageProps> = ({ user }) => {
           onSelectGroup={handleSelectGroupChat}
         />
       ) : (
+        <ChatMessageView
+          selectedUser={selectedUser}
+          selectedGroup={selectedGroup}
+          messages={messages}
+          updateMessages={updateMessages}
+          onSendMessage={handleSendMessage}
+          onClose={handleCloseChat}
+        />
+      )} */}
+      {!selectedUser && !selectedGroup && (
+        <div>
+          <div className="flex max-w-2xl mx-auto px-4 pb-4 bg-white relative border-b border-gray-200">
+            <div className="font-semibold text-xl px-4 pt-4">Messages</div>
+            <div className="justify-end flex-1 flex items-center pt-4">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  openModal();
+                }}
+              >
+                <LucideUsers2 />
+              </button>
+            </div>
+          </div>
+          <ChatList
+            user={user}
+            conversations={conversations}
+            groups={groups}
+            selectedUser={selectedUser}
+            selectedGroup={selectedGroup}
+            onSelectConversation={handleSelectConversation}
+            onSelectGroup={handleSelectGroupChat}
+          />
+        </div>
+      )}
+      {(selectedUser || selectedGroup) && (
         <ChatMessageView
           selectedUser={selectedUser}
           selectedGroup={selectedGroup}
