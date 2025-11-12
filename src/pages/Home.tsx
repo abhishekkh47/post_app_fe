@@ -7,11 +7,11 @@ import { PostFeed } from "../components/post";
 
 const Home: React.FC = () => {
   const { user } = useAuth();
-  if (!user) return;
-
+  
   const { showGroupJoinModal, inviteToken, handleCancel, handleJoin } =
-    useHome();
+  useHome();
   const { joinGroupData } = useJoinGroup();
+  if (!user) return;
 
   return (
     <div className="w-full h-[calc(100vh-5rem)] lg:pl-48 xl:pl-72 2xl:pl-96 lg:pr-48 xl:pr-72 2xl:pr-96 transition-all duration-300">

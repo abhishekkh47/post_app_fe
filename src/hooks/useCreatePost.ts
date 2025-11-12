@@ -20,7 +20,7 @@ const useCreatePost = ({ fetchPosts }: CreatePostProps) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    let attachmentNames: string[] = [];
+    const attachmentNames: string[] = [];
     if (content || attachments) {
       try {
         if (attachmentNames.length > 10) {
@@ -34,6 +34,7 @@ const useCreatePost = ({ fetchPosts }: CreatePostProps) => {
         setError("");
         fetchPosts();
       } catch (err) {
+        console.error(`Failed to create post: ${(err as Error).message}`);
         setError("Failed to create post. Please try again.");
       }
     }
