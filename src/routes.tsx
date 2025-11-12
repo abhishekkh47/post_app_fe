@@ -104,6 +104,7 @@ const createRoutesConfig = (isAuthenticated: boolean, user: any) => {
       path: "/settings",
       component: Settings,
       protected: true,
+      withNotifications: true,
       children: [
         {
           path: ":userId",

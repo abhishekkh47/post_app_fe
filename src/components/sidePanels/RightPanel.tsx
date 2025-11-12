@@ -42,7 +42,7 @@ const RightPanel: React.FC<RightPanelProps> = ({
     }, 3000);
 
     return () => clearTimeout(timer); // Clean up on unmount
-  }, [isConnected]);
+  }, [isConnected, getActiveFriends]);
 
   const fetchGroups = async () => {
     try {

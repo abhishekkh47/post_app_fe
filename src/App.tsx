@@ -3,7 +3,7 @@ import { AuthProvider } from "./context/AuthContext";
 import { SocketProvider } from "./context/SocketContext";
 import { ProtectedRoute } from "./components/auth";
 import { useAuth } from "./context/AuthContext";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import {
   AuthenticatedLayout,
   MaintenancePageLayout,
@@ -83,9 +83,11 @@ const AppContent = () => {
   // Helper function to wrap elements based on route config
   const getWrappedElement = (route: RouteConfig) => {
     // Handle redirect for public routes when authenticated
-    if (!route.protected && "redirect" in route.component) {
-      return <Navigate to={(route.component as any).redirect} replace />;
-    }
+
+    // The below redirect logic was unnecessary since your routes config already handles navigation for authenticated users by returning functions that call navigate().
+    // if (!route.protected && "redirect" in route.component) {
+    //   return <Navigate to={(route.component as any).redirect} replace />;
+    // }
 
     // Get the component
     const Component = route.component;
