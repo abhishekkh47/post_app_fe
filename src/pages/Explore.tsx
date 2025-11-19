@@ -13,21 +13,16 @@ const Explore: React.FC = () => {
             <Loader />
           ) : (
             <>
-              {/* Toggle Buttons */}
-              {/* <div className="flex space-x-2">
-                <button
-                  className={`px-4 py-2 rounded-md font-semibold transition bg-indigo-600 text-white`}
-                >
-                  Accounts
-                </button>
-              </div> */}
-
-              {/* <FriendSuggestions /> */}
               {friendSuggestions?.length > 0 && (
                 <>
-                  <h1 className="text-xl text-gray-900 text-start">
-                    People you may know
-                  </h1>
+                  <div className="flex items-center gap-2 mb-4">
+                    <h1 className="text-xl text-gray-900 text-start">
+                      Recommended for You
+                    </h1>
+                    <span className="px-2 py-1 text-xs font-semibold text-purple-600 bg-purple-100 rounded-full">
+                      ✨ AI Powered
+                    </span>
+                  </div>
                   <FriendSuggestions
                     friendSuggestions={friendSuggestions}
                     handleFriendClick={handleFriendClick}
